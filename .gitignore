@@ -1,0 +1,11 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDEs and editor files
+.idea/
+.vscode/
+
+# Ignore Xcode files
+*.xcuserstate
+*.xcuserdata
