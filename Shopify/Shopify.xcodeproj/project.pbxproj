@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F558F6162D5B96DD000982BF /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = F558F6152D5B96DD000982BF /* Apollo */; };
+		F558F61F2D5B984C000982BF /* MyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = F558F61E2D5B984C000982BF /* MyAPI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		F5D4DEF72D58ECC90038A233 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F558F6162D5B96DD000982BF /* Apollo in Frameworks */,
+				F558F61F2D5B984C000982BF /* MyAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,12 +92,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F558F61D2D5B984C000982BF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F5D4DED42D58ECC70038A233 = {
 			isa = PBXGroup;
 			children = (
 				F5D4DEDF2D58ECC70038A233 /* Shopify */,
 				F5D4DEF92D58ECC90038A233 /* ShopifyTests */,
 				F5D4DF032D58ECC90038A233 /* ShopifyUITests */,
+				F558F61D2D5B984C000982BF /* Frameworks */,
 				F5D4DEDE2D58ECC70038A233 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,6 +140,8 @@
 			);
 			name = Shopify;
 			packageProductDependencies = (
+				F558F6152D5B96DD000982BF /* Apollo */,
+				F558F61E2D5B984C000982BF /* MyAPI */,
 			);
 			productName = Shopify;
 			productReference = F5D4DEDD2D58ECC70038A233 /* Shopify.app */;
@@ -208,6 +225,10 @@
 			);
 			mainGroup = F5D4DED42D58ECC70038A233;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F558F6142D5B96DD000982BF /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				F558F61C2D5B981D000982BF /* XCLocalSwiftPackageReference "MyAPI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F5D4DEDE2D58ECC70038A233 /* Products */;
 			projectDirPath = "";
@@ -563,6 +584,37 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F558F61C2D5B981D000982BF /* XCLocalSwiftPackageReference "MyAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MyAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F558F6142D5B96DD000982BF /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F558F6152D5B96DD000982BF /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F558F6142D5B96DD000982BF /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+		F558F61E2D5B984C000982BF /* MyAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F558F61C2D5B981D000982BF /* XCLocalSwiftPackageReference "MyAPI" */;
+			productName = MyAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F5D4DED52D58ECC70038A233 /* Project object */;
 }
