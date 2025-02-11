@@ -63,12 +63,30 @@ extension ViewController: UITableViewDelegate , UITableViewDataSource , Shopping
     
     func removeCell(at indexPath: IndexPath) {
         let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(names[indexPath.row])", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .destructive) { _ in
-            self.names.remove(at: indexPath.row)
-            self.tableView.reloadData()
+        alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self]_ in
+            names.remove(at: indexPath.row)
+            tableView.reloadData()
         })
         alert.addAction(UIAlertAction(title: "Cancle", style: .default, handler: {_ in }))
         self.present(alert, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(names[indexPath.row])", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self]_ in
+                names.remove(at: indexPath.row)
+                tableView.reloadData()
+            })
+            alert.addAction(UIAlertAction(title: "Cancle", style: .default, handler: {_ in }))
+            self.present(alert, animated: true)
+        }
+    }
 }
+
+
 
