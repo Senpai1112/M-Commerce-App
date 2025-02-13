@@ -35,10 +35,10 @@ class ShoppingCartTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     func initUI(){
-        plusButton.layer.cornerRadius = 20
+        plusButton.layer.cornerRadius = 15
         plusButton.clipsToBounds = true
         
-        minusButton.layer.cornerRadius = 20
+        minusButton.layer.cornerRadius = 15
         minusButton.clipsToBounds = true
 
         productImage.layer.cornerRadius = 50

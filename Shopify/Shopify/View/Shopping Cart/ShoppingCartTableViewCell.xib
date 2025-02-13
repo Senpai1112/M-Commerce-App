@@ -32,33 +32,37 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKz-nw-NgB">
-                        <rect key="frame" x="545" y="95" width="40" height="40"/>
+                        <rect key="frame" x="555" y="100" width="30" height="30"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="690-M3-d7G"/>
-                            <constraint firstAttribute="height" constant="40" id="dOd-li-gum"/>
+                            <constraint firstAttribute="width" constant="30" id="690-M3-d7G"/>
+                            <constraint firstAttribute="height" constant="30" id="dOd-li-gum"/>
                         </constraints>
                         <state key="normal" title="Button"/>
-                        <buttonConfiguration key="configuration" style="gray" title="+"/>
+                        <buttonConfiguration key="configuration" style="gray" title="+">
+                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="10"/>
+                        </buttonConfiguration>
                         <connections>
                             <action selector="tabPlusButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="U3c-Iu-wZu"/>
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cwg-jl-PQR">
-                        <rect key="frame" x="467" y="95" width="40" height="40"/>
+                        <rect key="frame" x="487" y="100" width="30" height="30"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="40" id="A7V-LK-G6w"/>
-                            <constraint firstAttribute="width" constant="40" id="f5L-ic-Dmy"/>
+                            <constraint firstAttribute="height" constant="30" id="A7V-LK-G6w"/>
+                            <constraint firstAttribute="width" constant="30" id="f5L-ic-Dmy"/>
                         </constraints>
                         <state key="normal" title="Button"/>
-                        <buttonConfiguration key="configuration" style="gray" title="-"/>
+                        <buttonConfiguration key="configuration" style="gray" title="-">
+                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="10"/>
+                        </buttonConfiguration>
                         <connections>
                             <action selector="tabMinusButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="if3-eS-Nqx"/>
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PKN-aH-xjg">
-                        <rect key="frame" x="522" y="104" width="8" height="21"/>
+                        <rect key="frame" x="532" y="104" width="8" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -71,7 +75,7 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="cwg-jl-PQR" secondAttribute="bottom" constant="15" id="4Yw-mL-0re"/>
+                    <constraint firstAttribute="bottom" secondItem="cwg-jl-PQR" secondAttribute="bottom" constant="20" id="4Yw-mL-0re"/>
                     <constraint firstItem="BWm-4j-lmX" firstAttribute="leading" secondItem="8YI-ce-KDp" secondAttribute="trailing" constant="15" id="5Dp-bI-sQn"/>
                     <constraint firstItem="gcR-wH-0Uf" firstAttribute="leading" secondItem="8YI-ce-KDp" secondAttribute="trailing" constant="15" id="CWw-9C-3si"/>
                     <constraint firstAttribute="trailing" secondItem="BWm-4j-lmX" secondAttribute="trailing" constant="15" id="Kbr-R6-Wob"/>
@@ -80,7 +84,7 @@
                     <constraint firstAttribute="bottom" secondItem="PKN-aH-xjg" secondAttribute="bottom" constant="25" id="WmF-P6-ZUM"/>
                     <constraint firstItem="8YI-ce-KDp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="YDt-St-RoH"/>
                     <constraint firstAttribute="bottom" secondItem="gcR-wH-0Uf" secondAttribute="bottom" constant="25" id="hNZ-w1-VSh"/>
-                    <constraint firstAttribute="bottom" secondItem="WKz-nw-NgB" secondAttribute="bottom" constant="15" id="rg9-rd-E9u"/>
+                    <constraint firstAttribute="bottom" secondItem="WKz-nw-NgB" secondAttribute="bottom" constant="20" id="rg9-rd-E9u"/>
                     <constraint firstItem="8YI-ce-KDp" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="waj-kZ-gsI"/>
                     <constraint firstItem="WKz-nw-NgB" firstAttribute="leading" secondItem="PKN-aH-xjg" secondAttribute="trailing" constant="15" id="xun-y1-gqZ"/>
                     <constraint firstAttribute="trailing" secondItem="WKz-nw-NgB" secondAttribute="trailing" constant="15" id="yti-JL-aK8"/>
