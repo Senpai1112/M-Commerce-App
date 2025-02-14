@@ -1,14 +1,19 @@
 //
-//  TableViewCell.swift
+//  SettingsTableViewCell.swift
 //  Shopify
 //
-//  Created by Yasser Yasser on 13/02/2025.
+//  Created by Yasser Yasser on 14/02/2025.
 //
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class SettingsTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var staticImage: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBOutlet weak var detailsLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

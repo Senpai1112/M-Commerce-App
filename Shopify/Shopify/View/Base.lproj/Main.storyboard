@@ -86,29 +86,45 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="jZF-xc-fHL">
-                                <rect key="frame" x="0.0" y="59" width="393" height="387"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="H8N-oS-dpL">
+                                <rect key="frame" x="0.0" y="59" width="393" height="350"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="350" id="Tgs-eM-DCx"/>
+                                </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="M0k-Ja-G0a">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="LaY-m6-fXG">
                                         <rect key="frame" x="0.0" y="50" width="393" height="47.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="M0k-Ja-G0a" id="pze-tK-DyB">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LaY-m6-fXG" id="nHC-aC-9yi">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="47.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJv-qx-2iu">
+                                <rect key="frame" x="100" y="424" width="193" height="39"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Logout"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="uaR-Jf-dbn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="jZF-xc-fHL" firstAttribute="top" secondItem="uaR-Jf-dbn" secondAttribute="top" id="Kzu-qD-8ac"/>
-                            <constraint firstItem="jZF-xc-fHL" firstAttribute="trailing" secondItem="uaR-Jf-dbn" secondAttribute="trailing" id="fFR-Jo-Xu6"/>
-                            <constraint firstItem="jZF-xc-fHL" firstAttribute="leading" secondItem="uaR-Jf-dbn" secondAttribute="leading" id="skq-N4-wBC"/>
+                            <constraint firstItem="H8N-oS-dpL" firstAttribute="trailing" secondItem="uaR-Jf-dbn" secondAttribute="trailing" id="4zX-iC-PVx"/>
+                            <constraint firstItem="uaR-Jf-dbn" firstAttribute="trailing" secondItem="AJv-qx-2iu" secondAttribute="trailing" constant="100" id="EKX-7H-Nq0"/>
+                            <constraint firstItem="AJv-qx-2iu" firstAttribute="top" secondItem="H8N-oS-dpL" secondAttribute="bottom" constant="15" id="KrJ-MZ-QEA"/>
+                            <constraint firstItem="H8N-oS-dpL" firstAttribute="top" secondItem="uaR-Jf-dbn" secondAttribute="top" id="TvY-9H-mE8"/>
+                            <constraint firstItem="AJv-qx-2iu" firstAttribute="leading" secondItem="uaR-Jf-dbn" secondAttribute="leading" constant="100" id="bRV-P2-mm0"/>
+                            <constraint firstItem="H8N-oS-dpL" firstAttribute="leading" secondItem="uaR-Jf-dbn" secondAttribute="leading" id="cXz-am-Wgg"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="eIW-Hz-sxW"/>
+                    <connections>
+                        <outlet property="logoutButton" destination="AJv-qx-2iu" id="MYg-Mr-0Wc"/>
+                        <outlet property="tableView" destination="H8N-oS-dpL" id="L7g-WP-Q6S"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x6a-dW-az9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

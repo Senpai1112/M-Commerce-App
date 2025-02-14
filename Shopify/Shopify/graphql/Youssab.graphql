@@ -1,0 +1,10 @@
+query CartQuery {
+    cart(id: "10") {
+        checkoutUrl
+        createdAt
+        id
+        note
+        totalQuantity
+        updatedAt
+    }
+}
