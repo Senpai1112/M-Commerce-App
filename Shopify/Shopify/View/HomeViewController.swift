@@ -13,6 +13,7 @@ class HomeViewController: UIViewController ,UICollectionViewDataSource, UICollec
     
     var viewModel : ViewModel!
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         homeCollection.dataSource = self
         homeCollection.delegate = self
