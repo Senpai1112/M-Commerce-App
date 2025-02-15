@@ -4,18 +4,15 @@
 //
 //  Created by Mai Atef  on 09/02/2025.
 //
-
 import Foundation
 
-struct SmartCollectionResponse: Codable {
-    let smart_collections: [SmartCollection]
-}
-
-struct SmartCollection: Codable {
+struct BrandModel {
     let title: String?
-    let image: Image?
+    let image: String?
+    let products: [ProductModel]
 }
 
-struct Image: Codable {
-    let src: String?
+struct ProductModel {
+    let title: String?
+    let image: String?
 }

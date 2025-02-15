@@ -13,7 +13,6 @@ class HeaderView: UICollectionReusableView {
     override func awakeFromNib() {
         super.awakeFromNib()
         headerLabel.textAlignment = .center
-        headerLabel.font = UIFont.boldSystemFont(ofSize: 18)
         
     }
     
