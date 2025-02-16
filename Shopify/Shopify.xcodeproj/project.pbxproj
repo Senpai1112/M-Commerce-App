@@ -6,6 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1741D3D42D5E1F4E00961507 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 1741D3D32D5E1F4E00961507 /* Apollo */; };
+		1741D3D62D5E1F4E00961507 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 1741D3D52D5E1F4E00961507 /* ApolloTestSupport */; };
+		1741D3D82D5E1F4E00961507 /* ApolloWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = 1741D3D72D5E1F4E00961507 /* ApolloWebSocket */; };
+		1741D3E22D5E232300961507 /* RokayaAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1741D3E12D5E232300961507 /* RokayaAPI */; };
+		3C55F2D1C8E055903D8651D1 /* Pods_Shopify_ShopifyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A868CD4AC4240D416DDCCECE /* Pods_Shopify_ShopifyUITests.framework */; };
+		7E99846F47DBED3200623EE4 /* Pods_Shopify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAB9EBC61E09F7E56781473 /* Pods_Shopify.framework */; };
+		FBFBCC60A38B12B8EF9D7170 /* Pods_ShopifyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05380E88F8960BAFF2D5AF8D /* Pods_ShopifyTests.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		F5D4DEF72D58ECC90038A233 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +34,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		05380E88F8960BAFF2D5AF8D /* Pods_ShopifyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShopifyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		159A2EB4B6B44D6EC0E17058 /* Pods-ShopifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShopifyTests.debug.xcconfig"; path = "Target Support Files/Pods-ShopifyTests/Pods-ShopifyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		16C914ED8AD2D81CF47B2F5E /* Pods-Shopify-ShopifyUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shopify-ShopifyUITests.release.xcconfig"; path = "Target Support Files/Pods-Shopify-ShopifyUITests/Pods-Shopify-ShopifyUITests.release.xcconfig"; sourceTree = "<group>"; };
+		74329265775279C39B81022A /* Pods-ShopifyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShopifyTests.release.xcconfig"; path = "Target Support Files/Pods-ShopifyTests/Pods-ShopifyTests.release.xcconfig"; sourceTree = "<group>"; };
+		7DAB9EBC61E09F7E56781473 /* Pods_Shopify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shopify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A689B4E6754D4922F139F49 /* Pods-Shopify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shopify.release.xcconfig"; path = "Target Support Files/Pods-Shopify/Pods-Shopify.release.xcconfig"; sourceTree = "<group>"; };
+		A868CD4AC4240D416DDCCECE /* Pods_Shopify_ShopifyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shopify_ShopifyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1FAED51BA255306B09D1C63 /* Pods-Shopify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shopify.debug.xcconfig"; path = "Target Support Files/Pods-Shopify/Pods-Shopify.debug.xcconfig"; sourceTree = "<group>"; };
+		D36D1B79654050366AF2838C /* Pods-Shopify-ShopifyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shopify-ShopifyUITests.debug.xcconfig"; path = "Target Support Files/Pods-Shopify-ShopifyUITests/Pods-Shopify-ShopifyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F5D4DEDD2D58ECC70038A233 /* Shopify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D4DEF62D58ECC90038A233 /* ShopifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D4DF002D58ECC90038A233 /* ShopifyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopifyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +84,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1741D3D42D5E1F4E00961507 /* Apollo in Frameworks */,
+				1741D3D82D5E1F4E00961507 /* ApolloWebSocket in Frameworks */,
+				1741D3E22D5E232300961507 /* RokayaAPI in Frameworks */,
+				1741D3D62D5E1F4E00961507 /* ApolloTestSupport in Frameworks */,
+				7E99846F47DBED3200623EE4 /* Pods_Shopify.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBFBCC60A38B12B8EF9D7170 /* Pods_ShopifyTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,19 +104,45 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C55F2D1C8E055903D8651D1 /* Pods_Shopify_ShopifyUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1741D3E32D5E235300961507 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7DAB9EBC61E09F7E56781473 /* Pods_Shopify.framework */,
+				A868CD4AC4240D416DDCCECE /* Pods_Shopify_ShopifyUITests.framework */,
+				05380E88F8960BAFF2D5AF8D /* Pods_ShopifyTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E300C2A1DD32E7D852C2E3CE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B1FAED51BA255306B09D1C63 /* Pods-Shopify.debug.xcconfig */,
+				8A689B4E6754D4922F139F49 /* Pods-Shopify.release.xcconfig */,
+				D36D1B79654050366AF2838C /* Pods-Shopify-ShopifyUITests.debug.xcconfig */,
+				16C914ED8AD2D81CF47B2F5E /* Pods-Shopify-ShopifyUITests.release.xcconfig */,
+				159A2EB4B6B44D6EC0E17058 /* Pods-ShopifyTests.debug.xcconfig */,
+				74329265775279C39B81022A /* Pods-ShopifyTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		F5D4DED42D58ECC70038A233 = {
 			isa = PBXGroup;
 			children = (
 				F5D4DEDF2D58ECC70038A233 /* Shopify */,
 				F5D4DEF92D58ECC90038A233 /* ShopifyTests */,
 				F5D4DF032D58ECC90038A233 /* ShopifyUITests */,
+				1741D3E32D5E235300961507 /* Frameworks */,
 				F5D4DEDE2D58ECC70038A233 /* Products */,
+				E300C2A1DD32E7D852C2E3CE /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,9 +163,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F5D4DF092D58ECC90038A233 /* Build configuration list for PBXNativeTarget "Shopify" */;
 			buildPhases = (
+				21C18D514CAA099DD89F3271 /* [CP] Check Pods Manifest.lock */,
 				F5D4DED92D58ECC70038A233 /* Sources */,
 				F5D4DEDA2D58ECC70038A233 /* Frameworks */,
 				F5D4DEDB2D58ECC70038A233 /* Resources */,
+				8C27BFB6F3ED1B749249F169 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -125,6 +178,10 @@
 			);
 			name = Shopify;
 			packageProductDependencies = (
+				1741D3D32D5E1F4E00961507 /* Apollo */,
+				1741D3D52D5E1F4E00961507 /* ApolloTestSupport */,
+				1741D3D72D5E1F4E00961507 /* ApolloWebSocket */,
+				1741D3E12D5E232300961507 /* RokayaAPI */,
 			);
 			productName = Shopify;
 			productReference = F5D4DEDD2D58ECC70038A233 /* Shopify.app */;
@@ -134,6 +191,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F5D4DF0E2D58ECC90038A233 /* Build configuration list for PBXNativeTarget "ShopifyTests" */;
 			buildPhases = (
+				09B23DE635D3DE2CB7185C6F /* [CP] Check Pods Manifest.lock */,
 				F5D4DEF22D58ECC90038A233 /* Sources */,
 				F5D4DEF32D58ECC90038A233 /* Frameworks */,
 				F5D4DEF42D58ECC90038A233 /* Resources */,
@@ -147,8 +205,6 @@
 				F5D4DEF92D58ECC90038A233 /* ShopifyTests */,
 			);
 			name = ShopifyTests;
-			packageProductDependencies = (
-			);
 			productName = ShopifyTests;
 			productReference = F5D4DEF62D58ECC90038A233 /* ShopifyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -157,9 +213,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F5D4DF112D58ECC90038A233 /* Build configuration list for PBXNativeTarget "ShopifyUITests" */;
 			buildPhases = (
+				4A715575B2B901810234DA59 /* [CP] Check Pods Manifest.lock */,
 				F5D4DEFC2D58ECC90038A233 /* Sources */,
 				F5D4DEFD2D58ECC90038A233 /* Frameworks */,
 				F5D4DEFE2D58ECC90038A233 /* Resources */,
+				BC97A11DAAAA95002A7265AA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -170,8 +228,6 @@
 				F5D4DF032D58ECC90038A233 /* ShopifyUITests */,
 			);
 			name = ShopifyUITests;
-			packageProductDependencies = (
-			);
 			productName = ShopifyUITests;
 			productReference = F5D4DF002D58ECC90038A233 /* ShopifyUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -208,6 +264,10 @@
 			);
 			mainGroup = F5D4DED42D58ECC70038A233;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1741D3D22D5E1F4E00961507 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				1741D3E02D5E232300961507 /* XCLocalSwiftPackageReference "RokayaAPI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F5D4DEDE2D58ECC70038A233 /* Products */;
 			projectDirPath = "";
@@ -243,6 +303,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		09B23DE635D3DE2CB7185C6F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ShopifyTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		21C18D514CAA099DD89F3271 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Shopify-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4A715575B2B901810234DA59 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Shopify-ShopifyUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8C27BFB6F3ED1B749249F169 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Shopify/Pods-Shopify-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Shopify/Pods-Shopify-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Shopify/Pods-Shopify-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC97A11DAAAA95002A7265AA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Shopify-ShopifyUITests/Pods-Shopify-ShopifyUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Shopify-ShopifyUITests/Pods-Shopify-ShopifyUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Shopify-ShopifyUITests/Pods-Shopify-ShopifyUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F5D4DED92D58ECC70038A233 /* Sources */ = {
@@ -284,6 +447,7 @@
 /* Begin XCBuildConfiguration section */
 		F5D4DF0A2D58ECC90038A233 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1FAED51BA255306B09D1C63 /* Pods-Shopify.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -311,6 +475,7 @@
 		};
 		F5D4DF0B2D58ECC90038A233 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8A689B4E6754D4922F139F49 /* Pods-Shopify.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -373,7 +538,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -436,7 +601,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -457,6 +622,7 @@
 		};
 		F5D4DF0F2D58ECC90038A233 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 159A2EB4B6B44D6EC0E17058 /* Pods-ShopifyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -475,6 +641,7 @@
 		};
 		F5D4DF102D58ECC90038A233 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 74329265775279C39B81022A /* Pods-ShopifyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -493,6 +660,7 @@
 		};
 		F5D4DF122D58ECC90038A233 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D36D1B79654050366AF2838C /* Pods-Shopify-ShopifyUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -509,6 +677,7 @@
 		};
 		F5D4DF132D58ECC90038A233 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 16C914ED8AD2D81CF47B2F5E /* Pods-Shopify-ShopifyUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -563,6 +732,46 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1741D3E02D5E232300961507 /* XCLocalSwiftPackageReference "RokayaAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = RokayaAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1741D3D22D5E1F4E00961507 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apollographql/apollo-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1741D3D32D5E1F4E00961507 /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1741D3D22D5E1F4E00961507 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+		1741D3D52D5E1F4E00961507 /* ApolloTestSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1741D3D22D5E1F4E00961507 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloTestSupport;
+		};
+		1741D3D72D5E1F4E00961507 /* ApolloWebSocket */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1741D3D22D5E1F4E00961507 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloWebSocket;
+		};
+		1741D3E12D5E232300961507 /* RokayaAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RokayaAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F5D4DED52D58ECC70038A233 /* Project object */;
 }
