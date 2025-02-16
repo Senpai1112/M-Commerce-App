@@ -1,0 +1,55 @@
+query CustomerAddresses($token : String!) {
+    customer(customerAccessToken: $token) {
+        addresses {
+            edges {
+                cursor
+                node {
+                    address1
+                    address2
+                    city
+                    country
+                    phone
+                    id
+                }
+            }
+        }
+    }
+}
+
+query CustomerDefaultAddress($token : String!) {
+    customer(customerAccessToken: $token ) {
+        defaultAddress {
+            address1
+            address2
+            city
+            country
+        }
+    }
+}
+
+
+mutation CustomerAddressCreate($token : String!,$address1 : String!,$address2 : String!,$city : String!,$country : String!,$phone : String!) {
+    customerAddressCreate(
+        customerAccessToken: $token
+        address: { address1: $address1, address2: $address2, city: $city, country: $country, phone: $phone }
+    ) {
+        customerAddress {
+            address1
+            address2
+            country
+            phone
+            city
+        }
+    }
+}
+
+
+mutation CustomerDefaultAddressUpdate($token : String! ,$addressId : ID!) {
+    customerDefaultAddressUpdate(customerAccessToken: $token, addressId: $addressId) {
+        customerUserErrors {
+            code
+            field
+            message
+        }
+    }
+}

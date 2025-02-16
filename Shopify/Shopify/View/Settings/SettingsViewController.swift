@@ -9,12 +9,14 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    @IBOutlet weak var logoutButton: UIButton!
     
+    @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     let titles = ["Address" , "Currency" , "Contact Us","About Us"]
-    let details = ["address" , "EGP" ,"",""]
+    var details = ["address" , "USD" ,"",""]
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initNib()
@@ -31,6 +33,9 @@ class SettingsViewController: UIViewController {
         logoutButton.layer.cornerRadius = logoutButton.frame.height / 2
         logoutButton.layer.cornerCurve = .continuous
         logoutButton.clipsToBounds = true
+    }
+    
+    @IBAction func logoutButton(_ sender: UIButton) {
     }
     /*
      // MARK: - Navigation
@@ -55,6 +60,10 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableViewCell", for: indexPath) as! SettingsTableViewCell
         cell.detailsLabel.text = details[indexPath.row]
         cell.titleLabel.text = titles[indexPath.row]
+        cell.backgroundColor = .systemGray6
+        cell.layer.borderColor = UIColor.systemBackground.cgColor
+        cell.layer.borderWidth = 10
+        cell.clipsToBounds = true
         return cell
     }
     
@@ -62,5 +71,33 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
         return 80
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let viewController = storyBoard.instantiateViewController(withIdentifier: "AddressesDetailsViewController") as! AddressesDetailsViewController
+            self.navigationController?.pushViewController(viewController, animated: true)
+        case 1:
+            currencySetter()
+        default:
+            break
+        }
+        
+    }
+    
+    func currencySetter(){
+        let alert = UIAlertController(title: "Choose you Currency", message: "", preferredStyle: .alert)
+        let egp = UIAlertAction(title: "EGP", style: .default, handler: {  _ in
+            self.details[1] = "EGP"
+            self.tableView.reloadData()
+        })
+        let usd = UIAlertAction(title: "USD", style: .default, handler: { _ in
+            self.details[1] = "USD"
+            self.tableView.reloadData()
+        })
+        alert.addAction(egp)
+        alert.addAction(usd)
+        self.present(alert, animated: true, completion: nil)
+    }
     
 }
