@@ -85,8 +85,9 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
         carousel.delegate = self
         
         print("Fetching product data...")
-        
-        fetchProductData()
+        setupViewModelObservers()
+        viewModel.fetchProduct()
+      //  fetchProductData()
     }
 
     override func loadView() {
@@ -94,45 +95,38 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
         view.backgroundColor = .systemGray6
         self.view = view
     }
-    
-    private func fetchProductData() {
-        viewModel.fetchProduct { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let product):
-                    self?.updateUI(with: product) // ✅ Update UI
-                    print("Product Data Fetched Successfully:")
-                    print("ID: \(product.id)")
-                    print("Title: \(product.title)")
-                   // titleb = product.title
-                    print("Description: \(product.description)")
-                    print("Available for Sale: \(product.availableForSale ? "Yes" : "No")")
-                    print("Total Inventory: \(product.totalInventory)")
-                    print("Price: \(product.price) EGP")
+    private func setupViewModelObservers() {
+            viewModel.onProductFetched = { [weak self] product in
+                self?.updateUI(with: product)
+            }
 
-                    print("\n Images:")
-                    for imageUrl in product.images {
-                        print("   - \(imageUrl)")
-                    }
-                    
-                    print("\n Variants:")
-                    for variant in product.adjacentVariants {
-                        print("   - Price: \(variant.price.amount) \(variant.price.currencyCode)")
-                    }
-                case .failure(let error):
-                    print("Error fetching product: \(error.localizedDescription)")
-                }
+            viewModel.onError = { errorMessage in
+                print("Error: \(errorMessage)")
             }
         }
-    }
-
 
     private func updateUI(with product: Product) {
         //  Update Title, Price, and Description
         titleLabel.text = product.title
         priceLabel.text = "\(product.price) \(product.currecy)"
         descriptionLabel.text = product.description
-
+        print("Product Data Fetched Successfully:")
+        print("ID: \(product.id)")
+        print("Title: \(product.title)")
+       // titleb = product.title
+        print("Description: \(product.description)")
+        print("Available for Sale: \(product.availableForSale ? "Yes" : "No")")
+        print("Total Inventory: \(product.totalInventory)")
+        print("Price: \(product.price) EGP")
+        
+        print("\n Images:")
+        for imageUrl in product.images {
+            print("   - \(imageUrl)")
+                  }
+        print("\n Variants:")
+        for variant in product.adjacentVariants {
+               print("   - Price: \(variant.price.amount) \(variant.price.currencyCode)")
+                            }
         //  Update Images in the Carousel
         if !product.images.isEmpty {
             let urls = product.images.compactMap { URL(string: $0) }
