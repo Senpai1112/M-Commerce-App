@@ -7,9 +7,11 @@
 
 import Foundation
 
-class Addresses{
+struct Addresses{
     var country : String?
     var city : String?
     var address1 : String?
+    var address2 : String?
     var phone : String?
+    var id : String?
 }

@@ -9,7 +9,9 @@ import UIKit
 
 class AddressesDetailsViewController: UIViewController {
     
+
     private var addressViewModel = AddressesViewModel()
+    var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
     @IBOutlet weak var addNewAddress: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
@@ -23,7 +25,7 @@ class AddressesDetailsViewController: UIViewController {
                 tableView.reloadData()
             }
         }
-        addressViewModel.getAddressesFromModel()
+        addressViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
         // Do any additional setup after loading the view.
     }
     
@@ -42,6 +44,7 @@ class AddressesDetailsViewController: UIViewController {
     @IBAction func addNewAddress(_ sender: Any) {
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyBoard.instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
+        viewController.customerAccessToken = customerAccessToken
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     /*
@@ -64,17 +67,19 @@ extension AddressesDetailsViewController:
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if addressViewModel.finalResult.count == 0{
+        if addressViewModel.addressResult.count == 0{
+            print("nothing returned")
             return 0
         }else{
-            return addressViewModel.finalResult.count
+            return addressViewModel.addressResult.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddressesDetailsTableViewCell", for: indexPath) as! AddressesDetailsTableViewCell
-        cell.cityAndAdressDetails.text = addressViewModel.finalResult[indexPath.row].title
-        cell.phoneNumber.text = addressViewModel.finalResult    [indexPath.row].id
+        cell.cityAndAdressDetails.text = addressViewModel.addressResult[indexPath.row].city
+        cell.phoneNumber.text = addressViewModel.addressResult    [indexPath.row].phone
+        cell.countryName.text = addressViewModel.addressResult[indexPath.row].country
         cell.backgroundColor = .systemGray6
         cell.layer.borderColor = UIColor.systemBackground.cgColor
         cell.layer.borderWidth = 10

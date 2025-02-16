@@ -10,7 +10,10 @@ import Lottie
 
 class AddAddressViewController: UIViewController {
     var animationView : LottieAnimationView!
+    private var addressViewModel = AddressesViewModel()
 
+    var customerAccessToken : String?
+    
     @IBOutlet weak var addAddressButton: UIButton!
     @IBOutlet weak var viewForMapAnimation: UIView!
     
@@ -56,7 +59,17 @@ class AddAddressViewController: UIViewController {
     }
     
     @IBAction func addAddressButton(_ sender: UIButton) {
-        
+        let alert = UIAlertController(title: "You have to fill all fields", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })
+        if (countryName.text == "" || apartmentNumber.text == "" || cityName.text == "" || streetName.text == "" || phoneNumber.text == ""){
+            self.present(alert, animated: true)
+        }
+        else{
+            let address : Addresses = Addresses(country: countryName.text!, city: cityName.text!, address1 : streetName.text!, address2 : apartmentNumber.text!, phone: phoneNumber.text!)
+            addressViewModel.bindResultToAddAddressViewController = { () in
+            }
+            addressViewModel.createAddressInModel(customerAccessToken: customerAccessToken, address: address)
+        }
     }
     
     /*

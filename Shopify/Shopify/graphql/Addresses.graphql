@@ -1,6 +1,6 @@
 query CustomerAddresses($token : String!) {
     customer(customerAccessToken: $token) {
-        addresses {
+        addresses(first: 10) {
             edges {
                 cursor
                 node {
@@ -23,6 +23,7 @@ query CustomerDefaultAddress($token : String!) {
             address2
             city
             country
+            phone
         }
     }
 }
@@ -39,6 +40,7 @@ mutation CustomerAddressCreate($token : String!,$address1 : String!,$address2 : 
             country
             phone
             city
+            id
         }
     }
 }

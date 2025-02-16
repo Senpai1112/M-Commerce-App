@@ -10,30 +10,57 @@ import Apollo
 
 class AddressesViewModel{
     var bindResultToAddressDetailsTableViewController : (()->()) = {}
-    
-    var finalResult = [Products]()
+    var addressResult = [Addresses]()
     {
         didSet{
             bindResultToAddressDetailsTableViewController()
         }
     }
-    func getAddressesFromModel() {
-        ApolloNetwokService.fetchProducts { [weak self] result in
+    
+    func getAddressesFromModel(customerAccessToken : String?) {
+        ApolloNetwokService.fetchCustomerAddresses(token: customerAccessToken ?? "", completion: { [weak self] result in
             switch result {
             case .success(let data):
-                if let collections = data.data?.products.edges {
-                    let finals = collections.compactMap { $0.node }
-                    let productModels = finals.map { product in
-                        return Products(id: product.id, title: product.title)
+                if let collections = data.data?.customer?.addresses {
+                    let finals = collections.edges.compactMap { $0.node }
+                    let addressModel = finals.map { address in
+                        return Addresses(country: address.country ,city: address.city, address1: address.address1,address2: address.address2,phone: address.phone,id: address.id)
                     }
                     DispatchQueue.main.async {
-                        self?.finalResult = productModels
+                        self?.addressResult = addressModel
                     }
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
+        })
+    }
+    
+    var bindResultToAddAddressViewController : (()->()) = {}
+    var addedAddressResult = [Addresses]()
+    {
+        didSet{
+            bindResultToAddAddressViewController()
         }
+    }
+    
+    func createAddressInModel(customerAccessToken : String? , address : Addresses) {
+        ApolloNetwokService.fetchCustomerAddresses(token: customerAccessToken ?? "", completion: { [weak self] result in
+            switch result {
+            case .success(let data):
+                if let collections = data.data?.customer?.addresses {
+                    let finals = collections.edges.compactMap { $0.node }
+                    let addressModel = finals.map { address in
+                        return Addresses(country: address.country ,city: address.city, address1: address.address1,address2: address.address2,phone: address.phone,id: address.id)
+                    }
+                    DispatchQueue.main.async {
+                        self?.addedAddressResult = addressModel
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
     }
 }
 
