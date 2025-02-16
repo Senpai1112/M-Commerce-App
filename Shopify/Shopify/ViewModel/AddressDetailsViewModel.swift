@@ -8,7 +8,7 @@
 import Foundation
 import Apollo
 
-class AddressesViewModel{
+class AddressDetailsViewModel{
     var bindResultToAddressDetailsTableViewController : (()->()) = {}
     var addressResult = [Addresses]()
     {
@@ -18,7 +18,7 @@ class AddressesViewModel{
     }
     
     func getAddressesFromModel(customerAccessToken : String?) {
-        ApolloNetwokService.fetchCustomerAddresses(token: customerAccessToken ?? "", completion: { [weak self] result in
+        ApolloNetwokService.fetchCustomerAddresses(token: customerAccessToken!, completion: { [weak self] result in
             switch result {
             case .success(let data):
                 if let collections = data.data?.customer?.addresses {
@@ -27,6 +27,7 @@ class AddressesViewModel{
                         return Addresses(country: address.country ,city: address.city, address1: address.address1,address2: address.address2,phone: address.phone,id: address.id)
                     }
                     DispatchQueue.main.async {
+                        self?.addressResult.removeAll()
                         self?.addressResult = addressModel
                     }
                 }
@@ -36,25 +37,12 @@ class AddressesViewModel{
         })
     }
     
-    var bindResultToAddAddressViewController : (()->()) = {}
-    var addedAddressResult = [Addresses]()
-    {
-        didSet{
-            bindResultToAddAddressViewController()
-        }
-    }
-    
-    func createAddressInModel(customerAccessToken : String? , address : Addresses) {
-        ApolloNetwokService.fetchCustomerAddresses(token: customerAccessToken ?? "", completion: { [weak self] result in
+    func deleteAddressesFromModel(customerAccessToken : String? , addressId : String? , indexPath : IndexPath) {
+        ApolloNetwokService.deleteCustomerAddresses(token: customerAccessToken!, addressid: addressId!, completion: { [weak self] result in
             switch result {
             case .success(let data):
-                if let collections = data.data?.customer?.addresses {
-                    let finals = collections.edges.compactMap { $0.node }
-                    let addressModel = finals.map { address in
-                        return Addresses(country: address.country ,city: address.city, address1: address.address1,address2: address.address2,phone: address.phone,id: address.id)
-                    }
-                    DispatchQueue.main.async {
-                        self?.addedAddressResult = addressModel
+                if data.data != nil{
+                    DispatchQueue.main.async {                        self?.addressResult.remove(at: indexPath.row)
                     }
                 }
             case .failure(let error):

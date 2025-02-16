@@ -16,6 +16,8 @@ query CustomerAddresses($token : String!) {
     }
 }
 
+
+
 query CustomerDefaultAddress($token : String!) {
     customer(customerAccessToken: $token ) {
         defaultAddress {
@@ -53,5 +55,14 @@ mutation CustomerDefaultAddressUpdate($token : String! ,$addressId : ID!) {
             field
             message
         }
+    }
+}
+
+mutation CustomerAddressDelete($token : String! ,$addressId : ID!) {
+    customerAddressDelete(
+        id: $addressId
+        customerAccessToken: $token
+    ) {
+        deletedCustomerAddressId
     }
 }

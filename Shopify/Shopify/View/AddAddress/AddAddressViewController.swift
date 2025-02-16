@@ -10,7 +10,7 @@ import Lottie
 
 class AddAddressViewController: UIViewController {
     var animationView : LottieAnimationView!
-    private var addressViewModel = AddressesViewModel()
+    private var addAddressViewModel = AddAddressViewModel()
 
     var customerAccessToken : String?
     
@@ -33,7 +33,6 @@ class AddAddressViewController: UIViewController {
         initUI()
         // Do any additional setup after loading the view.
     }
-    
     func setupAnimationView(){
         animationView = .init(name: "Location")
         animationView.frame = viewForMapAnimation.frame
@@ -66,9 +65,11 @@ class AddAddressViewController: UIViewController {
         }
         else{
             let address : Addresses = Addresses(country: countryName.text!, city: cityName.text!, address1 : streetName.text!, address2 : apartmentNumber.text!, phone: phoneNumber.text!)
-            addressViewModel.bindResultToAddAddressViewController = { () in
+            addAddressViewModel.bindResultToAddAddressViewController = { [weak self] in
+                print("data added successfully")
+                self?.navigationController?.popViewController(animated: true)
             }
-            addressViewModel.createAddressInModel(customerAccessToken: customerAccessToken, address: address)
+            addAddressViewModel.createAddressInModel(customerAccessToken: customerAccessToken, address: address)
         }
     }
     
