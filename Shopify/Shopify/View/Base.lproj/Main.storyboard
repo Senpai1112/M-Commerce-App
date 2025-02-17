@@ -105,90 +105,6 @@
             </objects>
             <point key="canvasLocation" x="-292.36641221374043" y="661.97183098591552"/>
         </scene>
-        <!--Products View Controller-->
-        <scene sceneID="Y3t-jj-Pms">
-            <objects>
-                <viewController storyboardIdentifier="ProductVC" id="MHN-Ek-hC8" customClass="ProductsViewController" customModule="Shopify" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Ix8-DC-JcG">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FUx-9e-O4N">
-                                <rect key="frame" x="16" y="206" width="361" height="574"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="361" id="dkV-2D-OJn"/>
-                                    <constraint firstAttribute="height" constant="574" id="oQk-gv-e6f"/>
-                                </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ddn-2v-OZN">
-                                    <size key="itemSize" width="128" height="128"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                            </collectionView>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="v3z-vp-BCq">
-                                <rect key="frame" x="135" y="165" width="226" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="4Ci-UY-Qoc"/>
-                                    <constraint firstAttribute="width" constant="222" id="Z5v-EY-eG2"/>
-                                </constraints>
-                                <connections>
-                                    <action selector="sliderValueChanged:" destination="MHN-Ek-hC8" eventType="valueChanged" id="dAR-bx-Fdd"/>
-                                </connections>
-                            </slider>
-                            <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="8hF-7e-QCg">
-                                <rect key="frame" x="0.0" y="101" width="393" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="jWg-Yb-ZFh"/>
-                                    <constraint firstAttribute="width" constant="393" id="ylQ-CE-dLg"/>
-                                </constraints>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="MHN-Ek-hC8" id="xrN-rI-ZwF"/>
-                                </connections>
-                            </searchBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1T-Pp-tT1">
-                                <rect key="frame" x="16" y="169" width="113" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="sJO-Ab-pav"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="nwX-fl-bMO"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="FUx-9e-O4N" firstAttribute="leading" secondItem="nwX-fl-bMO" secondAttribute="leading" constant="16" id="4qU-jc-eDO"/>
-                            <constraint firstItem="v3z-vp-BCq" firstAttribute="top" secondItem="8hF-7e-QCg" secondAttribute="bottom" constant="20" id="5Qs-Cv-ZdM"/>
-                            <constraint firstItem="v3z-vp-BCq" firstAttribute="leading" secondItem="g1T-Pp-tT1" secondAttribute="trailing" constant="8" id="9qb-ap-jTD"/>
-                            <constraint firstItem="v3z-vp-BCq" firstAttribute="leading" secondItem="g1T-Pp-tT1" secondAttribute="trailing" constant="8" id="E1C-nY-May"/>
-                            <constraint firstItem="8hF-7e-QCg" firstAttribute="top" secondItem="nwX-fl-bMO" secondAttribute="top" constant="42" id="EF4-cG-gaL"/>
-                            <constraint firstItem="g1T-Pp-tT1" firstAttribute="leading" secondItem="nwX-fl-bMO" secondAttribute="leading" constant="16" id="MoS-Y8-LQw"/>
-                            <constraint firstItem="FUx-9e-O4N" firstAttribute="top" secondItem="v3z-vp-BCq" secondAttribute="bottom" constant="11" id="OkJ-oK-fYe"/>
-                            <constraint firstItem="FUx-9e-O4N" firstAttribute="top" secondItem="g1T-Pp-tT1" secondAttribute="bottom" constant="16" id="TfU-KI-ubX"/>
-                            <constraint firstItem="8hF-7e-QCg" firstAttribute="leading" secondItem="nwX-fl-bMO" secondAttribute="leading" id="Vfr-RU-VOk"/>
-                            <constraint firstItem="g1T-Pp-tT1" firstAttribute="top" secondItem="8hF-7e-QCg" secondAttribute="bottom" constant="24" id="c2E-Xy-35a"/>
-                            <constraint firstItem="v3z-vp-BCq" firstAttribute="top" secondItem="8hF-7e-QCg" secondAttribute="bottom" constant="20" id="mKV-dc-Sbx"/>
-                            <constraint firstItem="nwX-fl-bMO" firstAttribute="trailing" secondItem="v3z-vp-BCq" secondAttribute="trailing" constant="34" id="mpL-Z1-ROm"/>
-                            <constraint firstItem="8hF-7e-QCg" firstAttribute="trailing" secondItem="nwX-fl-bMO" secondAttribute="trailing" id="rui-LG-k2M"/>
-                            <constraint firstItem="FUx-9e-O4N" firstAttribute="top" secondItem="v3z-vp-BCq" secondAttribute="bottom" constant="11" id="ync-Yt-CFe"/>
-                            <constraint firstItem="nwX-fl-bMO" firstAttribute="trailing" secondItem="FUx-9e-O4N" secondAttribute="trailing" constant="16" id="zof-fL-jUc"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="Productscollection" destination="FUx-9e-O4N" id="tVG-5R-PQq"/>
-                        <outlet property="mySlider" destination="v3z-vp-BCq" id="rFr-KH-yih"/>
-                        <outlet property="priceLabel" destination="g1T-Pp-tT1" id="uL7-Yx-PHV"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2dn-wW-z8g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1799.2366412213739" y="661.97183098591552"/>
-        </scene>
         <!--Home-->
         <scene sceneID="zUx-5m-61A">
             <objects>
@@ -280,7 +196,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tintColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
