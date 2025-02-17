@@ -39,6 +39,11 @@ class ShoppingCartViewController: UIViewController {
         checkoutButton.clipsToBounds = true
     }
     
+    @IBAction func checkOutButton(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+        let vc = storyBoard.instantiateViewController(identifier: "ChooseAddressViewController") as! ChooseAddressViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSource , ShoppingCartTableViewCellDelegate{
