@@ -1,0 +1,39 @@
+PODS:
+  - Braintree (6.28.0):
+    - Braintree/Card (= 6.28.0)
+    - Braintree/Core (= 6.28.0)
+    - Braintree/PayPal (= 6.28.0)
+  - Braintree/Card (6.28.0):
+    - Braintree/Core
+  - Braintree/Core (6.28.0)
+  - Braintree/DataCollector (6.28.0):
+    - Braintree/Core
+  - Braintree/PayPal (6.28.0):
+    - Braintree/Core
+    - Braintree/DataCollector
+  - Braintree/PayPalNativeCheckout (6.28.0):
+    - Braintree/Core
+    - Braintree/PayPal
+    - PayPalCheckout (= 1.3.0)
+  - lottie-ios (4.5.1)
+  - PayPalCheckout (1.3.0)
+
+DEPENDENCIES:
+  - Braintree
+  - Braintree/PayPalNativeCheckout
+  - lottie-ios
+
+SPEC REPOS:
+  trunk:
+    - Braintree
+    - lottie-ios
+    - PayPalCheckout
+
+SPEC CHECKSUMS:
+  Braintree: 9232afa45c944e7d66bd760aabcd0344c902b744
+  lottie-ios: 248b380fa1b97d18e792c37d90da7ab2aa0d6562
+  PayPalCheckout: 06cb1e4f5bfdca33b8eb6052d04ac4e4a4ab512c
+
+PODFILE CHECKSUM: 639ca9993f4bda40fb0ba29c5eb3fd7bdae099a5
+
+COCOAPODS: 1.16.2
