@@ -10,7 +10,7 @@ import Foundation
 import Apollo
 import RokayaAPI
 
-
+//
 //struct Customer: Codable {
 //    let firstName: String?
 //    let lastName: String?
@@ -27,16 +27,42 @@ import RokayaAPI
 //        self.acceptsMarketing = data?.acceptsMarketing ?? false
 //    }
 //}
+//
+//
+//
+////  Customer Model (Represents the Created Customer)
+//struct Customer {
+//    let id: String?
+//    let firstName: String?
+//    let lastName: String?
+//    let email: String?
+//    let password: String?
+//}
 
 
 
-//  Customer Model (Represents the Created Customer)
 struct Customer {
     let id: String?
     let firstName: String?
     let lastName: String?
     let email: String?
     let password: String?
+    let errors: [CustomerUserError]?
+    
+    init(id: String? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, password: String? = nil, errors: [CustomerUserError]? = nil) {
+        self.id = id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.password = password
+        self.errors = errors
+    }
+}
+
+
+struct CustomerUserError {
+    let field: [String]?
+    let message: String
 }
 
 

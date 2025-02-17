@@ -18,5 +18,10 @@ mutation CustomerCreateMutation(
       id
       lastName
     }
+customerUserErrors {
+        code
+        field
+        message
+      }
   }
 }

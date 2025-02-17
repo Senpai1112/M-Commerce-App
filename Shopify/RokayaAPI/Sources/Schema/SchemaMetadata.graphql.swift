@@ -25,6 +25,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Blog": return RokayaAPI.Objects.Blog
     case "Cart": return RokayaAPI.Objects.Cart
     case "CartLine": return RokayaAPI.Objects.CartLine
+    case "CartUserError": return RokayaAPI.Objects.CartUserError
     case "Collection": return RokayaAPI.Objects.Collection
     case "Comment": return RokayaAPI.Objects.Comment
     case "Company": return RokayaAPI.Objects.Company
@@ -33,6 +34,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ComponentizableCartLine": return RokayaAPI.Objects.ComponentizableCartLine
     case "Customer": return RokayaAPI.Objects.Customer
     case "CustomerCreatePayload": return RokayaAPI.Objects.CustomerCreatePayload
+    case "CustomerUserError": return RokayaAPI.Objects.CustomerUserError
     case "ExternalVideo": return RokayaAPI.Objects.ExternalVideo
     case "GenericFile": return RokayaAPI.Objects.GenericFile
     case "Image": return RokayaAPI.Objects.Image
@@ -46,6 +48,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Menu": return RokayaAPI.Objects.Menu
     case "MenuItem": return RokayaAPI.Objects.MenuItem
     case "Metafield": return RokayaAPI.Objects.Metafield
+    case "MetafieldDeleteUserError": return RokayaAPI.Objects.MetafieldDeleteUserError
+    case "MetafieldsSetUserError": return RokayaAPI.Objects.MetafieldsSetUserError
     case "Metaobject": return RokayaAPI.Objects.Metaobject
     case "Model3d": return RokayaAPI.Objects.Model3d
     case "MoneyV2": return RokayaAPI.Objects.MoneyV2
@@ -68,6 +72,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ShopPolicy": return RokayaAPI.Objects.ShopPolicy
     case "TaxonomyCategory": return RokayaAPI.Objects.TaxonomyCategory
     case "UrlRedirect": return RokayaAPI.Objects.UrlRedirect
+    case "UserError": return RokayaAPI.Objects.UserError
+    case "UserErrorsShopPayPaymentRequestSessionUserErrors": return RokayaAPI.Objects.UserErrorsShopPayPaymentRequestSessionUserErrors
     case "Video": return RokayaAPI.Objects.Video
     default: return nil
     }

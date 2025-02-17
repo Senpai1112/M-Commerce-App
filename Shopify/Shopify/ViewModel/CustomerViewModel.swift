@@ -1,14 +1,13 @@
-//
-//  CustomerViewModel.swift
-//  Shopify
-//
-//  Created by Rokaya El Shahed on 16/02/2025.
-//
+////
+////  CustomerViewModel.swift
+////  Shopify
+////
+////  Created by Rokaya El Shahed on 16/02/2025.
+////
 
 import Apollo
 import RokayaAPI
 import Foundation
-
 
 class CustomerViewModel {
     
@@ -17,7 +16,7 @@ class CustomerViewModel {
     var onCustomerCreated: ((Customer) -> Void)?
     var onError: ((String) -> Void)?
 
-    func createCustomer(id: String ,firstName: String, lastName: String, email: String, password: String) {
+    func createCustomer(id: String, firstName: String, lastName: String, email: String, password: String) {
         print("Creating customer with email: \(email)")
         
         let input = Customer(
@@ -33,22 +32,34 @@ class CustomerViewModel {
             switch result {
             case .success(let graphQLResult):
                 print("GraphQL result received")
-                if let payload = graphQLResult.data?.customerCreate {
-                    if let gqlCustomer = payload.customer {
-                        let customer = Customer(
-                            id: gqlCustomer.id,
-                            firstName: gqlCustomer.firstName,
-                            lastName: gqlCustomer.lastName,
-                            email: gqlCustomer.email,
-                            password: nil
-                        )
-                        self?.onCustomerCreated?(customer)
-                    } else {
-                        print("Customer is nil in payload")
+                
+                if let errors = graphQLResult.data?.customerCreate?.customerUserErrors, !errors.isEmpty {
+                    // Extract errors and notify
+                    let errorMessages = errors.map {
+                        let errorCode = $0.code?.rawValue ?? "Unknown Error"
+                        return "\(errorCode): \($0.message ?? "No message provided.")"
                     }
-                } else {
-                    print("Payload is nil")
+
+                    let errorMessage = errorMessages.joined(separator: "\n")
+                    print("Customer creation failed: \(errorMessage)")
+                    self?.onError?(errorMessage)
+                    return
                 }
+
+                if let data = graphQLResult.data?.customerCreate?.customer {
+                    let customer = Customer(
+                        id: data.id,
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        email: data.email,
+                        password: nil
+                    )
+                    self?.onCustomerCreated?(customer)
+                } else {
+                    print("Customer is nil in payload")
+                    self?.onError?("Unexpected error: Customer data is missing.")
+                }
+
             case .failure(let error):
                 print("GraphQL error: \(error.localizedDescription)")
                 self?.onError?(error.localizedDescription)
