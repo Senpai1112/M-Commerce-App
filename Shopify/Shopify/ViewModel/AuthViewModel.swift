@@ -16,7 +16,7 @@ private let apollo = ApolloNetwokService.shared.apollo
 
    
     func loginCustomer(email: String, password: String) {
-        print("🚀 Attempting to log in with email: \(email)")
+        print("Attempting to log in with email: \(email)")
         
         apollo.perform(mutation: CustomerAccessTokenCreateMutation(email: email, password: password)) { [weak self] result in
             switch result {

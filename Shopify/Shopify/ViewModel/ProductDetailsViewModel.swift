@@ -53,7 +53,7 @@ import RokayaAPI
 
 class ProductDetailsViewModel {
     private let apollo = ApolloNetwokService.shared.apollo
-    
+    //here to pass id after merge
     var onProductFetched: ((Product) -> Void)?
     var onError: ((String) -> Void)?
     
