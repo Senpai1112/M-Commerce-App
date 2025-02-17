@@ -22,7 +22,7 @@ class AddressDetailsViewModel{
             print("Invalid customer access token.")
             return
         }
-        ApolloAddressesNetwokService.fetchCustomerAddresses(token: customerAccessToken!, completion: { [weak self] result in
+        ApolloAddressesNetwokService.fetchCustomerAddresses(token: customerAccessToken!, completion: {  result in
             switch result {
             case .success(let data):
                 if let collections = data.data?.customer?.addresses {
@@ -35,10 +35,11 @@ class AddressDetailsViewModel{
                             phone: edge.node.phone,
                             id: edge.node.id
                         )
+                        print("get ,\(address.city ?? "nothing returned")")
                         return address
                     }
                     DispatchQueue.main.async {
-                        self?.addressResult = addressModel
+                        self.addressResult = addressModel
                     }
                 }
             case .failure(let error):

@@ -33,7 +33,7 @@ class ApplePayViewController: UIViewController {
     @objc func startApplePay() {
         let paymentRequest = PKPaymentRequest()
         
-        // Configure your Merchant ID
+        // Configure your Merchant ID merchant.2jd4vk6g4v2prs6z
         paymentRequest.merchantIdentifier = "merchant.2jd4vk6g4v2prs6z"
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .threeDSecure
