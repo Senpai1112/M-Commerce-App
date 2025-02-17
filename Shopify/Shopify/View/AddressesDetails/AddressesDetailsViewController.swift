@@ -43,7 +43,7 @@ class AddressesDetailsViewController: UIViewController {
     }
     
     @IBAction func addNewAddress(_ sender: Any) {
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
         let viewController = storyBoard.instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         viewController.customerAccessToken = customerAccessToken
         self.navigationController?.pushViewController(viewController, animated: true)
