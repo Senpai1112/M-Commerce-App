@@ -19,7 +19,7 @@ class BrandsViewModel {
   
 
     func getBrandsFromModel() {
-        ApolloNetwokService.shared.fetchCollections { [weak self] result in
+        ApolloProductsNetwokService.shared.fetchCollections { [weak self] result in
             switch result {
             case .success(let data):
                 if let collections = data.data?.collections.edges {

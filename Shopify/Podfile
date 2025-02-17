@@ -8,6 +8,9 @@ target 'Shopify' do
   # Pods for Shopify
 pod 'SDWebImage', '~> 5.0'
 pod 'Kingfisher'
+pod 'Braintree'
+pod 'Braintree/PayPalNativeCheckout'
+pod 'lottie-ios'
 
   target 'ShopifyTests' do
     inherit! :search_paths

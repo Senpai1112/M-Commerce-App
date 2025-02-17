@@ -25,6 +25,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Blog": return MyApi.Objects.Blog
     case "Cart": return MyApi.Objects.Cart
     case "CartLine": return MyApi.Objects.CartLine
+    case "CartUserError": return MyApi.Objects.CartUserError
     case "Collection": return MyApi.Objects.Collection
     case "CollectionConnection": return MyApi.Objects.CollectionConnection
     case "CollectionEdge": return MyApi.Objects.CollectionEdge
@@ -34,20 +35,29 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CompanyLocation": return MyApi.Objects.CompanyLocation
     case "ComponentizableCartLine": return MyApi.Objects.ComponentizableCartLine
     case "Customer": return MyApi.Objects.Customer
+    case "CustomerAddressCreatePayload": return MyApi.Objects.CustomerAddressCreatePayload
+    case "CustomerAddressDeletePayload": return MyApi.Objects.CustomerAddressDeletePayload
+    case "CustomerDefaultAddressUpdatePayload": return MyApi.Objects.CustomerDefaultAddressUpdatePayload
+    case "CustomerUserError": return MyApi.Objects.CustomerUserError
     case "ExternalVideo": return MyApi.Objects.ExternalVideo
     case "GenericFile": return MyApi.Objects.GenericFile
     case "Image": return MyApi.Objects.Image
     case "Location": return MyApi.Objects.Location
     case "MailingAddress": return MyApi.Objects.MailingAddress
+    case "MailingAddressConnection": return MyApi.Objects.MailingAddressConnection
+    case "MailingAddressEdge": return MyApi.Objects.MailingAddressEdge
     case "Market": return MyApi.Objects.Market
     case "MediaImage": return MyApi.Objects.MediaImage
     case "MediaPresentation": return MyApi.Objects.MediaPresentation
     case "Menu": return MyApi.Objects.Menu
     case "MenuItem": return MyApi.Objects.MenuItem
     case "Metafield": return MyApi.Objects.Metafield
+    case "MetafieldDeleteUserError": return MyApi.Objects.MetafieldDeleteUserError
+    case "MetafieldsSetUserError": return MyApi.Objects.MetafieldsSetUserError
     case "Metaobject": return MyApi.Objects.Metaobject
     case "Model3d": return MyApi.Objects.Model3d
     case "MoneyV2": return MyApi.Objects.MoneyV2
+    case "Mutation": return MyApi.Objects.Mutation
     case "Order": return MyApi.Objects.Order
     case "Page": return MyApi.Objects.Page
     case "Product": return MyApi.Objects.Product
@@ -67,6 +77,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ShopPolicy": return MyApi.Objects.ShopPolicy
     case "TaxonomyCategory": return MyApi.Objects.TaxonomyCategory
     case "UrlRedirect": return MyApi.Objects.UrlRedirect
+    case "UserError": return MyApi.Objects.UserError
+    case "UserErrorsShopPayPaymentRequestSessionUserErrors": return MyApi.Objects.UserErrorsShopPayPaymentRequestSessionUserErrors
     case "Video": return MyApi.Objects.Video
     default: return nil
     }
