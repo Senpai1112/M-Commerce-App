@@ -31,7 +31,8 @@ class CustomerViewController: UIViewController {
                 print("   Email: \(customer.email ?? "N/A")")
                 
                //navigate to login
-                if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
+                let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
+                if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
                     self.navigationController?.pushViewController(loginVC, animated: true)
                 }
             }
@@ -45,7 +46,9 @@ class CustomerViewController: UIViewController {
         }
     }
     @objc private func loginButtonTapped(){
-        if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
+        let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
+
+        if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }

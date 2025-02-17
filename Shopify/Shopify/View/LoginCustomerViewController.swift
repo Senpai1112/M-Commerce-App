@@ -51,7 +51,8 @@ class LoginCustomerViewController: UIViewController {
     }
     
     @objc private func goToRegister() {
-        if let registerVC = self.storyboard?.instantiateViewController(withIdentifier: "registerVC") as? CustomerViewController {
+        let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
+        if let registerVC = storyBoard.instantiateViewController(withIdentifier: "registerVC") as? CustomerViewController {
             self.navigationController?.pushViewController(registerVC, animated: true)
         }
     }
