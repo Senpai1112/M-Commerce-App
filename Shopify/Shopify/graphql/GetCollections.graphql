@@ -1,4 +1,3 @@
-
 query GetAllCollectionsQuery {
     collections(first: 20) {
         edges {
@@ -7,33 +6,31 @@ query GetAllCollectionsQuery {
                 title
                 image {
                     url
-                    width
-                    height
+                    
                 }
-                products(first: 10) {
-                            edges {
-                             node {
-                        availableForSale
-                        description
-                        handle
-                        id
-                        productType
-                        tags
-                        title
-                        totalInventory
-                        vendor
-                        featuredImage {
-                            altText
-                            height
+                products(first: 100) {
+                    edges {
+                        node {
+                            availableForSale
+                            handle
                             id
-                            originalSrc
-                            src
-                            transformedSrc
-                            url
-                            width
-                        }
-                     
+                            title
+                            totalInventory
+                            vendor
+                            featuredImage {
+                          url
+                            }
+                            priceRange {
+                    maxVariantPrice {
+                        amount
+                        currencyCode
                     }
+                    minVariantPrice {
+                        amount
+                        currencyCode
+                    }
+                }
+                        }
                     }
                 }
             }

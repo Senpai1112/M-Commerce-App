@@ -41,4 +41,16 @@ class ApolloNetwokService {
               }
           }
       }
+    
+    func fetchProducts(query: String, completion: @escaping (Result<GraphQLResult<ProductsQuery.Data>, Error>) -> Void) {
+        let productsQuery = ProductsQuery(query: query)
+        ApolloNetwokService.shared.apollo.fetch(query: productsQuery) { result in
+            switch result {
+            case .success(let graphQLResult):
+                completion(.success(graphQLResult))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
   }
