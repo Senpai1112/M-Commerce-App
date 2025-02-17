@@ -1,0 +1,28 @@
+query ProductsQuery($query: String!) {
+    products(first: 250 , query: $query) {
+        edges {
+            node {
+                availableForSale
+                handle
+                id
+                title
+                totalInventory
+                vendor
+                featuredImage {
+                    url
+                }
+                priceRange {
+                    maxVariantPrice {
+                        amount
+                        currencyCode
+                    }
+                    minVariantPrice {
+                        amount
+                        currencyCode
+                    }
+                }
+                tags
+            }
+        }
+    }
+}
