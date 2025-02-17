@@ -9,10 +9,17 @@ import Foundation
 
 class AddAddressViewModel{
     var bindResultToAddAddressViewController : (()->()) = {}
+    var bindErrorToAddAddressViewController : (()->()) = {}
     var addedAddressResult = Addresses()
     {
         didSet{
             bindResultToAddAddressViewController()
+        }
+    }
+    var addedAddressError = Errors()
+    {
+        didSet{
+            bindErrorToAddAddressViewController()
         }
     }
     
@@ -20,8 +27,15 @@ class AddAddressViewModel{
         ApolloNetwokService.createCustomerAddresses(token: customerAccessToken ?? "", address: address, completion: { [weak self] result in
             switch result {
             case .success(let data):
+                if let error = data.data?.customerAddressCreate?.customerUserErrors , !error.isEmpty{
+                    let errorMessage = error.map{
+                        return $0.message
+                    }
+                    self?.addedAddressError.message = errorMessage.first
+                    return
+                }
                 if data.data != nil{
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async{
                         self?.addedAddressResult = address
                     }
                 }

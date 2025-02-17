@@ -18,16 +18,26 @@ class AddressDetailsViewModel{
     }
     
     func getAddressesFromModel(customerAccessToken : String?) {
+        guard customerAccessToken != nil else {
+            print("Invalid customer access token.")
+            return
+        }
         ApolloNetwokService.fetchCustomerAddresses(token: customerAccessToken!, completion: { [weak self] result in
             switch result {
             case .success(let data):
                 if let collections = data.data?.customer?.addresses {
-                    let finals = collections.edges.compactMap { $0.node }
-                    let addressModel = finals.map { address in
-                        return Addresses(country: address.country ,city: address.city, address1: address.address1,address2: address.address2,phone: address.phone,id: address.id)
+                    let addressModel = collections.edges.map { edge in
+                        let address = Addresses(
+                            country: edge.node.country,
+                            city: edge.node.city,
+                            address1: edge.node.address1,
+                            address2: edge.node.address2,
+                            phone: edge.node.phone,
+                            id: edge.node.id
+                        )
+                        return address
                     }
                     DispatchQueue.main.async {
-                        self?.addressResult.removeAll()
                         self?.addressResult = addressModel
                     }
                 }
@@ -36,13 +46,17 @@ class AddressDetailsViewModel{
             }
         })
     }
-    
     func deleteAddressesFromModel(customerAccessToken : String? , addressId : String? , indexPath : IndexPath) {
+        guard let token = customerAccessToken, let id = addressId else {
+            print("Invalid token or address id.")
+            return
+        }
         ApolloNetwokService.deleteCustomerAddresses(token: customerAccessToken!, addressid: addressId!, completion: { [weak self] result in
             switch result {
             case .success(let data):
                 if data.data != nil{
-                    DispatchQueue.main.async {                        self?.addressResult.remove(at: indexPath.row)
+                    DispatchQueue.main.async {
+                        self?.addressResult.remove(at: indexPath.row)
                     }
                 }
             case .failure(let error):

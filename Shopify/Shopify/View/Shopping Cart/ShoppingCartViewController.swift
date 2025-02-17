@@ -90,7 +90,7 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
                 names.remove(at: indexPath.row)
                 tableView.reloadData()
             })
-            alert.addAction(UIAlertAction(title: "Cancle", style: .default, handler: {_ in }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: {_ in }))
             self.present(alert, animated: true)
         }
     }

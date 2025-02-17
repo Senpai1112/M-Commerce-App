@@ -44,6 +44,11 @@ mutation CustomerAddressCreate($token : String!,$address1 : String!,$address2 : 
             city
             id
         }
+        customerUserErrors {
+            code
+            field
+            message
+        }
     }
 }
 

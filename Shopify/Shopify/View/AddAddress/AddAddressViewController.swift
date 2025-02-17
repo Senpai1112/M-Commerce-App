@@ -65,6 +65,14 @@ class AddAddressViewController: UIViewController {
         }
         else{
             let address : Addresses = Addresses(country: countryName.text!, city: cityName.text!, address1 : streetName.text!, address2 : apartmentNumber.text!, phone: phoneNumber.text!)
+            
+            addAddressViewModel.bindErrorToAddAddressViewController = { [weak self] in
+                if  let error = self?.addAddressViewModel.addedAddressError.message{
+                    let alert = UIAlertController(title: "Error adding address", message: "\(error)", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })
+                    self!.present(alert, animated: true)
+                }
+            }
             addAddressViewModel.bindResultToAddAddressViewController = { [weak self] in
                 print("data added successfully")
                 self?.navigationController?.popViewController(animated: true)

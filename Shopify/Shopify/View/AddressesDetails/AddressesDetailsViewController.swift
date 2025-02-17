@@ -9,7 +9,6 @@ import UIKit
 
 class AddressesDetailsViewController: UIViewController {
     
-
     private var addressDetailsViewModel = AddressDetailsViewModel()
     var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
     @IBOutlet weak var addNewAddress: UIButton!
@@ -19,11 +18,10 @@ class AddressesDetailsViewController: UIViewController {
         super.viewDidLoad()
         initNib()
         initUI()
-        
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
             DispatchQueue.main.async { [self] in
                 tableView.reloadData()
@@ -65,27 +63,28 @@ class AddressesDetailsViewController: UIViewController {
 extension AddressesDetailsViewController:
     UITableViewDelegate,UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if addressDetailsViewModel.addressResult.count == 0{
-            return 0
-        }else{
-            return addressDetailsViewModel.addressResult.count
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AddressesDetailsTableViewCell", for: indexPath) as! AddressesDetailsTableViewCell
+    func configureCell(_ cell: AddressesDetailsTableViewCell, at indexPath: IndexPath) {
         cell.cityAndAdressDetails.text = addressDetailsViewModel.addressResult[indexPath.row].city
-        cell.phoneNumber.text = addressDetailsViewModel.addressResult    [indexPath.row].phone
+        cell.phoneNumber.text = addressDetailsViewModel.addressResult[indexPath.row].phone
         cell.countryName.text = addressDetailsViewModel.addressResult[indexPath.row].country
         cell.backgroundColor = .systemGray6
         cell.layer.borderColor = UIColor.systemBackground.cgColor
         cell.layer.borderWidth = 10
         cell.clipsToBounds = true
+    }
+
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return addressDetailsViewModel.addressResult.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AddressesDetailsTableViewCell", for: indexPath) as! AddressesDetailsTableViewCell
+        configureCell(cell, at: indexPath)
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -97,12 +96,11 @@ extension AddressesDetailsViewController:
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(addressDetailsViewModel.addressResult[indexPath.row])", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Deleting", message: "Do you want to delete This Address?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self] _ in
                 addressDetailsViewModel.deleteAddressesFromModel(customerAccessToken: customerAccessToken, addressId: addressDetailsViewModel.addressResult[indexPath.row].id , indexPath: indexPath)
-                tableView.reloadData()
             })
-            alert.addAction(UIAlertAction(title: "Cancle", style: .default, handler: {_ in }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: {_ in }))
             self.present(alert, animated: true)
         }
     }
