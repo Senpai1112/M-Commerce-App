@@ -1,0 +1,39 @@
+query GetAllCollectionsQuery {
+    collections(first: 20) {
+        edges {
+            node {
+                handle
+                title
+                image {
+                    url
+                    
+                }
+                products(first: 100) {
+                    edges {
+                        node {
+                            availableForSale
+                            handle
+                            id
+                            title
+                            totalInventory
+                            vendor
+                            featuredImage {
+                          url
+                            }
+                            priceRange {
+                    maxVariantPrice {
+                        amount
+                        currencyCode
+                    }
+                    minVariantPrice {
+                        amount
+                        currencyCode
+                    }
+                }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
