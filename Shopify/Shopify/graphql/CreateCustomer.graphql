@@ -1,23 +1,16 @@
-mutation CustomerCreateMutation(
-  $firstName: String!,
-  $lastName: String!,
+mutation CustomerAccessTokenCreateMutation(
   $email: String!,
   $password: String!
 ) {
-  customerCreate(
+    customerAccessTokenCreate(
     input: {
-      firstName: $firstName,
-      lastName: $lastName,
       email: $email,
       password: $password
     }
   ) {
-    customer {
-      email
-      firstName
-      id
-      lastName
-    }
+    customerAccessToken {
+    accessToken
+        }
 customerUserErrors {
         code
         field

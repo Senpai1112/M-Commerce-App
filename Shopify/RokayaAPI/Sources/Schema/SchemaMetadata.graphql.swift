@@ -33,6 +33,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CompanyLocation": return RokayaAPI.Objects.CompanyLocation
     case "ComponentizableCartLine": return RokayaAPI.Objects.ComponentizableCartLine
     case "Customer": return RokayaAPI.Objects.Customer
+    case "CustomerAccessToken": return RokayaAPI.Objects.CustomerAccessToken
+    case "CustomerAccessTokenCreatePayload": return RokayaAPI.Objects.CustomerAccessTokenCreatePayload
     case "CustomerCreatePayload": return RokayaAPI.Objects.CustomerCreatePayload
     case "CustomerUserError": return RokayaAPI.Objects.CustomerUserError
     case "ExternalVideo": return RokayaAPI.Objects.ExternalVideo
