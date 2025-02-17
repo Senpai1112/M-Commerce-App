@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="d3h-T4-mgz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KWZ-tS-26W">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
@@ -8,6 +8,21 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Testing Radion Button View Controller-->
+        <scene sceneID="ki0-kb-ZUw">
+            <objects>
+                <viewController id="MZz-Vy-Whf" customClass="TestingRadionButtonViewController" customModule="Shopify" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="f5b-TT-dlw">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="3FS-4n-lRy"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xWN-Sz-9id" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-700" y="621"/>
+        </scene>
         <!--Shopping Cart View Controller-->
         <scene sceneID="U0w-DG-vsu">
             <objects>
@@ -17,7 +32,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="v9l-2R-yZN">
-                                <rect key="frame" x="0.0" y="59" width="393" height="652.33333333333337"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="597.33333333333337"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ZR8-Qv-57f">
@@ -31,18 +46,24 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JJk-Dq-owL">
-                                <rect key="frame" x="20" y="779" width="353" height="39"/>
+                                <rect key="frame" x="20" y="768" width="353" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="djG-lc-Sgv"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="PROCEED TO CHECKOUT"/>
+                                <connections>
+                                    <action selector="checkOutButton:" destination="NNl-Db-WOS" eventType="touchUpInside" id="H51-aZ-eaa"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sub Total :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bc3-HW-0ms">
-                                <rect key="frame" x="20.000000000000007" y="731.33333333333337" width="110.66666666666669" height="27.666666666666629"/>
+                                <rect key="frame" x="20.000000000000007" y="720.33333333333337" width="110.66666666666669" height="27.666666666666629"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yLi-AC-ofR">
-                                <rect key="frame" x="140.66666666666666" y="732.66666666666663" width="149.99999999999997" height="26.333333333333371"/>
+                                <rect key="frame" x="140.66666666666666" y="721.66666666666663" width="149.99999999999997" height="26.333333333333371"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="LNV-Nn-hCu"/>
                                 </constraints>
@@ -77,22 +98,118 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GpM-CM-efA" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="31" y="-2"/>
+            <point key="canvasLocation" x="956.48854961832058" y="-2.1126760563380285"/>
         </scene>
-        <!--View Controller-->
+        <!--Choose Address View Controller-->
         <scene sceneID="oZb-ZL-V5E">
             <objects>
-                <viewController id="QZa-SH-v8X" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChooseAddressViewController" id="QZa-SH-v8X" customClass="ChooseAddressViewController" customModule="Shopify" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iBU-LZ-vd4">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVU-du-30z">
+                                <rect key="frame" x="20" y="768" width="353" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Mvx-Re-bz1"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Continue To Payment"/>
+                                <connections>
+                                    <action selector="continueToPayment:" destination="QZa-SH-v8X" eventType="touchUpInside" id="6Bf-63-z8k"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tHs-HF-y0N">
+                                <rect key="frame" x="0.0" y="59" width="393" height="689"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Yq0-OD-JQY">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="47.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yq0-OD-JQY" id="Whc-AJ-F1G">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="47.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="JSb-iI-yVV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="tHs-HF-y0N" firstAttribute="leading" secondItem="JSb-iI-yVV" secondAttribute="leading" id="L2l-df-FH1"/>
+                            <constraint firstItem="cVU-du-30z" firstAttribute="top" secondItem="tHs-HF-y0N" secondAttribute="bottom" constant="20" id="Po1-aZ-hT3"/>
+                            <constraint firstItem="JSb-iI-yVV" firstAttribute="trailing" secondItem="tHs-HF-y0N" secondAttribute="trailing" id="azq-2b-Phw"/>
+                            <constraint firstItem="JSb-iI-yVV" firstAttribute="bottom" secondItem="cVU-du-30z" secondAttribute="bottom" id="kL5-PO-BEc"/>
+                            <constraint firstItem="JSb-iI-yVV" firstAttribute="trailing" secondItem="cVU-du-30z" secondAttribute="trailing" constant="20" id="tDd-kx-RW8"/>
+                            <constraint firstItem="tHs-HF-y0N" firstAttribute="top" secondItem="JSb-iI-yVV" secondAttribute="top" id="vJE-PG-0WR"/>
+                            <constraint firstItem="cVU-du-30z" firstAttribute="leading" secondItem="JSb-iI-yVV" secondAttribute="leading" constant="20" id="vYC-Bg-e17"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="fnt-fp-KoS"/>
+                    <connections>
+                        <outlet property="continueToPayment" destination="cVU-du-30z" id="mks-gK-xeo"/>
+                        <outlet property="tableView" destination="tHs-HF-y0N" id="jCu-Kw-IL7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x51-KD-s2f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="895" y="-2"/>
+            <point key="canvasLocation" x="1820.6106870229007" y="-2.1126760563380285"/>
+        </scene>
+        <!--Choose Payment Method View Controller-->
+        <scene sceneID="8yD-cR-gf5">
+            <objects>
+                <viewController storyboardIdentifier="ChoosePaymentMethodViewController" id="jaY-Jo-30t" customClass="ChoosePaymentMethodViewController" customModule="Shopify" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4wf-fV-IIK">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o3S-4w-csp">
+                                <rect key="frame" x="20" y="768" width="353" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="zkk-K9-8pY"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Continue To Payment"/>
+                                <connections>
+                                    <action selector="continueToPayment:" destination="jaY-Jo-30t" eventType="touchUpInside" id="ZxE-MY-eRU"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="eAa-K7-dEA">
+                                <rect key="frame" x="0.0" y="59" width="393" height="689"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Whr-lg-uBd">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="47.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Whr-lg-uBd" id="xzQ-Qd-3Z8">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="47.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SoJ-uf-zB1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="eAa-K7-dEA" firstAttribute="top" secondItem="SoJ-uf-zB1" secondAttribute="top" id="8aY-Ie-VBY"/>
+                            <constraint firstItem="o3S-4w-csp" firstAttribute="bottom" secondItem="SoJ-uf-zB1" secondAttribute="bottom" id="Qye-6v-weg"/>
+                            <constraint firstItem="o3S-4w-csp" firstAttribute="top" secondItem="eAa-K7-dEA" secondAttribute="bottom" constant="20" id="XO8-wz-lbg"/>
+                            <constraint firstItem="SoJ-uf-zB1" firstAttribute="trailing" secondItem="o3S-4w-csp" secondAttribute="trailing" constant="20" id="Y1j-Fb-xpe"/>
+                            <constraint firstItem="SoJ-uf-zB1" firstAttribute="trailing" secondItem="eAa-K7-dEA" secondAttribute="trailing" id="eFs-6J-mhl"/>
+                            <constraint firstItem="o3S-4w-csp" firstAttribute="leading" secondItem="SoJ-uf-zB1" secondAttribute="leading" constant="20" id="reW-nj-WyC"/>
+                            <constraint firstItem="eAa-K7-dEA" firstAttribute="leading" secondItem="SoJ-uf-zB1" secondAttribute="leading" id="uLO-Pe-HoF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="continueToPayment" destination="o3S-4w-csp" id="Am9-zL-Pbp"/>
+                        <outlet property="tableView" destination="eAa-K7-dEA" id="beV-V6-QuJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EzX-xN-Yrn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2844" y="-2"/>
         </scene>
         <!--Apple Pay View Controller-->
         <scene sceneID="zMb-Ft-jmI">
@@ -119,7 +236,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="iXv-4i-o9w">
-                                <rect key="frame" x="0.0" y="103" width="393" height="350"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="350"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="350" id="BjZ-Ao-vqB"/>
@@ -136,7 +253,7 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ydw-cv-SK1">
-                                <rect key="frame" x="100" y="468" width="193" height="40"/>
+                                <rect key="frame" x="100" y="424" width="193" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="VkB-7R-gQQ"/>
                                 </constraints>
@@ -166,7 +283,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ziP-96-xPg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3096.9465648854962" y="-5.6338028169014089"/>
+            <point key="canvasLocation" x="4950.3816793893129" y="-5.6338028169014089"/>
         </scene>
         <!--Addresses Details View Controller-->
         <scene sceneID="GFz-tG-UOn">
@@ -221,7 +338,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VWm-4B-Nf6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4199.2366412213742" y="-6.3380281690140849"/>
+            <point key="canvasLocation" x="6052.6717557251905" y="-6.3380281690140849"/>
         </scene>
         <!--Add Address View Controller-->
         <scene sceneID="AQY-u2-SaO">
@@ -328,25 +445,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aXR-c5-wcZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5201" y="-2"/>
+            <point key="canvasLocation" x="7054.1984732824421" y="-2.1126760563380285"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="EbY-tu-LDg">
+        <scene sceneID="6e0-hw-1bP">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d3h-T4-mgz" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iki-F7-sMh" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mtx-s6-b9D">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rDf-eU-YaG">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="G0c-SJ-Y0l" kind="relationship" relationship="rootViewController" id="QR1-M7-6kA"/>
+                        <segue destination="NNl-Db-WOS" kind="relationship" relationship="rootViewController" id="bLr-gN-azx"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xUQ-Gs-kHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZIw-g0-qVg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2170.2290076335876" y="-5.6338028169014089"/>
+            <point key="canvasLocation" x="29.770992366412212" y="-2.1126760563380285"/>
         </scene>
     </scenes>
     <resources>
@@ -354,7 +471,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

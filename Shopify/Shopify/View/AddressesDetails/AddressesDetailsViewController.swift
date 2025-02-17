@@ -9,7 +9,7 @@ import UIKit
 
 class AddressesDetailsViewController: UIViewController {
     
-    private var addressDetailsViewModel = AddressDetailsViewModel()
+    private let addressDetailsViewModel = AddressDetailsViewModel()
     var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
     @IBOutlet weak var addNewAddress: UIButton!
     
@@ -23,8 +23,8 @@ class AddressesDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
-            DispatchQueue.main.async { [self] in
-                tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
         }
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
@@ -79,7 +79,11 @@ extension AddressesDetailsViewController:
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return addressDetailsViewModel.addressResult.count
+        if addressDetailsViewModel.addressResult == nil {
+            return 0
+        }else{
+            return addressDetailsViewModel.addressResult.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

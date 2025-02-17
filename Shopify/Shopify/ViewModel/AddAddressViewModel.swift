@@ -37,6 +37,7 @@ class AddAddressViewModel{
                 if data.data != nil{
                     DispatchQueue.main.async{
                         self?.addedAddressResult = address
+                        print("create ,\(address.city ?? "nothing returned")")
                     }
                 }
             case .failure(let error):
