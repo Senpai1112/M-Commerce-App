@@ -74,7 +74,7 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
             let viewController = storyBoard.instantiateViewController(withIdentifier: "AddressesDetailsViewController") as! AddressesDetailsViewController
             self.navigationController?.pushViewController(viewController, animated: true)
         case 1:
