@@ -1,0 +1,22 @@
+query ProductDetailsQuery($id: ID!) {
+    product(id: $id) {
+        availableForSale
+        description
+        id
+        title
+        totalInventory
+        images(first: 5) {
+            edges {
+                node {
+                    src
+                }
+            }
+        }
+        adjacentVariants {
+            price {
+                amount
+                currencyCode
+            }
+        }
+    }
+}

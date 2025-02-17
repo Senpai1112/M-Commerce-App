@@ -35,13 +35,18 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CompanyLocation": return MyApi.Objects.CompanyLocation
     case "ComponentizableCartLine": return MyApi.Objects.ComponentizableCartLine
     case "Customer": return MyApi.Objects.Customer
+    case "CustomerAccessToken": return MyApi.Objects.CustomerAccessToken
+    case "CustomerAccessTokenCreatePayload": return MyApi.Objects.CustomerAccessTokenCreatePayload
     case "CustomerAddressCreatePayload": return MyApi.Objects.CustomerAddressCreatePayload
     case "CustomerAddressDeletePayload": return MyApi.Objects.CustomerAddressDeletePayload
+    case "CustomerCreatePayload": return MyApi.Objects.CustomerCreatePayload
     case "CustomerDefaultAddressUpdatePayload": return MyApi.Objects.CustomerDefaultAddressUpdatePayload
     case "CustomerUserError": return MyApi.Objects.CustomerUserError
     case "ExternalVideo": return MyApi.Objects.ExternalVideo
     case "GenericFile": return MyApi.Objects.GenericFile
     case "Image": return MyApi.Objects.Image
+    case "ImageConnection": return MyApi.Objects.ImageConnection
+    case "ImageEdge": return MyApi.Objects.ImageEdge
     case "Location": return MyApi.Objects.Location
     case "MailingAddress": return MyApi.Objects.MailingAddress
     case "MailingAddressConnection": return MyApi.Objects.MailingAddressConnection
