@@ -24,9 +24,10 @@ class ChooseAddressViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationItem.title = "Choose Address"
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
-            DispatchQueue.main.async { [self] in
-                tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
         }
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
@@ -49,6 +50,12 @@ class ChooseAddressViewController: UIViewController {
             let alert = UIAlertController(title: "Please Select an address", message:"", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .destructive) { _ in})
             self.present(alert, animated: true)
+        }else{
+            let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+            let vc = storyBoard.instantiateViewController(withIdentifier: "ChoosePaymentMethodViewController") as! ChoosePaymentMethodViewController
+            vc.address = addressDetailsViewModel.addressResult[selectedIndex!.row]
+            self.navigationController?.pushViewController(vc, animated: true)
+            
         }
     }
     /*
@@ -76,6 +83,12 @@ extension ChooseAddressViewController: UITableViewDelegate, UITableViewDataSourc
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChooseAddressTableViewCell", for: indexPath) as! ChooseAddressTableViewCell
+        configureCell(cell, at: indexPath)
+        return cell
+    }
+    
+    func configureCell(_ cell: ChooseAddressTableViewCell, at indexPath: IndexPath) {
+        
         cell.selectionStyle = .none
         
         cell.checkButton.setImage(UIImage(systemName: "circle"), for: .normal)
@@ -87,13 +100,6 @@ extension ChooseAddressViewController: UITableViewDelegate, UITableViewDataSourc
             cell.checkButton.isSelected = false
         }
         
-        cell.checkButton.tag = indexPath.row
-        cell.checkButton.addTarget(self, action: #selector(self.checkSelected(sender:)), for: .touchUpInside)
-        configureCell(cell, at: indexPath)
-        return cell
-    }
-    
-    func configureCell(_ cell: ChooseAddressTableViewCell, at indexPath: IndexPath) {
         cell.cityName.text = addressDetailsViewModel.addressResult[indexPath.row].city
         cell.phoneNumber.text = addressDetailsViewModel.addressResult[indexPath.row].phone
         cell.countryName.text = addressDetailsViewModel.addressResult[indexPath.row].country
@@ -102,14 +108,8 @@ extension ChooseAddressViewController: UITableViewDelegate, UITableViewDataSourc
         cell.layer.borderWidth = 10
         cell.clipsToBounds = true
     }
-
-    @objc func checkSelected(sender: UIButton) {
-
-        let point = sender.convert(CGPoint.zero, to: tableView)
-        if let indexPath = tableView.indexPathForRow(at: point) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             selectedIndex = indexPath
             tableView.reloadData()
-        }
     }
-
 }

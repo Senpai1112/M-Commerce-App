@@ -10,28 +10,6 @@ import PassKit
 
 class ApplePayViewController: UIViewController {
     
-    class RadioButton: UIButton {
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            setupButton()
-        }
-
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-            setupButton()
-        }
-
-        private func setupButton() {
-            self.setImage(UIImage(systemName: "circle"), for: .normal) // Unselected state
-            self.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .selected) // Selected state
-            self.addTarget(self, action: #selector(toggleSelection), for: .touchUpInside)
-        }
-
-        @objc private func toggleSelection() {
-            self.isSelected = true
-        }
-    }
-    
     var emailAddress : String?
     var country : String?
     var phoneNumber : String?
@@ -39,7 +17,6 @@ class ApplePayViewController: UIViewController {
     var address2 : String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        var radioButton1 = RadioButton()
         let paymentButton = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
         paymentButton.addTarget(self, action: #selector(startApplePay), for: .touchUpInside)
         paymentButton.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +33,7 @@ class ApplePayViewController: UIViewController {
     @objc func startApplePay() {
         let paymentRequest = PKPaymentRequest()
         
-        // Configure your Merchant ID
+        // Configure your Merchant ID merchant.2jd4vk6g4v2prs6z
         paymentRequest.merchantIdentifier = "merchant.2jd4vk6g4v2prs6z"
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .threeDSecure

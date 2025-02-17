@@ -27,6 +27,11 @@ class ShoppingCartViewController: UIViewController {
         initUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Shopping Cart"
+    }
+    
     func initNib(){
         tableView.dataSource = self
         tableView.delegate = self
