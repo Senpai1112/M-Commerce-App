@@ -14,7 +14,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    var titles = ["Address" , "Currency" , "Contact Us","About Us"]
+    let titles = ["Address" , "Currency" , "Contact Us","About Us"]
     var details = ["address" , "USD" ,"",""]
     
     
@@ -26,9 +26,10 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
+        self.navigationItem.title = "Settings"
+        addressDetailsViewModel.bindResultToSettingTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
-                self?.titles[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
+                self?.details[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
                 self?.tableView.reloadData()
             }
         }

@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import Lottie
 
 class AddressesDetailsViewController: UIViewController {
     
     private let addressDetailsViewModel = AddressDetailsViewModel()
     var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    private var animationView : LottieAnimationView!
     
     
     @IBOutlet weak var addNewAddress: UIButton!
@@ -21,12 +23,11 @@ class AddressesDetailsViewController: UIViewController {
         super.viewDidLoad()
         initNib()
         initUI()
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationItem.title = "Addresses Details"
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
@@ -46,6 +47,12 @@ class AddressesDetailsViewController: UIViewController {
         addNewAddress.layer.cornerRadius = addNewAddress.frame.height / 2
         addNewAddress.layer.cornerCurve = .continuous
         addNewAddress.clipsToBounds = true
+        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .black
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
     }
     
     @IBAction func addNewAddress(_ sender: Any) {
@@ -55,15 +62,15 @@ class AddressesDetailsViewController: UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 extension AddressesDetailsViewController:
@@ -78,7 +85,7 @@ extension AddressesDetailsViewController:
         cell.layer.borderWidth = 10
         cell.clipsToBounds = true
     }
-
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

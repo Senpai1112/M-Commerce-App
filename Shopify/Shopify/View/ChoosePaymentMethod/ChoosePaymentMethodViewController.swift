@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PassKit
 
 class ChoosePaymentMethodViewController: UIViewController {
 
