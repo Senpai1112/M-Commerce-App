@@ -98,7 +98,7 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
          let storyBord = UIStoryboard(name: "Set3", bundle: nil)
          let detailsVC = storyBord.instantiateViewController(withIdentifier: "detailsVC") as! ProductDetailsViewController
         print("id:\(products[indexPath.item].id)")
-           // detailsVC.productId = products[indexPath.item].id
+           detailsVC.id = products[indexPath.item].id
         navigationController?.pushViewController(detailsVC, animated: true)
         
     }
