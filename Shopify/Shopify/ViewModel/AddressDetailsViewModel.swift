@@ -10,10 +10,18 @@ import Apollo
 
 class AddressDetailsViewModel{
     var bindResultToAddressDetailsTableViewController : (()->()) = {}
+    var bindResultToSettingTableViewController : (()->()) = {}
     var addressResult = [Addresses]()
     {
         didSet{
             bindResultToAddressDetailsTableViewController()
+        }
+    }
+    
+    var defaultAddressResult = Addresses()
+    {
+        didSet{
+            bindResultToSettingTableViewController()
         }
     }
     
@@ -27,7 +35,7 @@ class AddressDetailsViewModel{
             case .success(let data):
                 if let collections = data.data?.customer?.addresses {
                     let addressModel = collections.edges.map { edge in
-                        let address = Addresses(
+                        return Addresses(
                             country: edge.node.country,
                             city: edge.node.city,
                             address1: edge.node.address1,
@@ -35,11 +43,35 @@ class AddressDetailsViewModel{
                             phone: edge.node.phone,
                             id: edge.node.id
                         )
-                        print("get ,\(address.city ?? "nothing returned")")
-                        return address
                     }
                     DispatchQueue.main.async {
                         self.addressResult = addressModel
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
+    }
+    
+    func getDefaultAddressesFromModel(customerAccessToken : String?) {
+        guard customerAccessToken != nil else {
+            print("Invalid customer access token.")
+            return
+        }
+        ApolloAddressesNetwokService.fetchCustomerDefaultAddresses(token: customerAccessToken!, completion: {  result in
+            switch result {
+            case .success(let data):
+                if let collections = data.data?.customer?.defaultAddress {
+                    DispatchQueue.main.async {
+                        self.defaultAddressResult = Addresses(
+                            country: collections.country,
+                            city: collections.city,
+                            address1: collections.address1,
+                            address2: collections.address2,
+                            phone: collections.phone,
+                            id: collections.id
+                        )
                     }
                 }
             case .failure(let error):

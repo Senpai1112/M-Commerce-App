@@ -9,11 +9,12 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    
+    var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
+    var addressDetailsViewModel = AddressDetailsViewModel()
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    let titles = ["Address" , "Currency" , "Contact Us","About Us"]
+    var titles = ["Address" , "Currency" , "Contact Us","About Us"]
     var details = ["address" , "USD" ,"",""]
     
     
@@ -21,6 +22,17 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         initNib()
         initUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
+            DispatchQueue.main.async { [weak self] in
+                self?.titles[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
+                self?.tableView.reloadData()
+            }
+        }
+        addressDetailsViewModel.getDefaultAddressesFromModel(customerAccessToken: customerAccessToken)
     }
     func initNib(){
         tableView.dataSource = self
@@ -79,7 +91,16 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
             self.navigationController?.pushViewController(viewController, animated: true)
         case 1:
             currencySetter()
+        case 2:
+            let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+            let viewController = storyBoard.instantiateViewController(withIdentifier: "AboutUsViewController") as! AboutUsViewController
+            viewController.isAboutUs = false
+            self.navigationController?.present(viewController, animated: true)
         default:
+            let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+            let viewController = storyBoard.instantiateViewController(withIdentifier: "AboutUsViewController") as! AboutUsViewController
+            viewController.isAboutUs = true
+            self.navigationController?.present(viewController, animated: true)
             break
         }
         

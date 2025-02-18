@@ -42,6 +42,16 @@ class ApolloAddressesNetwokService {
             }
         }
     }
+    static func fetchCustomerDefaultAddresses(token : String,completion: @escaping (Result<GraphQLResult<CustomerDefaultAddressQuery.Data>, Error>) -> Void) {
+        ApolloAddressesNetwokService.shared.apollo.fetch(query: CustomerDefaultAddressQuery(token: token),cachePolicy: .fetchIgnoringCacheData) { result in
+            switch result {
+            case .success(let graphQLResult):
+                completion(.success(graphQLResult))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     
     static func deleteCustomerAddresses(token : String,addressid : String ,completion: @escaping (Result<GraphQLResult<CustomerAddressDeleteMutation.Data>, Error>) -> Void) {
         ApolloAddressesNetwokService.shared.apollo.perform(mutation: CustomerAddressDeleteMutation(token: token, addressId: addressid)) { result in

@@ -85,11 +85,7 @@ extension AddressesDetailsViewController:
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if addressDetailsViewModel.addressResult == nil {
-            return 0
-        }else{
-            return addressDetailsViewModel.addressResult.count
-        }
+        return addressDetailsViewModel.addressResult.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
