@@ -11,6 +11,9 @@ class AddressesDetailsViewController: UIViewController {
     
     private let addressDetailsViewModel = AddressDetailsViewModel()
     var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    
     @IBOutlet weak var addNewAddress: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
@@ -18,6 +21,8 @@ class AddressesDetailsViewController: UIViewController {
         super.viewDidLoad()
         initNib()
         initUI()
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -25,6 +30,7 @@ class AddressesDetailsViewController: UIViewController {
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
+                self?.activityIndicator.stopAnimating()
             }
         }
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)

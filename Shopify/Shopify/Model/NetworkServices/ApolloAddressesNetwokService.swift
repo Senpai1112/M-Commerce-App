@@ -33,7 +33,7 @@ class ApolloAddressesNetwokService {
     private(set) lazy var apollo = ApolloClient(networkTransport: networkTransport, store: store)
     
     static func fetchCustomerAddresses(token : String,completion: @escaping (Result<GraphQLResult<CustomerAddressesQuery.Data>, Error>) -> Void) {
-        ApolloAddressesNetwokService.shared.apollo.fetch(query: CustomerAddressesQuery(token: token)) { result in
+        ApolloAddressesNetwokService.shared.apollo.fetch(query: CustomerAddressesQuery(token: token),cachePolicy: .fetchIgnoringCacheData) { result in
             switch result {
             case .success(let graphQLResult):
                 completion(.success(graphQLResult))
