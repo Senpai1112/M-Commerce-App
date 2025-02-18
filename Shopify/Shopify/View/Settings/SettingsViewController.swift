@@ -26,10 +26,7 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-<<<<<<< HEAD
         self.navigationItem.title = "Settings"
-=======
->>>>>>> ee354d04d177e3859e71d50f8ad33ba7f364321b
         addressDetailsViewModel.bindResultToSettingTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
                 self?.details[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
