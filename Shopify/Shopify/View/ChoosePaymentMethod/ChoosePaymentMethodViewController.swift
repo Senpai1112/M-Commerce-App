@@ -38,7 +38,9 @@ class ChoosePaymentMethodViewController: UIViewController {
             self.present(alert, animated: true)
         }
         else{
-            
+            if selectedIndex?.section == 0{
+                
+            }
         }
     }
     func initNib(){
@@ -117,5 +119,78 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedIndex = indexPath
         tableView.reloadData()
+    }
+    
+    func startApplePay(address : Addresses , customer : Customer , price : Price) {
+       let paymentRequest = PKPaymentRequest()
+       
+       // Configure your Merchant ID merchant.2jd4vk6g4v2prs6z
+       paymentRequest.merchantIdentifier = "merchant.2jd4vk6g4v2prs6z"
+       paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
+       paymentRequest.merchantCapabilities = .threeDSecure
+       paymentRequest.countryCode = "US" // Your country code
+       paymentRequest.currencyCode = "USD" // Your currency code
+       
+       // Required fields
+       paymentRequest.requiredShippingContactFields = [.name, .postalAddress, .phoneNumber, .emailAddress]
+       
+       // Payment Summary Items
+       let item1 = PKPaymentSummaryItem(label: "Product 1", amount: NSDecimalNumber(string: "19.99"))
+       let item2 = PKPaymentSummaryItem(label: "Tax", amount: NSDecimalNumber(string: "1.99"))
+       let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "21.98"))
+       
+       paymentRequest.paymentSummaryItems = [item1, item2, total]
+       
+       if #available(iOS 11.0, *) {
+           let shippingContact = PKContact()
+           
+           // Set up the name (optional)
+           var nameComponents = PersonNameComponents()
+           nameComponents.givenName = "John"
+           nameComponents.familyName = "Appleseed"
+           shippingContact.name = nameComponents
+           
+           // Set up the postal address
+           let postalAddress = CNMutablePostalAddress()
+           postalAddress.street = "1 Infinite Loop"
+           postalAddress.city = "Cupertino"
+           postalAddress.state = "CA"
+           postalAddress.postalCode = "95014"
+           postalAddress.country = "United States"
+           shippingContact.postalAddress = postalAddress
+           // Optionally, add phone number and email (if needed)
+           // shippingContact.phoneNumber = CNPhoneNumber(stringValue: "123-456-7890")
+           shippingContact.emailAddress = "john.appleseed@example.com"
+           
+           paymentRequest.shippingContact = shippingContact
+       }
+       
+       // Present Apple Pay sheet
+       if let paymentVC = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) {
+           paymentVC.delegate = self
+           present(paymentVC, animated: true, completion: nil)
+       } else {
+           print("Unable to present Apple Pay authorization.")
+       }
+   }
+
+}
+
+extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControllerDelegate {
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
+                                            didAuthorizePayment payment: PKPayment,
+                                            handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        // Send payment token to your server or payment processor
+        let paymentToken = payment.token
+        print("Payment Token: \(paymentToken)")
+        
+        // Handle success or failure
+        let status = PKPaymentAuthorizationStatus.success
+        let result = PKPaymentAuthorizationResult(status: status, errors: nil)
+        completion(result)
+    }
+    
+    func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

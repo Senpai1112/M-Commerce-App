@@ -82,7 +82,7 @@ class ApplePayViewController: UIViewController {
             print("Unable to present Apple Pay authorization.")
         }
     }
-    
+
     
     
     /*

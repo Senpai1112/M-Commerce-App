@@ -13,8 +13,6 @@ class AddressesDetailsViewController: UIViewController {
     private let addressDetailsViewModel = AddressDetailsViewModel()
     var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
     let activityIndicator = UIActivityIndicatorView(style: .large)
-    private var animationView : LottieAnimationView!
-    
     
     @IBOutlet weak var addNewAddress: UIButton!
     
@@ -49,10 +47,16 @@ class AddressesDetailsViewController: UIViewController {
         addNewAddress.clipsToBounds = true
         
         activityIndicator.hidesWhenStopped = true
+<<<<<<< HEAD
         activityIndicator.color = .black
         activityIndicator.center = self.view.center
         activityIndicator.startAnimating()
         view.addSubview(activityIndicator)
+=======
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+>>>>>>> ee354d04d177e3859e71d50f8ad33ba7f364321b
     }
     
     @IBAction func addNewAddress(_ sender: Any) {
