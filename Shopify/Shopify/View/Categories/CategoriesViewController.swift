@@ -18,6 +18,7 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         CategoriesProductcollection.dataSource = self
                 CategoriesProductcollection.delegate = self
+
                 initNib()
                 
                 viewModel = ProductViewModel()
@@ -31,6 +32,10 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
 
            // Do any additional setup after loading the view.
     }
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.title = "Category"
+
+    }
     @IBAction func firstFilterAction(_ sender: UISegmentedControl) {
         setQuery()
     }
@@ -40,8 +45,10 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
     }
 
     func setQuery() {
-        let first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
+        var first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
         let sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
+        if first == "All" { first = "" }
+
         viewModel.getProductsFromModel(query: "\(first) | \(sec)")
     }
 
@@ -72,6 +79,16 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
                return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+        let detailsVC = storyBord.instantiateViewController(withIdentifier: "detailsVC") as! ProductDetailsViewController
+       // detailsVC.productId = viewModel.finalResult[indexPath.item].id
+        print("Id:\(viewModel.finalResult[indexPath.item].id)")
+
+    navigationController?.pushViewController(detailsVC, animated: true)
+        
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            let width = (collectionView.bounds.width / 2)
         return CGSize(width: width - 5, height: width*1.4)

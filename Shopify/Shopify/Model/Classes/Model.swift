@@ -13,6 +13,7 @@ struct BrandModel {
 }
 
 struct ProductModel {
+    let id : String?
     let price: Double?
     let currencyCode : String?
     let image: String?

@@ -94,7 +94,14 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
 
         return cell
     }
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+         let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+         let detailsVC = storyBord.instantiateViewController(withIdentifier: "detailsVC") as! ProductDetailsViewController
+        print("id:\(products[indexPath.item].id)")
+           // detailsVC.productId = products[indexPath.item].id
+        navigationController?.pushViewController(detailsVC, animated: true)
+        
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.bounds.width / 2) - 10
         return CGSize(width: width, height: width)

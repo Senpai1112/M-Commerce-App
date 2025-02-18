@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().tintColor = .white
         return true
+        
     }
 
     // MARK: UISceneSession Lifecycle
