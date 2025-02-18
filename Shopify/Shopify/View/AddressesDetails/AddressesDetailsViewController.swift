@@ -11,8 +11,8 @@ class AddressesDetailsViewController: UIViewController {
     
     private let addressDetailsViewModel = AddressDetailsViewModel()
     var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+
     
     @IBOutlet weak var addNewAddress: UIButton!
     
@@ -21,8 +21,6 @@ class AddressesDetailsViewController: UIViewController {
         super.viewDidLoad()
         initNib()
         initUI()
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +44,11 @@ class AddressesDetailsViewController: UIViewController {
         addNewAddress.layer.cornerRadius = addNewAddress.frame.height / 2
         addNewAddress.layer.cornerCurve = .continuous
         addNewAddress.clipsToBounds = true
+        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
     }
     
     @IBAction func addNewAddress(_ sender: Any) {
