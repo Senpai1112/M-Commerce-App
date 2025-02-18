@@ -7,15 +7,19 @@
 
 import UIKit
 
-class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource{
+class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource , UISearchBarDelegate {
+    
     @IBOutlet weak var CategoriesProductcollection: UICollectionView!
        var viewModel: ProductViewModel!
 
        @IBOutlet weak var firstFilter: UISegmentedControl!
        @IBOutlet weak var secFilter: UISegmentedControl!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setUpSearchBar()
         CategoriesProductcollection.dataSource = self
                 CategoriesProductcollection.delegate = self
 
@@ -35,6 +39,14 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.title = "Category"
 
+    }
+    func setUpSearchBar(){
+        let searchBar = UISearchBar()
+            searchBar.placeholder = "Search products..."
+            searchBar.delegate = self
+            searchBar.searchTextField.backgroundColor = .white
+
+        self.tabBarController?.navigationItem.titleView = searchBar
     }
     @IBAction func firstFilterAction(_ sender: UISegmentedControl) {
         setQuery()
@@ -81,18 +93,39 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyBord = UIStoryboard(name: "Set3", bundle: nil)
-        let detailsVC = storyBord.instantiateViewController(withIdentifier: "detailsVC") as! ProductDetailsViewController
-       // detailsVC.productId = viewModel.finalResult[indexPath.item].id
-        print("Id:\(viewModel.finalResult[indexPath.item].id)")
-
-    navigationController?.pushViewController(detailsVC, animated: true)
+        guard let detailsVC = storyBord.instantiateViewController(withIdentifier: "detailsVC") as? ProductDetailsViewController else {
+            return
+        }
+            detailsVC.id = viewModel.finalResult[indexPath.item].id
         
-    }
+            print("Selected Product ID: \(detailsVC.id ?? "No ID")")
+            print("Id:\(viewModel.finalResult[indexPath.item].id)")
+            
+            
+            navigationController?.pushViewController(detailsVC, animated: true)
+        }
+    
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            let width = (collectionView.bounds.width / 2)
         return CGSize(width: width - 5, height: width*1.4)
        }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+            print("Search Text Changed: \(searchText)") // Print the search text
+            var first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
+            let sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
+            if first == "All" { first = "" }
+
+        viewModel.getProductsFromModel(query: "\(first) | \(sec) | \(searchText)")
+        }
+
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
+           
+            searchBar.resignFirstResponder()
+        }
     
 
 }
