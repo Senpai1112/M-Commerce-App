@@ -26,6 +26,7 @@ query CustomerDefaultAddress($token : String!) {
             city
             country
             phone
+            id
         }
     }
 }
