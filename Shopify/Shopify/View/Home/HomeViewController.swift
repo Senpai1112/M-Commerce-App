@@ -17,7 +17,6 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Home"
         homeCollection.dataSource = self
         homeCollection.delegate = self
         initNib()
@@ -28,6 +27,15 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.homeCollection.reloadData()
             }}
             viewModel.getBrandsFromModel()
+        
+    }
+   
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.title = "Home"
+        
+
+    
+
     }
     func compositionalLayout() {
         let layout = UICollectionViewCompositionalLayout { index, environment in

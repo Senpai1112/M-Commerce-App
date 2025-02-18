@@ -28,7 +28,7 @@ class BrandsViewModel {
                         let collection = edge.node
                         let products = collection.products.edges.map { productEdge in
                             let product = productEdge.node
-                            return ProductModel(price: Double(product.priceRange.maxVariantPrice.amount), currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue, image: product.featuredImage?.url,title: product.title,vendor: product.vendor)}
+                            return ProductModel(id: product.id, price: Double(product.priceRange.maxVariantPrice.amount), currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue, image: product.featuredImage?.url,title: product.title,vendor: product.vendor)}
                         
                         return BrandModel(title: collection.title, image: collection.image?.url, products: products)
                     }

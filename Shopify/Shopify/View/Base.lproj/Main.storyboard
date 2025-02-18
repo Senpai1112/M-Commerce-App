@@ -11,7 +11,7 @@
         <!--Me-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MeViewController" customModule="Shopify" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -53,7 +53,7 @@
                                     <constraint firstAttribute="height" constant="31" id="kcI-lp-3U2"/>
                                 </constraints>
                                 <segments>
-                                    <segment title="" image="checkmark.circle.fill" catalog="system"/>
+                                    <segment title="All"/>
                                     <segment title="Women"/>
                                     <segment title="Men"/>
                                     <segment title="Kid"/>
@@ -188,7 +188,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="homekit" catalog="system" width="128" height="104"/>
         <image name="person.circle.fill" catalog="system" width="128" height="123"/>
         <image name="square.split.2x2.fill" catalog="system" width="128" height="114"/>

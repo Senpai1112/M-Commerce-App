@@ -25,7 +25,7 @@ class ProductViewModel{
                 if let products = data.data?.products.edges {
                     self?.finalResult  = products.map { edge in
                         let product = edge.node
-                        return ProductModel(price: Double(product.priceRange.maxVariantPrice.amount), currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue,
+                        return ProductModel(id: product.id, price: Double(product.priceRange.maxVariantPrice.amount), currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue,
                                             image: product.featuredImage?.url,title: product.title,vendor: product.vendor)
                     }
                     
