@@ -18,7 +18,7 @@ class ShoppingCartViewController: UIViewController {
     @IBOutlet weak var totalPriceOfProducts: UILabel!
     
     var cartCount = 0
-        
+    
     private let cartViewModel = CartViewModel()
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
@@ -37,7 +37,6 @@ class ShoppingCartViewController: UIViewController {
         self.cartViewModel.bindResultToShoppingCartTableViewController = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-                
                 self.cartCount = self.cartViewModel.localCartResult.cart?.count ?? 0
                 self.activityIndicator.stopAnimating()
                 self.totalPriceOfProducts.text = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount
@@ -105,9 +104,10 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
     
     func removeCell(at indexPath: IndexPath) {
         let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(self.cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.title ?? "")", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self]_ in
-            //names.remove(at: indexPath.row)
-            tableView.reloadData()
+        alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self] _ in
+            
+            let lineId = [self.cartViewModel.localCartResult.cart?[indexPath.row].id ?? ""]
+            self.cartViewModel.deleteCartInModel(cartID: cartId, lineID: lineId, indexPath: indexPath)
         })
         alert.addAction(UIAlertAction(title: "Cancle", style: .default, handler: {_ in }))
         self.present(alert, animated: true)
@@ -121,8 +121,8 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
         if editingStyle == .delete{
             let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(self.cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.title ?? "")", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self]_ in
-                //names.remove(at: indexPath.row)
-                tableView.reloadData()
+                let lineId = [self.cartViewModel.localCartResult.cart?[indexPath.row].id ?? ""]
+                self.cartViewModel.deleteCartInModel(cartID: cartId, lineID: lineId, indexPath: indexPath)
             })
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: {_ in }))
             self.present(alert, animated: true)
@@ -131,25 +131,25 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
     
     func quantityDidChange(for indexPath: IndexPath, newQuantity: Int) {
         cartViewModel.localCartResult.cart?[indexPath.row].quantity = newQuantity
-                cartViewModel.updateCartInModel(
-                cartID: cartViewModel.localCartResult.id,
-                lineQuantuty: newQuantity,
-                lineID: cartViewModel.localCartResult.cart?[indexPath.row].id,
-                merchandiseId: cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.id
-            )
-            recalcTotalPrice()
+        cartViewModel.updateCartInModel(
+            cartID: cartViewModel.localCartResult.id,
+            lineQuantuty: newQuantity,
+            lineID: cartViewModel.localCartResult.cart?[indexPath.row].id,
+            merchandiseId: cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.id
+        )
+        recalcTotalPrice()
     }
     
     private func recalcTotalPrice() {
         var overallTotal: Double = 0.0
-           for item in cartViewModel.localCartResult.cart ?? [] {
-               if let unitPriceStr = item.cost?.checkoutChargeAmount?.amount,
-                  let unitPrice = Double(unitPriceStr),
-                  let qty = item.quantity {
-                   overallTotal += unitPrice * Double(qty)
-               }
-           }
-           totalPriceOfProducts.text = String(format: "%.2f", overallTotal)
+        for item in cartViewModel.localCartResult.cart ?? [] {
+            if let unitPriceStr = item.cost?.checkoutChargeAmount?.amount,
+               let unitPrice = Double(unitPriceStr),
+               let qty = item.quantity {
+                overallTotal += unitPrice * Double(qty)
+            }
+        }
+        totalPriceOfProducts.text = String(format: "%.2f", overallTotal)
     }
 }
 

@@ -21,16 +21,13 @@ class CartViewModel{
     
     var localCartResult = CartResponse()
     func parseCartResponse(from data: FetchCartByIdQuery.Data) -> CartResponse? {
-        // Ensure the top-level cart exists
         guard let cartData = data.cart else { return nil }
         
-        // A helper function that maps a cost amount into our Cost model while ignoring currencyCode.
         func mapCost(amount: String?) -> Cost? {
             guard let amount = amount else { return nil }
             return Cost(amount: amount, currencyCode: nil) // ignore currencyCode
         }
         
-        // Map the cart-level cost
         let totalCost: TotalCost? = {
             let cost = cartData.cost
             return TotalCost(
@@ -40,12 +37,10 @@ class CartViewModel{
             )
         }()
         
-        // Map each cart line into a Cart instance
         let cartItems: [Cart] = cartData.lines.edges.map { line in
             var cartItem = Cart()
             cartItem.id = line.node.id
             
-            // Map merchandise (assuming an inline fragment for ProductVariant is available)
             if let productVariant = line.node.merchandise.asProductVariant {
                 var merch = Merchendise(id: productVariant.id)
                 merch.availableQuantity = productVariant.quantityAvailable != nil ? productVariant.quantityAvailable! : 0
@@ -54,10 +49,8 @@ class CartViewModel{
                 cartItem.merchandise = merch
             }
             
-            // Convert line quantity to String
             cartItem.quantity = line.node.quantity
             
-            // Map the cost for the line item (ignoring currency code)
             cartItem.cost = {
                 let lineCost = line.node.cost
                 return TotalCost(
@@ -70,7 +63,6 @@ class CartViewModel{
             return cartItem
         }
         
-        // Build and return the final CartResponse model
         let cartResponse = CartResponse(
             checkoutUrl: cartData.checkoutUrl,
             id: cartData.id,
@@ -88,7 +80,7 @@ class CartViewModel{
             print("Invalid cart ID.")
             return
         }
-        ApolloCartNetworkService.fetchCartById(cartId : cartID!, completion: {  result in
+        ApolloCartNetworkService.fetchCartById(cartId : cartID!, completion: {[weak self]  result in
             switch result {
             case .success(let response):
                 guard let cartData = response.data else {
@@ -96,8 +88,8 @@ class CartViewModel{
                     return
                 }
                 DispatchQueue.main.async{
-                    self.cartResult = self.parseCartResponse(from: cartData)!
-                    self.localCartResult = self.cartResult
+                    self?.cartResult = (self!.parseCartResponse(from: cartData)!)
+                    self?.localCartResult = self!.cartResult
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -113,7 +105,7 @@ class CartViewModel{
             bindResultToShoppingCartCell()
         }
     }
-
+    
     func updateCartInModel(cartID : String?,lineQuantuty : Int? , lineID : String? , merchandiseId : String?) {
         guard cartID != nil else {
             print("Invalid cart ID.")
@@ -138,12 +130,12 @@ class CartViewModel{
         })
     }
     
-    func deleteCartInModel(cartID : String?,lineID : [String]?) {
+    func deleteCartInModel(cartID : String?,lineID : [String]? , indexPath :IndexPath) {
         guard cartID != nil else {
             print("Invalid cart ID.")
             return
         }
-       /* ApolloCartNetworkService.DeleteLineBy(cartID: cartID, lineID: lineID, completion:{ [weak self] result in
+        ApolloCartNetworkService.DeleteLineBy(cartID: cartID, lineID: lineID, completion:{ [weak self] result in
             switch result {
             case .success(let response):
                 guard let cartData = response.data else {
@@ -153,14 +145,12 @@ class CartViewModel{
                 if !(cartData.cartLinesRemove?.userErrors.isEmpty)!{
                     print((cartData.cartLinesRemove?.userErrors.first?.message)!)
                 }else{
-                    let cart = cartData.cartLinesRemove?.cart
-                    self?.cartQuantityResult = Cart(id: cart?.id,quantity:cart?.totalQuantity)
+                    self?.getCartFromModel(cartID: cartID)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        })*/
+        })
     }
-    
     
 }
