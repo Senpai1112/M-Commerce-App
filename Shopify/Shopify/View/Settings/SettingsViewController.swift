@@ -9,7 +9,7 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
+    var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
     var addressDetailsViewModel = AddressDetailsViewModel()
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -27,9 +27,10 @@ class SettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Settings"
+        details[0] = "Address"
         addressDetailsViewModel.bindResultToSettingTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
-                if self?.addressDetailsViewModel.addressResult.count == 0
+                if self?.addressDetailsViewModel.defaultAddressResult == nil
                 {
                     self?.details[0] = "Address"
                 }else{
