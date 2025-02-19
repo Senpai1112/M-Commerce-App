@@ -22,9 +22,16 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     switch typename {
     case "AppliedGiftCard": return MyApi.Objects.AppliedGiftCard
     case "Article": return MyApi.Objects.Article
+    case "BaseCartLineConnection": return MyApi.Objects.BaseCartLineConnection
+    case "BaseCartLineEdge": return MyApi.Objects.BaseCartLineEdge
     case "Blog": return MyApi.Objects.Blog
     case "Cart": return MyApi.Objects.Cart
+    case "CartBuyerIdentity": return MyApi.Objects.CartBuyerIdentity
+    case "CartCost": return MyApi.Objects.CartCost
     case "CartLine": return MyApi.Objects.CartLine
+    case "CartLineCost": return MyApi.Objects.CartLineCost
+    case "CartLinesRemovePayload": return MyApi.Objects.CartLinesRemovePayload
+    case "CartLinesUpdatePayload": return MyApi.Objects.CartLinesUpdatePayload
     case "CartUserError": return MyApi.Objects.CartUserError
     case "Collection": return MyApi.Objects.Collection
     case "CollectionConnection": return MyApi.Objects.CollectionConnection
@@ -72,6 +79,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ProductOptionValue": return MyApi.Objects.ProductOptionValue
     case "ProductPriceRange": return MyApi.Objects.ProductPriceRange
     case "ProductVariant": return MyApi.Objects.ProductVariant
+    case "ProductVariantComponent": return MyApi.Objects.ProductVariantComponent
+    case "ProductVariantComponentConnection": return MyApi.Objects.ProductVariantComponentConnection
     case "QueryRoot": return MyApi.Objects.QueryRoot
     case "SearchQuerySuggestion": return MyApi.Objects.SearchQuerySuggestion
     case "SellingPlan": return MyApi.Objects.SellingPlan

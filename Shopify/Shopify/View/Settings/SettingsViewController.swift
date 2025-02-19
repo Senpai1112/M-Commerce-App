@@ -29,7 +29,12 @@ class SettingsViewController: UIViewController {
         self.navigationItem.title = "Settings"
         addressDetailsViewModel.bindResultToSettingTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
-                self?.details[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
+                if self?.addressDetailsViewModel.addressResult.count == 0
+                {
+                    self?.details[0] = "Address"
+                }else{
+                    self?.details[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
+                }
                 self?.tableView.reloadData()
             }
         }

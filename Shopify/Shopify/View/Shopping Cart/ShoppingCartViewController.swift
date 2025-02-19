@@ -8,6 +8,7 @@
 import UIKit
 import Apollo
 import MyApi
+import SDWebImage
 
 class ShoppingCartViewController: UIViewController {
     
@@ -15,10 +16,13 @@ class ShoppingCartViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var totalPriceOfProducts: UILabel!
-        
-    var names : [String] = ["youssab" , "yasser" , "youssef" , "ziad" , "mai" , "andrew" , "hellana" ,"mohsen" ]
     
-    var prices : [String] = ["100" , "200" , "300" , "400" , "500" , "600" , "700" ,"800" ]
+    var cartCount = 0
+        
+    private let cartViewModel = CartViewModel()
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    
+    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +34,18 @@ class ShoppingCartViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Shopping Cart"
+        self.cartViewModel.bindResultToShoppingCartTableViewController = { [weak self] in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                self.cartCount = self.cartViewModel.localCartResult.cart?.count ?? 0
+                self.activityIndicator.stopAnimating()
+                self.totalPriceOfProducts.text = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount
+                self.tableView.reloadData()
+            }
+        }
+        cartViewModel.getCartFromModel(cartID: cartId)
     }
-    
     func initNib(){
         tableView.dataSource = self
         tableView.delegate = self
@@ -42,6 +56,12 @@ class ShoppingCartViewController: UIViewController {
         checkoutButton.layer.cornerRadius = checkoutButton.frame.height / 2
         checkoutButton.layer.cornerCurve = .continuous
         checkoutButton.clipsToBounds = true
+        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
     }
     
     @IBAction func checkOutButton(_ sender: Any) {
@@ -54,24 +74,28 @@ class ShoppingCartViewController: UIViewController {
 extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSource , ShoppingCartTableViewCellDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return names.count
+        return cartCount
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if names.count == 0 {
-            return 0
-        }else{
-            return 1
-        }
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShoppingCartTableViewCell", for: indexPath) as! ShoppingCartTableViewCell
+        var quantaty : Int = 0
+        cell.cartViewModel = self.cartViewModel
         cell.delegate = self
-        cell.productName.text = names[indexPath.row]
-        cell.productPrice.text = prices[indexPath.row]
-        cell.configure(with: indexPath)
-        
+        if let item = self.cartViewModel.localCartResult.cart?[indexPath.row] {
+            cell.productName.text = item.merchandise?.title
+            cell.productPrice.text = item.cost?.checkoutChargeAmount?.amount
+            quantaty = item.quantity!
+            cell.productQuantaty.text = item.quantity?.codingKey.stringValue
+            if let urlStr = item.merchandise?.image, let url = URL(string: urlStr) {
+                cell.productImage.sd_setImage(with: url, placeholderImage: UIImage(named: "Ad"))
+            }
+        }
+        cell.configure(with: indexPath , quantity: quantaty)
         return cell
     }
     
@@ -80,9 +104,9 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
     }
     
     func removeCell(at indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(names[indexPath.row])", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(self.cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.title ?? "")", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self]_ in
-            names.remove(at: indexPath.row)
+            //names.remove(at: indexPath.row)
             tableView.reloadData()
         })
         alert.addAction(UIAlertAction(title: "Cancle", style: .default, handler: {_ in }))
@@ -95,14 +119,37 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(names[indexPath.row])", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(self.cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.title ?? "")", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self]_ in
-                names.remove(at: indexPath.row)
+                //names.remove(at: indexPath.row)
                 tableView.reloadData()
             })
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: {_ in }))
             self.present(alert, animated: true)
         }
+    }
+    
+    func quantityDidChange(for indexPath: IndexPath, newQuantity: Int) {
+        cartViewModel.localCartResult.cart?[indexPath.row].quantity = newQuantity
+                cartViewModel.updateCartInModel(
+                cartID: cartViewModel.localCartResult.id,
+                lineQuantuty: newQuantity,
+                lineID: cartViewModel.localCartResult.cart?[indexPath.row].id,
+                merchandiseId: cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.id
+            )
+            recalcTotalPrice()
+    }
+    
+    private func recalcTotalPrice() {
+        var overallTotal: Double = 0.0
+           for item in cartViewModel.localCartResult.cart ?? [] {
+               if let unitPriceStr = item.cost?.checkoutChargeAmount?.amount,
+                  let unitPrice = Double(unitPriceStr),
+                  let qty = item.quantity {
+                   overallTotal += unitPrice * Double(qty)
+               }
+           }
+           totalPriceOfProducts.text = String(format: "%.2f", overallTotal)
     }
 }
 
