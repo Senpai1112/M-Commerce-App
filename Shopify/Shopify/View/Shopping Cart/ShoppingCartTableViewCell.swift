@@ -9,13 +9,16 @@ import UIKit
 
 protocol ShoppingCartTableViewCellDelegate{
     func removeCell(at indexPath: IndexPath)
+    func quantityDidChange(for: IndexPath , newQuantity: Int)
 }
 
 class ShoppingCartTableViewCell: UITableViewCell {
     
-
+    
     var delegate : ShoppingCartTableViewCellDelegate?
     private var indexPath :IndexPath?
+    var cartViewModel: CartViewModel!
+    private var currentQuantity: Int = 0
     
     @IBOutlet weak var productQuantaty: UILabel!
     @IBOutlet weak var minusButton: UIButton!
@@ -31,7 +34,6 @@ class ShoppingCartTableViewCell: UITableViewCell {
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
     func initUI(){
@@ -40,31 +42,36 @@ class ShoppingCartTableViewCell: UITableViewCell {
         
         minusButton.layer.cornerRadius = 15
         minusButton.clipsToBounds = true
-
+        
         productImage.layer.cornerRadius = 50
         
         productPrice.textColor = .systemRed
     }
     
-    func configure(with indexPath :IndexPath){
+    func configure(with indexPath: IndexPath, quantity: Int) {
         self.indexPath = indexPath
+        self.currentQuantity = quantity
+        self.productQuantaty.text = "\(quantity)"
     }
     
     @IBAction func tabPlusButton(_ sender: Any) {
-        var num = Int(productQuantaty.text!)
-        num! += 1
-        productQuantaty.text = num!.codingKey.stringValue
+        guard let totalQuantity = cartViewModel.localCartResult.cart?[indexPath!.row].merchandise?.availableQuantity,
+              currentQuantity < totalQuantity else {
+            print("Maximum number of quantities reached")
+            return
+        }
+        currentQuantity += 1
+        productQuantaty.text = "\(currentQuantity)"
+
+        delegate?.quantityDidChange(for: indexPath!, newQuantity: currentQuantity)
     }
     @IBAction func tabMinusButton(_ sender: Any) {
-        let num = Int(productQuantaty.text!)
-        if var num = num {
-            if num > 1{
-                num -= 1
-                productQuantaty.text = num.codingKey.stringValue
-            }
-            else{
-                delegate?.removeCell(at: self.indexPath!)
-            }
+        if currentQuantity > 1 {
+            currentQuantity -= 1
+            productQuantaty.text = "\(currentQuantity)"
+            delegate?.quantityDidChange(for: indexPath!, newQuantity: currentQuantity)
+        } else {
+            delegate?.removeCell(at: indexPath!)
         }
         
     }
