@@ -108,7 +108,7 @@
         <!--Home-->
         <scene sceneID="zUx-5m-61A">
             <objects>
-                <viewController id="qrg-QH-6kq" customClass="HomeViewController" customModule="Shopify" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="homeVC" id="qrg-QH-6kq" customClass="HomeViewController" customModule="Shopify" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="04a-cm-c6w">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -151,7 +151,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Rjz-tq-fC4">
             <objects>
-                <navigationController id="ig3-Yv-hp6" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="TabBarNavController" id="ig3-Yv-hp6" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="aKQ-OR-1Zx">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -167,7 +167,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="1jB-pl-h7q">
             <objects>
-                <tabBarController id="rEp-Jq-Rf6" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="homeTabBar" id="rEp-Jq-Rf6" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="dFE-Wx-XES"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="P8G-mw-hyG">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
@@ -195,7 +195,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tintColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
