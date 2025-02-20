@@ -70,6 +70,7 @@ class CartSummaryViewController: UIViewController {
         let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: "ChoosePaymentMethodViewController") as! ChoosePaymentMethodViewController
         vc.address = address
+        vc.newPrice = newPrice
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
