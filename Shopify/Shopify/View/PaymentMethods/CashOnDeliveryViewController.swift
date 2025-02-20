@@ -18,24 +18,45 @@ class CashOnDeliveryViewController: UIViewController {
     
     @IBOutlet weak var placeOrder: UIButton!
     
-    var customerDetails : CustomerDetails?
-    var address : Addresses?
-    var cartDetails : CartResponse?
+    var customerDetails = CustomerDetails()
+    var address = Addresses()
+    var cartDetails = CartResponse()
 
+    let orderViewModel = OrderViewModel()
+    let cartViewModel = CartViewModel()
+    
+    var newPrice = ""
+    
+    var customerAccessToken  = "fc1bea2489ae90f294f2c8795e0dd7ff"
+    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         initUI()
-        subTotal.text = "\(cartDetails?.totalCost?.totalAmount?.amount ?? "") \(address?.countryCode ?? "")"
-        shippingFees.text = "30.0 \(address?.countryCode ?? "")"
+        subTotal.text = "\(newPrice) \(address.countryCode ?? "")"
+        shippingFees.text = "30.0 \(address.countryCode ?? "")"
         let floatGrandTotal = (subTotal.text! as NSString).floatValue + 30.0
         grandTotal.text = "\(floatGrandTotal)"
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {
-        
+        var ids = [String]()
+        for item in cartDetails.cart! {
+            let variantId = extractVariantID(from: item.merchandise!.id)
+            let intVariantId = variantId?.codingKey.intValue
+            let address = Address(address1: address.address1!, phone: address.phone!, city: address.city!, country: address.country!)
+            let newPriceDouble = Double(newPrice)
+            orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
+            ids.append(item.id!)
+        }
+        cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
+        let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
+            self?.navigationController?.popViewController(animated: true)
+        })
+        self.present(alert, animated: true)
     }
     func initUI(){
         placeOrder.layer.cornerRadius = placeOrder.frame.height / 2
@@ -43,6 +64,10 @@ class CashOnDeliveryViewController: UIViewController {
         placeOrder.clipsToBounds = true
     }
 
+    func extractVariantID(from gid: String) -> String? {
+        let components = gid.components(separatedBy: "/")
+        return components.last
+    }
     /*
     // MARK: - Navigation
 

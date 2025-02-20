@@ -178,12 +178,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dqa-RD-ssG">
-                                <rect key="frame" x="20" y="666.33333333333337" width="271" height="34"/>
+                                <rect key="frame" x="20" y="666.33333333333337" width="243" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Validate" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q0f-mC-HbV">
-                                <rect key="frame" x="311" y="668.33333333333337" width="72" height="23"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Valid" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q0f-mC-HbV">
+                                <rect key="frame" x="303" y="668.33333333333337" width="80" height="23"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -211,7 +211,7 @@
                             <constraint firstItem="S2I-Eh-DzW" firstAttribute="top" secondItem="fhz-EP-8kc" secondAttribute="bottom" constant="20" id="AOt-7V-hgJ"/>
                             <constraint firstItem="mH7-cG-IX6" firstAttribute="trailing" secondItem="S2I-Eh-DzW" secondAttribute="trailing" constant="20" id="DwF-eJ-bqo"/>
                             <constraint firstItem="gWk-iC-Oen" firstAttribute="leading" secondItem="mH7-cG-IX6" secondAttribute="leading" constant="20" id="FkV-HU-5Et"/>
-                            <constraint firstItem="Q0f-mC-HbV" firstAttribute="leading" secondItem="dqa-RD-ssG" secondAttribute="trailing" constant="20" id="Lwc-zB-FYM"/>
+                            <constraint firstItem="Q0f-mC-HbV" firstAttribute="leading" secondItem="dqa-RD-ssG" secondAttribute="trailing" constant="40" id="Lwc-zB-FYM"/>
                             <constraint firstItem="Q0f-mC-HbV" firstAttribute="top" secondItem="SXj-J0-f3O" secondAttribute="bottom" constant="22" id="PD2-K9-Cqd"/>
                             <constraint firstItem="S2I-Eh-DzW" firstAttribute="leading" secondItem="mH7-cG-IX6" secondAttribute="leading" constant="20" id="Piv-40-P1b"/>
                             <constraint firstItem="S2I-Eh-DzW" firstAttribute="top" secondItem="gWk-iC-Oen" secondAttribute="bottom" constant="20" id="RI0-Aa-GCd"/>
@@ -229,6 +229,7 @@
                         <outlet property="discoundCopon" destination="dqa-RD-ssG" id="oBR-EN-W9i"/>
                         <outlet property="tableView" destination="SXj-J0-f3O" id="o4j-oN-EUx"/>
                         <outlet property="totalPriceOfProducts" destination="fhz-EP-8kc" id="Hgz-C2-dah"/>
+                        <outlet property="validationLabel" destination="Q0f-mC-HbV" id="X1U-Qi-nCS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j2P-wH-l73" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
