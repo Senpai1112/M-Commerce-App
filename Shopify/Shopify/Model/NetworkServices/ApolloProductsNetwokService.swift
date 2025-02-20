@@ -33,14 +33,14 @@ class ApolloProductsNetwokService {
     
     func fetchCollections(completion: @escaping (Result<GraphQLResult<GetAllCollectionsQuery.Data>, Error>) -> Void) {
         ApolloProductsNetwokService.shared.apollo.fetch(query: GetAllCollectionsQuery()) { result in
-              switch result {
-              case .success(let graphQLResult):
-                  completion(.success(graphQLResult))
-              case .failure(let error):
-                  completion(.failure(error))
-              }
-          }
-      }
+            switch result {
+            case .success(let graphQLResult):
+                completion(.success(graphQLResult))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     
     func fetchProducts(query: String, completion: @escaping (Result<GraphQLResult<ProductsQuery.Data>, Error>) -> Void) {
         let productsQuery = ProductsQuery(query: query)
@@ -53,4 +53,16 @@ class ApolloProductsNetwokService {
             }
         }
     }
-  }
+    
+     func fetchCustomerOrders(token : String,completion: @escaping (Result<GraphQLResult<CustomerOrdersQuery.Data>, Error>) -> Void) {
+        let ordersQuery = CustomerOrdersQuery(token: token)
+        ApolloAddressesNetwokService.shared.apollo.fetch(query: ordersQuery) { result in
+            switch result {
+            case .success(let graphQLResult):
+                completion(.success(graphQLResult))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+}

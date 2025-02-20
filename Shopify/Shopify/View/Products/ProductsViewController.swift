@@ -19,7 +19,6 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Products"
         Productscollection.dataSource = self
         Productscollection.delegate = self
         initNib()

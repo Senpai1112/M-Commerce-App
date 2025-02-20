@@ -1,0 +1,20 @@
+
+query CustomerOrdersQuery ($token : String!){
+    customer(customerAccessToken: $token) {
+        
+        orders(first: 10) {
+            totalCount
+            edges {
+                node {
+                    cancelReason
+                    canceledAt
+                    originalTotalPrice {
+                        amount
+                        currencyCode
+                    }
+                    processedAt
+                }
+            }
+        }
+    }
+}
