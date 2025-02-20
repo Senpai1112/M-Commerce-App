@@ -7,35 +7,92 @@
 
 import UIKit
 
-class MeViewController: UIViewController {
+class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet weak var ordersTable: UITableView!
+
+    var viewModel: OrdersViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSearchIconToNavigationBar()
-        // Do any additional setup after loading the view.
+        ordersTable.dataSource = self
+        ordersTable.delegate = self
+        
+        viewModel = OrdersViewModel()
+        viewModel.bindOrdersToViewController = {
+            DispatchQueue.main.async {
+                self.ordersTable.reloadData()
+            }}
+       // viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken" )! ) 
     }
+    
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.title = "Me"
+        setupNavigationBarIcons()
 
+            self.tabBarController?.title = "Me"
+}
+    
+    func setupNavigationBarIcons() {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        
+        let settingsButt = UIButton(type: .system)
+        setUpNavBarBtn(button: settingsButt, systemName: "gearshape", selector: #selector(settingsTapped))
+        
+        let butt2 = UIButton(type: .system)
+        setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
+        
+        let butt3 = UIButton(type: .system)
+        setUpNavBarBtn(button: butt3, systemName: "cart", selector: #selector(cartTapped))
+        
+        
+        stackView.addArrangedSubview(settingsButt)
+        stackView.addArrangedSubview(butt2)
+        stackView.addArrangedSubview(butt3)
+        
+        let barButtonItem = UIBarButtonItem(customView: stackView)
+        tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
     }
-    func addSearchIconToNavigationBar() {
-        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .done, target: self, action: #selector(searchButtonTapped))
-        self.navigationItem.rightBarButtonItem = searchButton
+    
+    @objc func settingsTapped() {
+        
+        let storyBord = UIStoryboard(name: "Set2", bundle: nil)
+        let settingsVc = storyBord.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+     
+        navigationController?.pushViewController(settingsVc, animated: true)
     }
-
-    @objc func searchButtonTapped() {
-        print("Search button tapped")
+    
+    @objc func favTapped() {
+       print("favTapped")
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    @objc func cartTapped() {
+        let storyBord = UIStoryboard(name: "Set2", bundle: nil)
+        let cartVc = storyBord.instantiateViewController(withIdentifier: "ShoppingCartViewController") as! ShoppingCartViewController
+     
+        navigationController?.pushViewController(cartVc, animated: true)    }
+    
+    func setUpNavBarBtn(button: UIButton, systemName: String, selector: Selector) {
+        if let icon = UIImage(systemName: systemName) {
+            button.setImage(icon, for: .normal)
+        }
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
-    */
-
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.finalResult.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "orderCell", for: indexPath)
+        let order = viewModel.finalResult[indexPath.row]
+           cell.textLabel?.text = "Price: \(order.price) \(order.currencyCode)"
+           cell.detailTextLabel?.text = "CreatedAt: \(order.processedAt)"
+        return cell
+    }
 }

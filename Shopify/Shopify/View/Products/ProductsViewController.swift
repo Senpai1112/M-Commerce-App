@@ -23,6 +23,7 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         super.viewDidLoad()
         setUpSearchBar()
         title = "Products"
+
         Productscollection.dataSource = self
         Productscollection.delegate = self
         initNib()

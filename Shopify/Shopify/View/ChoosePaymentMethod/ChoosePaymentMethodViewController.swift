@@ -14,6 +14,8 @@ class ChoosePaymentMethodViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    var customerAccessToken  = "fc1bea2489ae90f294f2c8795e0dd7ff"
+    
     var customer = Customer(id: "12"
                             ,firstName: "youssab"
                             ,lastName: "yasser"
@@ -138,6 +140,7 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         let paymentRequest = PKPaymentRequest()
         
         // Configure your Merchant ID merchant.2jd4vk6g4v2prs6z
+        
         paymentRequest.merchantIdentifier = "merchant.2jd4vk6g4v2prs6z"
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .threeDSecure

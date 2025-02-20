@@ -1,16 +1,16 @@
 //
-//  Network.swift
+//  ApolloCartNetworkService.swift
 //  Shopify
 //
-//  Created by Yasser Yasser on 11/02/2025.
+//  Created by Yasser Yasser on 18/02/2025.
 //
+
 import Foundation
 import Apollo
 import MyApi
 
-class ApolloProductsNetwokService {
-    
-    static let shared = ApolloProductsNetwokService()
+class ApolloCartNetworkService{
+    static let shared = ApolloAddressesNetwokService()
     
     private let url = URL(string: "https://itp-newcapital-ios3.myshopify.com/api/2025-01/graphql")!
     
@@ -29,10 +29,11 @@ class ApolloProductsNetwokService {
         )
     }()
     
+    // Apollo Client with store and transport
     private(set) lazy var apollo = ApolloClient(networkTransport: networkTransport, store: store)
     
-    func fetchCollections(completion: @escaping (Result<GraphQLResult<GetAllCollectionsQuery.Data>, Error>) -> Void) {
-        ApolloProductsNetwokService.shared.apollo.fetch(query: GetAllCollectionsQuery()) { result in
+    static func fetchCartById(cartId : String,completion: @escaping (Result<GraphQLResult<FetchCartByIdQuery.Data>, Error>) -> Void) {
+        ApolloAddressesNetwokService.shared.apollo.fetch(query: FetchCartByIdQuery(id: cartId),cachePolicy: .fetchIgnoringCacheData) { result in
             switch result {
             case .success(let graphQLResult):
                 completion(.success(graphQLResult))
@@ -42,9 +43,8 @@ class ApolloProductsNetwokService {
         }
     }
     
-    func fetchProducts(query: String, completion: @escaping (Result<GraphQLResult<ProductsQuery.Data>, Error>) -> Void) {
-        let productsQuery = ProductsQuery(query: query)
-        ApolloProductsNetwokService.shared.apollo.fetch(query: productsQuery) { result in
+    static func updateLineBy(cartID : String?,lineQuantuty : Int? , lineID : String? , merchandiseId : String?,completion: @escaping (Result<GraphQLResult<CartLinesUpdateMutation.Data>, Error>) -> Void) {
+        ApolloAddressesNetwokService.shared.apollo.perform(mutation: CartLinesUpdateMutation(cartId: cartID!, lineQuantity: lineQuantuty!, lineId: lineID!, merchandiseId: merchandiseId!)) { result in
             switch result {
             case .success(let graphQLResult):
                 completion(.success(graphQLResult))
@@ -54,9 +54,8 @@ class ApolloProductsNetwokService {
         }
     }
     
-     func fetchCustomerOrders(token : String,completion: @escaping (Result<GraphQLResult<CustomerOrdersQuery.Data>, Error>) -> Void) {
-        let ordersQuery = CustomerOrdersQuery(token: token)
-        ApolloAddressesNetwokService.shared.apollo.fetch(query: ordersQuery) { result in
+    static func DeleteLineBy(cartID : String?,lineID : [String]?,completion: @escaping (Result<GraphQLResult<CartLinesRemoveMutation.Data>, Error>) -> Void) {
+        ApolloAddressesNetwokService.shared.apollo.perform(mutation: CartLinesRemoveMutation(cartId: cartID!, linesIds: lineID!)){ result in
             switch result {
             case .success(let graphQLResult):
                 completion(.success(graphQLResult))

@@ -41,6 +41,7 @@ class BrandsViewModel {
         
         
     }
+
     /// to drop invalid data
     //        var filteredCollections: [BrandModel] {
     //             return   finalResult.dropFirst().dropLast(4)
@@ -60,4 +61,5 @@ class BrandsViewModel {
             }
         }
     }
+
 }
