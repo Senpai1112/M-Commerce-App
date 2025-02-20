@@ -45,8 +45,6 @@ class ShoppingCartTableViewCell: UITableViewCell {
         minusButton.layer.cornerRadius = 15
         minusButton.clipsToBounds = true
         minusButton.tintColor = UIColor.purple
-
-        productImage.layer.cornerRadius = 50
         
         productPrice.textColor = .systemRed
     }

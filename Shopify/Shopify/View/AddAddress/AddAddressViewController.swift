@@ -57,11 +57,11 @@ class AddAddressViewController: UIViewController {
         addAddressButton.tintColor = UIColor.purple
 
         
-        countryName.borderStyle = .line
-        phoneNumber.borderStyle = .line
-        cityName.borderStyle = .line
-        streetName.borderStyle = .line
-        apartmentNumber.borderStyle = .line
+        countryName.borderStyle = .roundedRect
+        phoneNumber.borderStyle = .roundedRect
+        cityName.borderStyle = .roundedRect
+        streetName.borderStyle = .roundedRect
+        apartmentNumber.borderStyle = .roundedRect
         
         activityIndicator.color = .gray
         activityIndicator.center = self.view.center

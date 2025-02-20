@@ -56,6 +56,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="detailsLabel" destination="c0l-IO-qtI" id="8x3-eQ-QKU"/>
+                <outlet property="settingsCellLayer" destination="H2p-sc-9uM" id="Rny-H4-mlE"/>
                 <outlet property="staticImage" destination="0iJ-Hr-kq9" id="KnE-Te-qJf"/>
                 <outlet property="titleLabel" destination="pbK-Zw-NcQ" id="TWg-du-vCL"/>
             </connections>

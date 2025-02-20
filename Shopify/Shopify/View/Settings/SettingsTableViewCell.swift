@@ -14,6 +14,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var detailsLabel: UILabel!
     
+    @IBOutlet weak var settingsCellLayer: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -26,6 +27,14 @@ class SettingsTableViewCell: UITableViewCell {
     }
     func initUI(){
         detailsLabel.textColor = UIColor.purple
+        settingsCellLayer.layer.cornerRadius = 10
+        settingsCellLayer.layer.shadowColor = UIColor.black.cgColor
+        settingsCellLayer.layer.shadowOffset = CGSize(width: 0, height: 2)
+        settingsCellLayer.layer.shadowRadius = 4
+        settingsCellLayer.layer.shadowOpacity = 0.2
+        
+        settingsCellLayer.layer.borderColor = UIColor.lightGray.cgColor
+        settingsCellLayer.layer.borderWidth = 5
     }
     
 }

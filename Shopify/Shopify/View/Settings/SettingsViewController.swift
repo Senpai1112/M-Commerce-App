@@ -82,10 +82,10 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableViewCell", for: indexPath) as! SettingsTableViewCell
         cell.detailsLabel.text = details[indexPath.row]
         cell.titleLabel.text = titles[indexPath.row]
-        cell.backgroundColor = .systemGray6
-        cell.layer.borderColor = UIColor.systemBackground.cgColor
-        cell.layer.borderWidth = 10
-        cell.clipsToBounds = true
+//        cell.backgroundColor = .systemGray6
+//        cell.layer.borderColor = UIColor.systemBackground.cgColor
+//        cell.layer.borderWidth = 10
+//        cell.clipsToBounds = true
         return cell
     }
     
