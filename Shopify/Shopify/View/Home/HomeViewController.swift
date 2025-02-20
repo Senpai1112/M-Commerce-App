@@ -28,6 +28,7 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         viewModel = BrandsViewModel()
         viewModel.bindBrandsToViewController = {
             DispatchQueue.main.async {
+                
                 self.homeCollection.reloadData()
             }}
             viewModel.getBrandsFromModel()
@@ -98,7 +99,7 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         case 0:
             return 5
         case 1:
-            return viewModel.finalResult.count
+            return viewModel.filteredCollections.count
         default:
             return 0
         }
@@ -113,7 +114,7 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandCell", for: indexPath) as! BrandCell
-            let brand = viewModel.finalResult[indexPath.row]
+            let brand = viewModel.filteredCollections[indexPath.row]
 
 cell.brandTitle.text = brand.title
     if let imageURL = brand.image, let url = URL(string: imageURL) {
@@ -130,8 +131,8 @@ cell.brandTitle.text = brand.title
         case 1:
             let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
             let productVC = storyBord.instantiateViewController(withIdentifier: "ProductVC") as! ProductsViewController
-            productVC.title=viewModel.finalResult[indexPath.row].title
-            productVC.products = viewModel.finalResult[indexPath.row].products
+            productVC.title=viewModel.filteredCollections[indexPath.row].title
+            productVC.products = viewModel.filteredCollections[indexPath.row].products
             navigationController?.pushViewController(productVC, animated: true)
         default:
             return
@@ -212,21 +213,22 @@ func drawAdsSection() -> NSCollectionLayoutSection {
             return section
         }
     ////search
-     func setUpSearchBar(){
-    let searchBar = UISearchBar()
-        searchBar.placeholder = "Search Brands..."
-        searchBar.delegate = self
-        searchBar.searchTextField.backgroundColor = .white
+        func setUpSearchBar(){
+       let searchBar = UISearchBar()
+           searchBar.placeholder = "Search Brands..."
+           searchBar.delegate = self
+           searchBar.searchTextField.backgroundColor = .white
 
-    self.tabBarController?.navigationItem.titleView = searchBar
-}
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-                print("Search Text Changed: \(searchText)")
-          
-                viewModel.searchText = searchText
-                homeCollection.reloadData()
-            }
+       self.tabBarController?.navigationItem.titleView = searchBar
+   }
+       func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+                   print("Search Text Changed: \(searchText)")
+             
+                   viewModel.searchText = searchText
+
+                   homeCollection.reloadData()
+               }
 
 
        
