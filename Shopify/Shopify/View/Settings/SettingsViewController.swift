@@ -30,7 +30,7 @@ class SettingsViewController: UIViewController {
         details[0] = "Address"
         addressDetailsViewModel.bindResultToSettingTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
-                if self?.addressDetailsViewModel.defaultAddressResult == nil
+                if self?.addressDetailsViewModel.defaultAddressResult.city == ""
                 {
                     self?.details[0] = "Address"
                 }else{
@@ -39,6 +39,7 @@ class SettingsViewController: UIViewController {
                 self?.tableView.reloadData()
             }
         }
+        tableView.reloadData()
         addressDetailsViewModel.getDefaultAddressesFromModel(customerAccessToken: customerAccessToken)
     }
     func initNib(){

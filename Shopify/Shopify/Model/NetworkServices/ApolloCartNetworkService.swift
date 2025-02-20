@@ -10,7 +10,7 @@ import Apollo
 import MyApi
 
 class ApolloCartNetworkService{
-    static let shared = ApolloAddressesNetwokService()
+    static let shared = ApolloCartNetworkService()
     
     private let url = URL(string: "https://itp-newcapital-ios3.myshopify.com/api/2025-01/graphql")!
     
