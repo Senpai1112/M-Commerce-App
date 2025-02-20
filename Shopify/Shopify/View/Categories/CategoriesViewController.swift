@@ -7,47 +7,97 @@
 
 import UIKit
 
-class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource , UISearchBarDelegate {
+class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate {
     
     @IBOutlet weak var CategoriesProductcollection: UICollectionView!
-       var viewModel: ProductViewModel!
-
-       @IBOutlet weak var firstFilter: UISegmentedControl!
-       @IBOutlet weak var secFilter: UISegmentedControl!
+    var viewModel: ProductViewModel!
     
-
+    @IBOutlet weak var firstFilter: UISegmentedControl!
+    @IBOutlet weak var secFilter: UISegmentedControl!
+    
+    var searchBar: UISearchBar?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpSearchBar()
         CategoriesProductcollection.dataSource = self
-                CategoriesProductcollection.delegate = self
-
-                initNib()
-                
-                viewModel = ProductViewModel()
-                viewModel.bindProductsToViewController = {
-                    DispatchQueue.main.async {
-                        
-                        self.CategoriesProductcollection.reloadData()
-                    }
-                }
+        CategoriesProductcollection.delegate = self
+        initNib()
+        
+        viewModel = ProductViewModel()
+        viewModel.bindProductsToViewController = {
+            DispatchQueue.main.async {
+                self.CategoriesProductcollection.reloadData()
+            }
+        }
+        
         setQuery()
-
-           // Do any additional setup after loading the view.
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.title = "Category"
+        setupNavigationBarIcons()
 
     }
-    func setUpSearchBar(){
-        let searchBar = UISearchBar()
-            searchBar.placeholder = "Search products..."
-            searchBar.delegate = self
-            searchBar.searchTextField.backgroundColor = .white
-
+    
+    func setupNavigationBarIcons() {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        
+        let searchButt = UIButton(type: .system)
+        setUpNavBarBtn(button: searchButt, systemName: "magnifyingglass", selector: #selector(searchTapped))
+        
+        let butt2 = UIButton(type: .system)
+        setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
+        
+        stackView.addArrangedSubview(searchButt)
+        stackView.addArrangedSubview(butt2)
+        
+        let barButtonItem = UIBarButtonItem(customView: stackView)
+        tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
+    }
+    
+    @objc func searchTapped() {
+        showSearchBar()
+    }
+    
+    @objc func favTapped() {
+        print("favTapped")
+    }
+    
+    func showSearchBar() {
+        searchBar = UISearchBar()
+        searchBar?.placeholder = "Search products..."
+        searchBar?.delegate = self
+        searchBar?.searchTextField.backgroundColor = .white
+        searchBar?.showsCancelButton = true
+        
         self.tabBarController?.navigationItem.titleView = searchBar
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        hideSearchBar()
+    }
+    
+    func hideSearchBar() {
+        self.tabBarController?.navigationItem.titleView = nil
+        self.tabBarController?.title = "Category"
+    }
+    
+    
+    func setUpNavBarBtn(button: UIButton, systemName: String, selector: Selector) {
+        if let icon = UIImage(systemName: systemName) {
+            button.setImage(icon, for: .normal)
+        }
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+
+
     @IBAction func firstFilterAction(_ sender: UISegmentedControl) {
         setQuery()
     }
@@ -58,11 +108,23 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
 
     func setQuery() {
         var first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
-        let sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
+        var sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
+        
         if first == "All" { first = "" }
-
-        viewModel.getProductsFromModel(query: "\(first) | \(sec)")
+        if sec == "All" { sec = "" }
+        
+        var result = ""
+        
+        if !first.isEmpty && !sec.isEmpty {
+            result = "\(first)|\(sec)"
+        } else {
+            result = first + sec
+        }
+        
+        print(result)
+        viewModel.getProductsFromModel(query: result)
     }
+
 
     func initNib(){
             let nib = UINib(nibName: "CategoryCell", bundle: nil)
@@ -112,12 +174,23 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
        }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        var first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
+        var sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
         
-            print("Search Text Changed: \(searchText)") // Print the search text
-            var first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
-            let sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
-            if first == "All" { first = "" }
-
-        viewModel.getProductsFromModel(query: "\(first) | \(sec) | \(searchText)")
+        if first == "All" { first = "" }
+        if sec == "All" { sec = "" }
+        
+        var result = ""
+        if !first.isEmpty && !sec.isEmpty {
+            result = "\(first)|\(sec)"
+        } else {
+            result = first + sec
         }
+        if searchText.isEmpty {
+            viewModel.getProductsFromModel(query: result)
+        } else {
+            viewModel.getProductsFromModel(query: "\(result)|\(searchText)")
+        }
+    }
+
 }

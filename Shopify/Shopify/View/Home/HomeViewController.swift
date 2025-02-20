@@ -18,9 +18,6 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setUpSearchBar()
-
         homeCollection.dataSource = self
         homeCollection.delegate = self
         initNib()
@@ -37,9 +34,8 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
    
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.title = "Home"
-        
+        setupNavigationBarIcons()
 
-    
 
     }
     func compositionalLayout() {
@@ -212,15 +208,69 @@ func drawAdsSection() -> NSCollectionLayoutSection {
 
             return section
         }
-    ////search
-        func setUpSearchBar(){
-       let searchBar = UISearchBar()
-           searchBar.placeholder = "Search Brands..."
-           searchBar.delegate = self
-           searchBar.searchTextField.backgroundColor = .white
+    
+    ////setupNavigationBarIcons
+    func setupNavigationBarIcons() {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.distribution = .equalSpacing
+        
+        let searchButt = UIButton(type: .system)
+        setUpNavBarBtn(button: searchButt, systemName: "magnifyingglass", selector: #selector(searchTapped))
+        
+        let butt2 = UIButton(type: .system)
+        setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
+        
+        stackView.addArrangedSubview(searchButt)
+        stackView.addArrangedSubview(butt2)
+        
+        let barButtonItem = UIBarButtonItem(customView: stackView)
+        tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
+    }
+    
+    @objc func searchTapped() {
+        showSearchBar()
+    }
+    
+    @objc func favTapped() {
+        print("favTapped")
+    }
+    
+    func showSearchBar() {
+        let searchBar = UISearchBar()
+            searchBar.placeholder = "Search Brands..."
+            searchBar.delegate = self
+            searchBar.searchTextField.backgroundColor = .white
+        searchBar.showsCancelButton = true
 
-       self.tabBarController?.navigationItem.titleView = searchBar
-   }
+        self.tabBarController?.navigationItem.titleView = searchBar
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        hideSearchBar()
+    }
+
+   
+    
+    func hideSearchBar() {
+        self.tabBarController?.navigationItem.titleView = nil
+        self.tabBarController?.title = "Home"
+    }
+    
+   
+    
+    
+    func setUpNavBarBtn(button: UIButton, systemName: String, selector: Selector) {
+        if let icon = UIImage(systemName: systemName) {
+            button.setImage(icon, for: .normal)
+        }
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+
+    ////search
+       
        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 
                    print("Search Text Changed: \(searchText)")
@@ -229,7 +279,8 @@ func drawAdsSection() -> NSCollectionLayoutSection {
 
                    homeCollection.reloadData()
                }
-
+    
+    
 
        
 }

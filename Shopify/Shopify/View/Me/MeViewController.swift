@@ -9,6 +9,7 @@ import UIKit
 
 class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var login: UIButton!
     @IBOutlet weak var ordersTable: UITableView!
 
     var viewModel: OrdersViewModel!
@@ -17,40 +18,34 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         super.viewDidLoad()
         ordersTable.dataSource = self
         ordersTable.delegate = self
-        
         viewModel = OrdersViewModel()
         viewModel.bindOrdersToViewController = {
             DispatchQueue.main.async {
                 self.ordersTable.reloadData()
             }}
-       // viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken" )! ) 
+        viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken" )! )
     }
-    
+    ///setupNavigationBarIcons
     override func viewWillAppear(_ animated: Bool) {
+       self.tabBarController?.title = "Me"
         setupNavigationBarIcons()
 
-            self.tabBarController?.title = "Me"
 }
-    
+   
     func setupNavigationBarIcons() {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 10
-        stackView.alignment = .center
         stackView.distribution = .equalSpacing
         
         let settingsButt = UIButton(type: .system)
         setUpNavBarBtn(button: settingsButt, systemName: "gearshape", selector: #selector(settingsTapped))
         
-        let butt2 = UIButton(type: .system)
-        setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
-        
+               
         let butt3 = UIButton(type: .system)
         setUpNavBarBtn(button: butt3, systemName: "cart", selector: #selector(cartTapped))
         
-        
         stackView.addArrangedSubview(settingsButt)
-        stackView.addArrangedSubview(butt2)
         stackView.addArrangedSubview(butt3)
         
         let barButtonItem = UIBarButtonItem(customView: stackView)
@@ -65,9 +60,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         navigationController?.pushViewController(settingsVc, animated: true)
     }
     
-    @objc func favTapped() {
-       print("favTapped")
-    }
+   
     
     @objc func cartTapped() {
         let storyBord = UIStoryboard(name: "Set2", bundle: nil)
@@ -83,7 +76,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         button.widthAnchor.constraint(equalToConstant: 30).isActive = true
         button.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
-    
+    /////
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.finalResult.count
     }
@@ -94,5 +87,12 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
            cell.textLabel?.text = "Price: \(order.price) \(order.currencyCode)"
            cell.detailTextLabel?.text = "CreatedAt: \(order.processedAt)"
         return cell
+    }
+    
+    @IBAction func loginAction(_ sender: Any) {
+        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+        let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+       
+        navigationController?.pushViewController(loginVC, animated: true)
     }
 }

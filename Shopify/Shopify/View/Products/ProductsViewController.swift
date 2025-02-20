@@ -22,7 +22,7 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpSearchBar()
-        title = "Products"
+        //title = "Products"
 
         Productscollection.dataSource = self
         Productscollection.delegate = self
