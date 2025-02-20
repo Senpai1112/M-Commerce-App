@@ -64,8 +64,10 @@ class ChoosePaymentMethodViewController: UIViewController {
             }else{
                 let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "CashOnDeliveryViewController") as! CashOnDeliveryViewController
+                vc.customerDetails = customerDetailsViewModel.customerDetails
+                vc.address = address
+                vc.cartDetails = cartViewModel.cartResult
                 self.navigationController?.present(vc, animated: true)
-                
             }
         }
     }
@@ -79,6 +81,8 @@ class ChoosePaymentMethodViewController: UIViewController {
         continueToPayment.layer.cornerRadius = continueToPayment.frame.height / 2
         continueToPayment.layer.cornerCurve = .continuous
         continueToPayment.clipsToBounds = true
+        continueToPayment.tintColor = UIColor.purple
+
     }
     
     
@@ -155,7 +159,7 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         paymentRequest.merchantIdentifier = "merchant.2jd4vk6g4v2prs6z"
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .threeDSecure
-        paymentRequest.countryCode = "EG"
+        paymentRequest.countryCode = address.countryCode!
         paymentRequest.currencyCode = "EGP"
         
         // Required fields

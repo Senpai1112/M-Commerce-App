@@ -41,7 +41,8 @@ class AddressDetailsViewModel{
                             address1: edge.node.address1,
                             address2: edge.node.address2,
                             phone: edge.node.phone,
-                            id: edge.node.id
+                            id: edge.node.id,
+                            countryCode: edge.node.countryCode
                         )
                     }
                     DispatchQueue.main.async {

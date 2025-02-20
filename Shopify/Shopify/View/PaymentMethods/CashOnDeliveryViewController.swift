@@ -13,22 +13,36 @@ class CashOnDeliveryViewController: UIViewController {
     
     @IBOutlet weak var shippingFees: UILabel!
     
-    @IBOutlet weak var discount: UILabel!
     
     @IBOutlet weak var grandTotal: UILabel!
-    @IBOutlet weak var copon: UITextField!
     
     @IBOutlet weak var placeOrder: UIButton!
+    
+    var customerDetails : CustomerDetails?
+    var address : Addresses?
+    var cartDetails : CartResponse?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        initUI()
+        subTotal.text = "\(cartDetails?.totalCost?.totalAmount?.amount ?? "") \(address?.countryCode ?? "")"
+        shippingFees.text = "30.0 \(address?.countryCode ?? "")"
+        let floatGrandTotal = (subTotal.text! as NSString).floatValue + 30.0
+        grandTotal.text = "\(floatGrandTotal)"
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {
+        
     }
-    
+    func initUI(){
+        placeOrder.layer.cornerRadius = placeOrder.frame.height / 2
+        placeOrder.layer.cornerCurve = .continuous
+        placeOrder.clipsToBounds = true
+    }
+
     /*
     // MARK: - Navigation
 

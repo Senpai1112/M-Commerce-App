@@ -10,6 +10,7 @@ query CustomerAddresses($token : String!) {
                     country
                     phone
                     id
+                    countryCode
                 }
             }
         }
@@ -27,6 +28,7 @@ query CustomerDefaultAddress($token : String!) {
             country
             phone
             id
+            countryCode
         }
     }
 }

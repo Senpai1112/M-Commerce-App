@@ -79,6 +79,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="addressDetailsViewCell" destination="H2p-sc-9uM" id="Lwi-5d-xcx"/>
                 <outlet property="cityAndAdressDetails" destination="WiP-Xl-qDH" id="yF4-ib-WLd"/>
                 <outlet property="countryName" destination="xPF-gl-I7R" id="QXU-wS-yx7"/>
                 <outlet property="phoneNumber" destination="YWm-YD-wpU" id="aMk-SW-v5U"/>

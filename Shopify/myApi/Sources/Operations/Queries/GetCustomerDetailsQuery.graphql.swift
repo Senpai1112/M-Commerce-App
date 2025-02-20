@@ -7,7 +7,7 @@ public class GetCustomerDetailsQuery: GraphQLQuery {
   public static let operationName: String = "GetCustomerDetails"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query GetCustomerDetails($token: String!) { customer(customerAccessToken: $token) { __typename displayName email firstName id lastName numberOfOrders phone } }"#
+      #"query GetCustomerDetails($token: String!) { customer(customerAccessToken: $token) { __typename displayName email firstName id lastName phone } }"#
     ))
 
   public var token: String
@@ -46,7 +46,6 @@ public class GetCustomerDetailsQuery: GraphQLQuery {
         .field("firstName", String?.self),
         .field("id", MyApi.ID.self),
         .field("lastName", String?.self),
-        .field("numberOfOrders", MyApi.UnsignedInt64.self),
         .field("phone", String?.self),
       ] }
 
@@ -60,8 +59,6 @@ public class GetCustomerDetailsQuery: GraphQLQuery {
       public var id: MyApi.ID { __data["id"] }
       /// The customer’s last name.
       public var lastName: String? { __data["lastName"] }
-      /// The number of orders that the customer has made at the store in their lifetime.
-      public var numberOfOrders: MyApi.UnsignedInt64 { __data["numberOfOrders"] }
       /// The customer’s phone number.
       public var phone: String? { __data["phone"] }
     }

@@ -36,4 +36,5 @@ struct Merchendise {
     var availableQuantity : Int?
     var title : String?
     var image : String?
+    var productTitle : String
 }

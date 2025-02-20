@@ -43,6 +43,8 @@ class ChooseAddressViewController: UIViewController {
         continueToPayment.layer.cornerRadius = continueToPayment.frame.height / 2
         continueToPayment.layer.cornerCurve = .continuous
         continueToPayment.clipsToBounds = true
+        continueToPayment.tintColor = UIColor.purple
+
     }
 
     @IBAction func continueToPayment(_ sender: UIButton) {
@@ -52,7 +54,7 @@ class ChooseAddressViewController: UIViewController {
             self.present(alert, animated: true)
         }else{
             let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
-            let vc = storyBoard.instantiateViewController(withIdentifier: "ChoosePaymentMethodViewController") as! ChoosePaymentMethodViewController
+            let vc = storyBoard.instantiateViewController(withIdentifier: "CartSummaryViewController") as! CartSummaryViewController
             vc.address = addressDetailsViewModel.addressResult[selectedIndex!.row]
             self.navigationController?.pushViewController(vc, animated: true)
             

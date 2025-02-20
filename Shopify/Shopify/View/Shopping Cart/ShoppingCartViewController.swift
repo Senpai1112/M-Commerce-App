@@ -55,6 +55,7 @@ class ShoppingCartViewController: UIViewController {
         checkoutButton.layer.cornerRadius = checkoutButton.frame.height / 2
         checkoutButton.layer.cornerCurve = .continuous
         checkoutButton.clipsToBounds = true
+        checkoutButton.tintColor = UIColor.purple
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.color = .gray
@@ -86,7 +87,8 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
         cell.cartViewModel = self.cartViewModel
         cell.delegate = self
         if let item = self.cartViewModel.localCartResult.cart?[indexPath.row] {
-            cell.productName.text = item.merchandise?.title
+            cell.productName.text = item.merchandise?.productTitle
+            cell.productDetails.text = item.merchandise?.title
             cell.productPrice.text = item.cost?.checkoutChargeAmount?.amount
             quantaty = item.quantity!
             cell.productQuantaty.text = item.quantity?.codingKey.stringValue
