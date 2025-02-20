@@ -6,8 +6,12 @@
 //
 import UIKit
 
+
+
 class ProductDetailsViewController: UIViewController, CarouselDelegate {
-    let viewModel = ProductDetailsViewModel()
+    var viewModel = ProductDetailsViewModel()
+
+    var id : String?
     // URLs for the images in the carousel
    lazy var urls: [Foundation.URL] = []
 //        URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png")!,
@@ -34,8 +38,8 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
         label.font = .systemFont(ofSize: 20)
         label.textColor = .black
        // label.textAlignment = .center
-        label.numberOfLines = 2  // ✅ Allow two lines
-        label.lineBreakMode = .byWordWrapping  // ✅ Ensure text wraps properly
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping 
         return label
     }()
     var priceLabel : UILabel = {
@@ -75,9 +79,11 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
         return label
     }()
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Details"
+        print("Product ID: \(id ?? "No ID")")
         setupHierarchy()
         setupComponents()
         setupConstraints()
@@ -86,7 +92,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
         
         print("Fetching product data...")
         setupViewModelObservers()
-        viewModel.fetchProduct()
+        viewModel.fetchProduct(pid: id ?? "gid://shopify/Product/7226328383543" )
       //  fetchProductData()
     }
 
@@ -196,7 +202,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
         favoriteButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         // Set up stack views
-        descriptionStackView.axis = .vertical  // ✅ Stack items in a column
+        descriptionStackView.axis = .vertical  //Stack items in a column
             descriptionStackView.spacing = 4
         
         ratingStackView.axis = .horizontal

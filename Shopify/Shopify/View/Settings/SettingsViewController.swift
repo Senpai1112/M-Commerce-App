@@ -9,12 +9,12 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
+    var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
     var addressDetailsViewModel = AddressDetailsViewModel()
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    var titles = ["Address" , "Currency" , "Contact Us","About Us"]
+    let titles = ["Address" , "Currency" , "Contact Us","About Us"]
     var details = ["address" , "USD" ,"",""]
     
     
@@ -26,9 +26,16 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
+        self.navigationItem.title = "Settings"
+        details[0] = "Address"
+        addressDetailsViewModel.bindResultToSettingTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
-                self?.titles[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
+                if self?.addressDetailsViewModel.defaultAddressResult == nil
+                {
+                    self?.details[0] = "Address"
+                }else{
+                    self?.details[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
+                }
                 self?.tableView.reloadData()
             }
         }

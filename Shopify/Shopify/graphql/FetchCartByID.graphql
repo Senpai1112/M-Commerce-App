@@ -1,0 +1,78 @@
+query FetchCartById($id : ID!) {
+    cart( id: $id ) {
+        checkoutUrl
+        id
+        note
+        totalQuantity
+        updatedAt
+        buyerIdentity {
+            email
+            phone
+        }
+        cost {
+            subtotalAmountEstimated
+            totalAmountEstimated
+            totalDutyAmountEstimated
+            totalTaxAmountEstimated
+            checkoutChargeAmount {
+                amount
+                currencyCode
+            }
+            subtotalAmount {
+                amount
+                currencyCode
+            }
+            totalAmount {
+                amount
+                currencyCode
+            }
+            totalTaxAmount {
+                amount
+                currencyCode
+            }
+        }
+        lines(first: 100) {
+            edges {
+                node {
+                    id
+                    merchandise {
+                        ... on ProductVariant {
+                            id
+                            quantityAvailable
+                            requiresComponents
+                            requiresShipping
+                            sku
+                            taxable
+                            title
+                            weight
+                            weightUnit
+                            components(first: 100) {
+                                nodes {
+                                    quantity
+                                }
+                            }
+                            image {
+                                url
+                            }
+                    }
+                }
+                quantity
+                cost {
+                    amountPerQuantity {
+                        amount
+                        currencyCode
+                    }
+                    totalAmount {
+                        amount
+                        currencyCode
+                    }
+                    subtotalAmount {
+                        amount
+                        currencyCode
+                    }
+                }
+            }
+            }
+        }
+    }
+}

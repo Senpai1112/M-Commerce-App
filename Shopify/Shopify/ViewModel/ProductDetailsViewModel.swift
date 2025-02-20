@@ -53,12 +53,16 @@ import MyApi
 
 class ProductDetailsViewModel {
     private let apollo = ApolloNetwokService.shared.apollo
-    //here to pass id after merge
+   // var productId: String?
     var onProductFetched: ((Product) -> Void)?
     var onError: ((String) -> Void)?
     
-    func fetchProduct() {
-        apollo.fetch(query: ProductDetailsQuery(id: "gid://shopify/Product/7226328318007")) { [weak self] result in
+//    init(productId: String?) {
+//            self.productId = productId
+//        }
+
+    func fetchProduct(pid: String) {
+        apollo.fetch(query: ProductDetailsQuery(id: pid)) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let graphQLResult):

@@ -10,7 +10,7 @@ import UIKit
 class ChooseAddressViewController: UIViewController {
     
     private var addressDetailsViewModel = AddressDetailsViewModel()
-    var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
+    var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
     
     var selectedIndex: IndexPath?
     @IBOutlet weak var continueToPayment: UIButton!
