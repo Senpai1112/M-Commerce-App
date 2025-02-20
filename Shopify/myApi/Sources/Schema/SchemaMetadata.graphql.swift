@@ -64,6 +64,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "MoneyV2": return MyApi.Objects.MoneyV2
     case "Mutation": return MyApi.Objects.Mutation
     case "Order": return MyApi.Objects.Order
+    case "OrderConnection": return MyApi.Objects.OrderConnection
+    case "OrderEdge": return MyApi.Objects.OrderEdge
     case "Page": return MyApi.Objects.Page
     case "Product": return MyApi.Objects.Product
     case "ProductConnection": return MyApi.Objects.ProductConnection

@@ -126,6 +126,7 @@ cell.brandTitle.text = brand.title
         case 1:
             let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
             let productVC = storyBord.instantiateViewController(withIdentifier: "ProductVC") as! ProductsViewController
+            productVC.title=viewModel.filteredCollections[indexPath.row].title
             productVC.products = viewModel.filteredCollections[indexPath.row].products
             navigationController?.pushViewController(productVC, animated: true)
         default:
