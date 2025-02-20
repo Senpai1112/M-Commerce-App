@@ -94,7 +94,7 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         case 0:
             return 5
         case 1:
-            return viewModel.filteredCollections.count
+            return viewModel.finalResult.count
         default:
             return 0
         }
@@ -109,7 +109,7 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandCell", for: indexPath) as! BrandCell
-            let brand = viewModel.filteredCollections[indexPath.row]
+            let brand = viewModel.finalResult[indexPath.row]
 
 cell.brandTitle.text = brand.title
     if let imageURL = brand.image, let url = URL(string: imageURL) {
@@ -126,8 +126,8 @@ cell.brandTitle.text = brand.title
         case 1:
             let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
             let productVC = storyBord.instantiateViewController(withIdentifier: "ProductVC") as! ProductsViewController
-            productVC.title=viewModel.filteredCollections[indexPath.row].title
-            productVC.products = viewModel.filteredCollections[indexPath.row].products
+            productVC.title=viewModel.finalResult[indexPath.row].title
+            productVC.products = viewModel.finalResult[indexPath.row].products
             navigationController?.pushViewController(productVC, animated: true)
         default:
             return

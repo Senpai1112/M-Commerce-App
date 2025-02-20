@@ -7,7 +7,7 @@ public class GetAllCollectionsQuery: GraphQLQuery {
   public static let operationName: String = "GetAllCollectionsQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query GetAllCollectionsQuery { collections(first: 20) { __typename edges { __typename node { __typename handle title image { __typename url } products(first: 100) { __typename edges { __typename node { __typename availableForSale handle id title totalInventory vendor featuredImage { __typename url } priceRange { __typename maxVariantPrice { __typename amount currencyCode } minVariantPrice { __typename amount currencyCode } } } } } } } } }"#
+      #"query GetAllCollectionsQuery { collections(first: 12) { __typename edges { __typename node { __typename handle title image { __typename url } products(first: 100) { __typename edges { __typename node { __typename availableForSale handle id title totalInventory vendor featuredImage { __typename url } priceRange { __typename maxVariantPrice { __typename amount currencyCode } minVariantPrice { __typename amount currencyCode } } } } } } } } }"#
     ))
 
   public init() {}
@@ -18,7 +18,7 @@ public class GetAllCollectionsQuery: GraphQLQuery {
 
     public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.QueryRoot }
     public static var __selections: [ApolloAPI.Selection] { [
-      .field("collections", Collections.self, arguments: ["first": 20]),
+      .field("collections", Collections.self, arguments: ["first": 12]),
     ] }
 
     /// List of the shop’s collections.

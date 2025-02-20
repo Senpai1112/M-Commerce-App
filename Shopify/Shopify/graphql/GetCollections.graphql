@@ -1,5 +1,5 @@
 query GetAllCollectionsQuery {
-    collections(first: 20) {
+    collections(first: 12) {
         edges {
             node {
                 handle
