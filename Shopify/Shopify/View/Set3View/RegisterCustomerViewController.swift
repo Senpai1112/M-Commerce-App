@@ -29,7 +29,8 @@ class CustomerViewController: UIViewController {
                 print("   ID: \(customer.id ?? "N/A")")
                 print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
                 print("   Email: \(customer.email ?? "N/A")")
-                
+                UserDefaults.standard.set(customer.id, forKey: "customerID")
+
                //navigate to login
                 let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
                 if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
@@ -43,6 +44,9 @@ class CustomerViewController: UIViewController {
                 print(" Error Creating Customer: \(errorMessage)")
                 self.showAlert(title: "Error", message: "\(errorMessage) \n Please try again.")
             }
+        }
+        if let value = UserDefaults.standard.string(forKey: "customerID") {
+            print(value)
         }
     }
     @objc private func loginButtonTapped(){
@@ -153,8 +157,8 @@ class CustomerViewController: UIViewController {
     
        private func setupUI() {
            view.backgroundColor = .systemGray6
-           self.navigationItem.hidesBackButton = true
-           self.navigationController?.navigationBar.tintColor = .purple
+         // self.navigationItem.hidesBackButton = true
+         //  self.navigationController?.navigationBar.tintColor = .purple
            
            // Add subviews
            self.view.addSubview(headerView)

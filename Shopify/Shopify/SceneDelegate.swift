@@ -16,16 +16,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-// <<<<<<< Set3-Features
-//         guard let windowScene = (scene as? UIWindowScene) else { return }
-//         let storyboard = UIStoryboard(name: "Set3", bundle: nil)
-//         let initialViewController = storyboard.instantiateInitialViewController()
+         guard let windowScene = (scene as? UIWindowScene) else { return }
+         let storyboard = UIStoryboard(name: "Set3", bundle: nil)
+         let initialViewController = storyboard.instantiateInitialViewController()
 
-//         window = UIWindow(windowScene: windowScene)
-//         window?.rootViewController = initialViewController
-//         window?.makeKeyAndVisible()
-// =======
-// >>>>>>> Release-0.01
+         window = UIWindow(windowScene: windowScene)
+         window?.rootViewController = initialViewController
+         window?.makeKeyAndVisible()
+
 
         guard let _ = (scene as? UIWindowScene) else { return }
     }
