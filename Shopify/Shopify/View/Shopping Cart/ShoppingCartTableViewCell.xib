@@ -73,13 +73,22 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nz8-AY-ED8">
+                        <rect key="frame" x="130" y="64.666666666666671" width="455" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="nz8-AY-ED8" firstAttribute="leading" secondItem="8YI-ce-KDp" secondAttribute="trailing" constant="15" id="3ZW-64-LcE"/>
                     <constraint firstAttribute="bottom" secondItem="cwg-jl-PQR" secondAttribute="bottom" constant="20" id="4Yw-mL-0re"/>
                     <constraint firstItem="BWm-4j-lmX" firstAttribute="leading" secondItem="8YI-ce-KDp" secondAttribute="trailing" constant="15" id="5Dp-bI-sQn"/>
                     <constraint firstItem="gcR-wH-0Uf" firstAttribute="leading" secondItem="8YI-ce-KDp" secondAttribute="trailing" constant="15" id="CWw-9C-3si"/>
+                    <constraint firstAttribute="trailing" secondItem="nz8-AY-ED8" secondAttribute="trailing" constant="15" id="Geq-hy-HWl"/>
                     <constraint firstAttribute="trailing" secondItem="BWm-4j-lmX" secondAttribute="trailing" constant="15" id="Kbr-R6-Wob"/>
                     <constraint firstItem="BWm-4j-lmX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="MAp-eE-dfc"/>
+                    <constraint firstItem="nz8-AY-ED8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="NmD-q7-ofp"/>
                     <constraint firstItem="PKN-aH-xjg" firstAttribute="leading" secondItem="cwg-jl-PQR" secondAttribute="trailing" constant="15" id="ONl-80-Rhx"/>
                     <constraint firstAttribute="bottom" secondItem="PKN-aH-xjg" secondAttribute="bottom" constant="25" id="WmF-P6-ZUM"/>
                     <constraint firstItem="8YI-ce-KDp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="YDt-St-RoH"/>
@@ -94,6 +103,7 @@
             <connections>
                 <outlet property="minusButton" destination="cwg-jl-PQR" id="VqW-yq-8jW"/>
                 <outlet property="plusButton" destination="WKz-nw-NgB" id="x7p-6a-Zcl"/>
+                <outlet property="productDetails" destination="nz8-AY-ED8" id="rS0-sc-8O7"/>
                 <outlet property="productImage" destination="8YI-ce-KDp" id="8Ke-nP-vhR"/>
                 <outlet property="productName" destination="BWm-4j-lmX" id="BAt-Dy-nRa"/>
                 <outlet property="productPrice" destination="gcR-wH-0Uf" id="5Za-xk-bXy"/>

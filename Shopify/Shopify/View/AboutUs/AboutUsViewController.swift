@@ -27,6 +27,11 @@ class AboutUsViewController: UIViewController {
         }
     }
     
+    func initUI(){
+        textLabel.textColor = UIColor.purple
+        teamLabel.textColor = UIColor.purple
+    }
+    
 
     /*
     // MARK: - Navigation

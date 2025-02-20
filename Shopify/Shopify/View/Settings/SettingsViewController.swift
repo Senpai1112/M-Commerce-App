@@ -53,6 +53,8 @@ class SettingsViewController: UIViewController {
         logoutButton.layer.cornerRadius = logoutButton.frame.height / 2
         logoutButton.layer.cornerCurve = .continuous
         logoutButton.clipsToBounds = true
+        logoutButton.tintColor = UIColor.purple
+
     }
     
     @IBAction func logoutButton(_ sender: UIButton) {

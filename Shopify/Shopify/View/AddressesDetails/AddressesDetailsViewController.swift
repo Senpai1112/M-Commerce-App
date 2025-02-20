@@ -45,6 +45,8 @@ class AddressesDetailsViewController: UIViewController {
         addNewAddress.layer.cornerRadius = addNewAddress.frame.height / 2
         addNewAddress.layer.cornerCurve = .continuous
         addNewAddress.clipsToBounds = true
+        addNewAddress.tintColor = UIColor.purple
+
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.color = .gray

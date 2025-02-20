@@ -54,6 +54,8 @@ class AddAddressViewController: UIViewController {
         addAddressButton.layer.cornerRadius = addAddressButton.frame.height / 2
         addAddressButton.layer.cornerCurve = .continuous
         addAddressButton.clipsToBounds = true
+        addAddressButton.tintColor = UIColor.purple
+
         
         countryName.borderStyle = .line
         phoneNumber.borderStyle = .line

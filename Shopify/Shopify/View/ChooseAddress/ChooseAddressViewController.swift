@@ -43,6 +43,8 @@ class ChooseAddressViewController: UIViewController {
         continueToPayment.layer.cornerRadius = continueToPayment.frame.height / 2
         continueToPayment.layer.cornerCurve = .continuous
         continueToPayment.clipsToBounds = true
+        continueToPayment.tintColor = UIColor.purple
+
     }
 
     @IBAction func continueToPayment(_ sender: UIButton) {

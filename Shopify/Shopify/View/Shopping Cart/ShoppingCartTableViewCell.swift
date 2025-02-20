@@ -20,6 +20,7 @@ class ShoppingCartTableViewCell: UITableViewCell {
     var cartViewModel: CartViewModel!
     private var currentQuantity: Int = 0
     
+    @IBOutlet weak var productDetails: UILabel!
     @IBOutlet weak var productQuantaty: UILabel!
     @IBOutlet weak var minusButton: UIButton!
     @IBOutlet weak var plusButton: UIButton!
@@ -39,10 +40,12 @@ class ShoppingCartTableViewCell: UITableViewCell {
     func initUI(){
         plusButton.layer.cornerRadius = 15
         plusButton.clipsToBounds = true
-        
+        plusButton.tintColor = UIColor.purple
+
         minusButton.layer.cornerRadius = 15
         minusButton.clipsToBounds = true
-        
+        minusButton.tintColor = UIColor.purple
+
         productImage.layer.cornerRadius = 50
         
         productPrice.textColor = .systemRed
