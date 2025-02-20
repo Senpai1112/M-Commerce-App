@@ -23,6 +23,7 @@ class CoreDataManager
         context = appDelegate?.persistentContainer.viewContext
         
         guard let myContext = context else{return}
+       
         
         let entity = NSEntityDescription.entity(forEntityName: "WishList", in: myContext)
         
@@ -37,7 +38,10 @@ class CoreDataManager
             favProduct.setValue(productName, forKey: "productName")
             favProduct.setValue(productPrice, forKey: "productPrice")
             favProduct.setValue(productImage, forKey: "productImage")
-          //  favProduct.setValue(productDesc, forKey: "productDesc")
+            if let customerID = UserDefaults.standard.string(forKey: "customerID") {
+                       favProduct.setValue(customerID, forKey: "customerID")  // Use customerID here
+                   }
+
             print("Saved Successfully")
             
             try myContext.save()
@@ -49,7 +53,7 @@ class CoreDataManager
     }
     
     
-    static func deleteFromCoreData( productName :String)
+    static func deleteFromCoreData( productId :String)
     {
         appDelegate = UIApplication.shared.delegate as? AppDelegate
         
@@ -57,9 +61,12 @@ class CoreDataManager
         
         do{
             let fetch = NSFetchRequest<NSManagedObject>(entityName: "WishList")
-            let predictt = NSPredicate(format: "productName == %@",productName)
-            fetch.predicate = predictt
+           // let predictt = NSPredicate(format: "productName == %@",productName)
+            //fetch.predicate = predictt
             
+            let customerID = UserDefaults.standard.string(forKey: "customerID")
+                    let predicate = NSPredicate(format: "productID == %@ AND customerID == %@", productId, customerID ?? "")
+                    fetch.predicate = predicate
             let favProducts = try context?.fetch(fetch)
             
             guard let item = favProducts else {return}
@@ -108,6 +115,11 @@ class CoreDataManager
         let fetch = NSFetchRequest<NSManagedObject>(entityName: "WishList")
         
         var arrayOfFavProduct : [FavoriteProduct] = []
+        
+        if let customerID = UserDefaults.standard.string(forKey: "customerID") {
+                let predicate = NSPredicate(format: "customerID == %@", customerID)
+                fetch.predicate = predicate
+            }
         
         do{
             

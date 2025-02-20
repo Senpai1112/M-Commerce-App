@@ -102,7 +102,7 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
         //AddAction
         alert.addAction(UIAlertAction(title: "OK", style: .default , handler: { [self] action in
             UserDefaults.standard.set(false, forKey: "\((wishList[indexPath.row].productId)!)")
-            CoreDataManager.deleteFromCoreData(productName: wishList[indexPath.row].productName ?? "")
+            CoreDataManager.deleteFromCoreData(productId: wishList[indexPath.row].productId ?? "")
             wishList.remove(at: indexPath.row)
             myFavTableView.deleteRows(at: [indexPath], with: .fade)
             

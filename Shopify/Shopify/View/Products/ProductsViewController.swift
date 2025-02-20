@@ -19,6 +19,8 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
     var isFilterVisible = false
     var currentPriceFilter: Int = 0
     
+    var productKey = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpSearchBar()
@@ -32,6 +34,12 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         filteredProducts = products
         mySlider.isHidden = true
         priceLabel.isHidden = true
+        Productscollection.reloadData()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        applyfilters()
         Productscollection.reloadData()
     }
     func initNib(){
@@ -97,6 +105,46 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         if let imageURL = product.image, let url = URL(string: imageURL) {
             cell.productImageView.kf.setImage(with: url, placeholder: UIImage(named: "1"))
         }
+        productKey = "\((product.id) ?? "")"
+       
+       var favIsSelected =  UserDefaults.standard.bool(forKey: productKey)
+
+      cell.favButton.isSelected =   UserDefaults.standard.bool(forKey: productKey)
+       
+       if UserDefaults.standard.bool(forKey: productKey){
+           cell.favButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+           cell.favButton.tintColor = .white
+
+             }else{
+                 cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+
+                 cell.favButton.tintColor = .white
+           }
+           
+
+       cell.addToFavList = { [unowned self] in
+
+           cell.favButton.isSelected = !cell.favButton.isSelected
+           if  cell.favButton.isSelected {
+
+               cell.favButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+               cell.favButton.tintColor = .white
+               
+                // save to core data
+               CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price)", productImage: product.image ?? "", productId: product.id ?? "")
+                    
+                 UserDefaults.standard.set(true,forKey: "\(product.id ?? "")")
+
+                }else{
+                    // delete from core data and change state
+                    cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                    cell.favButton.tintColor = .white
+
+                    CoreDataManager.deleteFromCoreData(productId: product.id ?? "" )
+                    UserDefaults.standard.set(false,
+                                              forKey: "\(product.id ?? "")")
+                }
+      }
 
         return cell
     }

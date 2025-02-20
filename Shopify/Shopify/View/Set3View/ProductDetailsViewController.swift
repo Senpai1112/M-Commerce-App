@@ -155,7 +155,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
             } else {
                 favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
                 favoriteButton.tintColor = .lightGray
-                CoreDataManager.deleteFromCoreData(productName: product.title)
+                CoreDataManager.deleteFromCoreData(productId: product.id)
                 UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
             }
     }
