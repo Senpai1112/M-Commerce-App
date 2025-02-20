@@ -120,12 +120,4 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
 
         viewModel.getProductsFromModel(query: "\(first) | \(sec) | \(searchText)")
         }
-
-        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-
-           
-            searchBar.resignFirstResponder()
-        }
-    
-
 }

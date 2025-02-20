@@ -9,15 +9,15 @@
 import Foundation
 
 class BrandsViewModel {
-    
+    var searchText : String = ""
     var bindBrandsToViewController: (() -> ()) = {}
     var finalResult: [BrandModel] = []{
         didSet {
             bindBrandsToViewController()
         }
     }
-  
-
+    
+    
     func getBrandsFromModel() {
         ApolloProductsNetwokService.shared.fetchCollections { [weak self] result in
             switch result {
@@ -39,9 +39,27 @@ class BrandsViewModel {
         }
         
         
-
+        
     }
-       
-            
-}
 
+    /// to drop invalid data
+    //        var filteredCollections: [BrandModel] {
+    //             return   finalResult.dropFirst().dropLast(4)
+    //            }
+    var filteredCollections: [BrandModel] {
+        let validBrands = Array(finalResult.dropFirst().dropLast(4))
+        
+        return filterBrands(with: searchText, validBrands: validBrands)
+    }
+    
+    func filterBrands(with searchText: String, validBrands: [BrandModel]) -> [BrandModel] {
+        if searchText.isEmpty {
+            return validBrands
+        } else {
+            return validBrands.filter { brand in
+                return (brand.title?.lowercased() ?? "").contains(searchText.lowercased())
+            }
+        }
+    }
+
+}

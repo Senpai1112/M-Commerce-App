@@ -8,17 +8,22 @@
 import UIKit
 import Kingfisher
 
-class ProductsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class ProductsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
     @IBOutlet weak var mySlider: UISlider!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var Productscollection: UICollectionView!
-
+    @IBOutlet weak var productsSearchBar: UISearchBar!
+    
     var products: [ProductModel] = []
     var filteredProducts: [ProductModel] = []
     var isFilterVisible = false
-
+    var currentPriceFilter: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpSearchBar()
+        title = "Products"
+
         Productscollection.dataSource = self
         Productscollection.delegate = self
         initNib()
@@ -38,7 +43,8 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
     @IBAction func sliderValueChanged(_ sender: UISlider) {
            let selectedPrice = sender.value
            priceLabel.text = "Price: \(selectedPrice)"
-
+        currentPriceFilter = Int(selectedPrice)
+        applyfilters()
         filteredProducts = products.filter { Int(($0.price ?? 0)) <= Int(selectedPrice)
         }
 
@@ -50,6 +56,7 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
                mySlider.minimumValue = Float(minPrice)
                mySlider.maximumValue = Float(maxPrice)
                mySlider.value = Float(maxPrice)
+               currentPriceFilter = Int(maxPrice)
                priceLabel.text = "Max: \(maxPrice)"
            }
 
@@ -104,5 +111,32 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.bounds.width / 2) - 10
         return CGSize(width: width, height: width)
+    }
+    ////search
+     func setUpSearchBar(){
+    
+         productsSearchBar.placeholder = "Search Products..."
+         productsSearchBar.delegate = self
+
+}
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+                print("Search Text Changed: \(searchText)")
+        applyfilters()
+        Productscollection.reloadData()
+
+            }
+    func applyfilters()
+    {
+        let searchText = productsSearchBar.text ?? ""
+
+                filteredProducts = products.filter { product in
+                    let matchesTitle = searchText.isEmpty || (product.title?.lowercased().contains(searchText.lowercased()) ?? false)
+                    let matchesPrice = Int((product.price ?? Double(currentPriceFilter) )) <=  currentPriceFilter
+
+                    return matchesTitle && matchesPrice
+                }
+
+                Productscollection.reloadData()
     }
 }

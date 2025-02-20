@@ -10,13 +10,17 @@ import Kingfisher
 import MyApi
 
 
-class HomeViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class HomeViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     @IBOutlet weak var homeCollection: UICollectionView!
     
     var viewModel: BrandsViewModel!
+    var filteredBrands: [BrandModel] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setUpSearchBar()
+
         homeCollection.dataSource = self
         homeCollection.delegate = self
         initNib()
@@ -207,6 +211,23 @@ func drawAdsSection() -> NSCollectionLayoutSection {
 
             return section
         }
+    ////search
+     func setUpSearchBar(){
+    let searchBar = UISearchBar()
+        searchBar.placeholder = "Search Brands..."
+        searchBar.delegate = self
+        searchBar.searchTextField.backgroundColor = .white
+
+    self.tabBarController?.navigationItem.titleView = searchBar
+}
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-      
+                print("Search Text Changed: \(searchText)")
+          
+                viewModel.searchText = searchText
+                homeCollection.reloadData()
+            }
+
+
+       
 }

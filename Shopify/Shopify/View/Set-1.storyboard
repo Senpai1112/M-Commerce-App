@@ -86,6 +86,7 @@
                         <outlet property="Productscollection" destination="NER-3R-QCc" id="FFm-kB-Snf"/>
                         <outlet property="mySlider" destination="crC-J0-PwA" id="miM-M1-Dxs"/>
                         <outlet property="priceLabel" destination="h2A-mk-sHo" id="9rW-kp-Myb"/>
+                        <outlet property="productsSearchBar" destination="xZQ-aN-ZWB" id="BtH-bq-0vq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9mK-Kc-nt0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

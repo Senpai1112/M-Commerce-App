@@ -28,6 +28,22 @@ class LoginCustomerViewController: UIViewController {
                 print("   Access Token: \(accessToken.accessToken ?? "N/A")")
                 
                 //navigate to home and pass access token after merge
+                
+                // Save the value
+                UserDefaults.standard.set(accessToken.accessToken, forKey: "accessToken")
+                let tabBarController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "homeTabBar") as! UITabBarController
+                    
+              self.navigationController?.pushViewController(tabBarController, animated: true)
+                    // Present the TabBarController modally
+       //             self.present(tabBarController, animated: true, completion: nil)
+                
+//                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+//                if let homeVC = storyBoard.instantiateViewController(withIdentifier: "homeVC") as? HomeViewController {
+//                    self.navigationController?.pushViewController(homeVC, animated: true)
+     //           }
+                
+
+               
             }
         }
         
@@ -48,6 +64,11 @@ class LoginCustomerViewController: UIViewController {
         authViewModel.loginCustomer(email: testEmail, password: testPassword)
         
         setupViewModelObservers()
+        
+        // Access the value
+        if let value = UserDefaults.standard.string(forKey: "accessToken") {
+            print(value)
+        }
     }
     
     @objc private func goToRegister() {
