@@ -9,15 +9,20 @@ import UIKit
 import Apollo
 import MyApi
 import SDWebImage
+import Combine
 
 class CartSummaryViewController: UIViewController {
     
     var address = Addresses()
     
+    @IBOutlet weak var validationLabel: UILabel!
+    var discoundCopons = ["SUMMER30","WINTER30"]
     @IBOutlet weak var continueToPayment: UIButton!
     
     @IBOutlet weak var totalPriceOfProducts: UILabel!
     private let cartViewModel = CartViewModel()
+    private var cancellable: AnyCancellable?
+
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
     var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
@@ -31,6 +36,7 @@ class CartSummaryViewController: UIViewController {
         super.viewDidLoad()
         initNib()
         initUI()
+        setupTextFieldPublisher()
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +52,38 @@ class CartSummaryViewController: UIViewController {
             }
         }
         cartViewModel.getCartFromModel(cartID: cartId)
+    }
+    
+    private func setupTextFieldPublisher() {
+        let publisher = NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: discoundCopon)
+            
+            cancellable = publisher
+                .map { ($0.object as? UITextField)?.text ?? "" }
+                .sink { [weak self] newText in
+                    if newText == self?.discoundCopons[0]{
+                        self?.validationLabel.text = "Valid"
+                        self?.validationLabel.textColor = UIColor.red
+                        self?.performDiscount()
+                    }else if newText == self?.discoundCopons[1]{
+                        self?.validationLabel.text = "Valid"
+                        self?.validationLabel.textColor = UIColor.red
+                        self?.performDiscount()
+                    }else{
+                        self?.validationLabel.text = "Not Valid"
+                        self?.validationLabel.textColor = UIColor.black
+                        self?.newPrice = (self?.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount)!
+                        self?.totalPriceOfProducts.text = self?.newPrice
+                    }
+                }
+        }
+    deinit {
+            cancellable?.cancel()
+        }
+    func performDiscount(){
+        let floatPrice = Float(totalPriceOfProducts.text ?? "0.0")
+        let discound = floatPrice! * 70 / 100
+        newPrice = "\(discound)"
+        totalPriceOfProducts.text = newPrice
     }
     func initNib(){
         tableView.dataSource = self

@@ -23,7 +23,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
             DispatchQueue.main.async {
                 self.ordersTable.reloadData()
             }}
-        viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken" )! )
+        //viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken" )! )
     }
     ///setupNavigationBarIcons
     override func viewWillAppear(_ animated: Bool) {

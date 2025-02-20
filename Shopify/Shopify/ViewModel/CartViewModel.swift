@@ -153,4 +153,27 @@ class CartViewModel{
         })
     }
     
+    func deleteLineInCart(cartID : String?,lineID : [String]?) {
+        guard cartID != nil else {
+            print("Invalid cart ID.")
+            return
+        }
+        ApolloCartNetworkService.DeleteLineBy(cartID: cartID, lineID: lineID, completion:{ [weak self] result in
+            switch result {
+            case .success(let response):
+                guard let cartData = response.data else {
+                    print("Unable to extract raw data from response.")
+                    return
+                }
+                if !(cartData.cartLinesRemove?.userErrors.isEmpty)!{
+                    print((cartData.cartLinesRemove?.userErrors.first?.message)!)
+                }else{
+                    self?.getCartFromModel(cartID: cartID)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
+    }
+    
 }
