@@ -9,6 +9,7 @@ import UIKit
 
 class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var moreOrders: UIButton!
     @IBOutlet weak var login: UIButton!
     @IBOutlet weak var ordersTable: UITableView!
 
@@ -18,12 +19,13 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         super.viewDidLoad()
         ordersTable.dataSource = self
         ordersTable.delegate = self
+        initNib()
         viewModel = OrdersViewModel()
         viewModel.bindOrdersToViewController = {
             DispatchQueue.main.async {
                 self.ordersTable.reloadData()
             }}
-        viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken" )! )
+        viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken") ?? "" )
     }
     ///setupNavigationBarIcons
     override func viewWillAppear(_ animated: Bool) {
@@ -31,6 +33,11 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         setupNavigationBarIcons()
 
 }
+    func initNib(){
+        let nib = UINib(nibName: "OrderCell", bundle: nil)
+        self.ordersTable.register(nib, forCellReuseIdentifier: "OrderCell")
+            
+        }
    
     func setupNavigationBarIcons() {
         let stackView = UIStackView()
@@ -51,6 +58,9 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         let barButtonItem = UIBarButtonItem(customView: stackView)
         tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
     }
+    
+    
+    
     
     @objc func settingsTapped() {
         
@@ -76,16 +86,22 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         button.widthAnchor.constraint(equalToConstant: 30).isActive = true
         button.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
-    /////
+    /////count of orders
+    var displayedOrders = 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.finalResult.count
+        return min(viewModel.finalResult.count, displayedOrders)
+    }
+    @IBAction func moreOrdersAction(_ sender: Any) {
+        displayedOrders = viewModel.finalResult.count
+            ordersTable.reloadData()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "orderCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as! OrderCell
         let order = viewModel.finalResult[indexPath.row]
-           cell.textLabel?.text = "Price: \(order.price) \(order.currencyCode)"
-           cell.detailTextLabel?.text = "CreatedAt: \(order.processedAt)"
+        cell.orderDateLabel.text = "Created At: \(order.processedAt ?? "")"
+        cell.orderPriceLabel.text = "Price: \(order.price ?? 0) \(order.currencyCode ?? "")"
+
         return cell
     }
     
@@ -95,4 +111,6 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
        
         navigationController?.pushViewController(loginVC, animated: true)
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60   }
 }
