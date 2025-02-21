@@ -32,9 +32,9 @@
                                 <cells/>
                             </collectionView>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="crC-J0-PwA">
-                                <rect key="frame" x="153" y="103" width="226" height="31"/>
+                                <rect key="frame" x="119" y="103" width="260" height="31"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="222" id="D7M-oE-avN"/>
+                                    <constraint firstAttribute="width" constant="256" id="D7M-oE-avN"/>
                                     <constraint firstAttribute="height" constant="30" id="Yhg-wp-5tf"/>
                                 </constraints>
                                 <connections>
@@ -67,7 +67,7 @@
                         <constraints>
                             <constraint firstItem="SQy-PK-FgY" firstAttribute="trailing" secondItem="NER-3R-QCc" secondAttribute="trailing" constant="16" id="2Kj-cG-C6A"/>
                             <constraint firstItem="SQy-PK-FgY" firstAttribute="trailing" secondItem="crC-J0-PwA" secondAttribute="trailing" constant="16" id="Ba6-bP-POs"/>
-                            <constraint firstItem="crC-J0-PwA" firstAttribute="leading" secondItem="h2A-mk-sHo" secondAttribute="trailing" constant="26" id="F8v-fX-PSR"/>
+                            <constraint firstItem="crC-J0-PwA" firstAttribute="leading" secondItem="h2A-mk-sHo" secondAttribute="trailing" constant="-8" id="F8v-fX-PSR"/>
                             <constraint firstItem="NER-3R-QCc" firstAttribute="top" secondItem="crC-J0-PwA" secondAttribute="bottom" constant="4" id="FRg-cY-MTW"/>
                             <constraint firstItem="crC-J0-PwA" firstAttribute="top" secondItem="xZQ-aN-ZWB" secondAttribute="bottom" id="FUv-4f-PKV"/>
                             <constraint firstItem="crC-J0-PwA" firstAttribute="top" secondItem="xZQ-aN-ZWB" secondAttribute="bottom" id="GPs-mO-XgN"/>
@@ -77,7 +77,7 @@
                             <constraint firstItem="h2A-mk-sHo" firstAttribute="leading" secondItem="SQy-PK-FgY" secondAttribute="leading" constant="16" id="n4J-UD-uC6"/>
                             <constraint firstItem="xZQ-aN-ZWB" firstAttribute="leading" secondItem="SQy-PK-FgY" secondAttribute="leading" id="oKV-tA-g9P"/>
                             <constraint firstItem="xZQ-aN-ZWB" firstAttribute="trailing" secondItem="SQy-PK-FgY" secondAttribute="trailing" id="pBu-FO-hcu"/>
-                            <constraint firstItem="crC-J0-PwA" firstAttribute="leading" secondItem="h2A-mk-sHo" secondAttribute="trailing" constant="26" id="q6D-08-83i"/>
+                            <constraint firstItem="crC-J0-PwA" firstAttribute="leading" secondItem="h2A-mk-sHo" secondAttribute="trailing" constant="-8" id="q6D-08-83i"/>
                             <constraint firstItem="NER-3R-QCc" firstAttribute="leading" secondItem="SQy-PK-FgY" secondAttribute="leading" constant="16" id="vbf-zc-qLQ"/>
                             <constraint firstItem="xZQ-aN-ZWB" firstAttribute="top" secondItem="SQy-PK-FgY" secondAttribute="top" id="yfA-sv-KX0"/>
                         </constraints>

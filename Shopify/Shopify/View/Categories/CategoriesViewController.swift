@@ -16,27 +16,52 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
     @IBOutlet weak var secFilter: UISegmentedControl!
     
     var searchBar: UISearchBar?
-    
+    var emptyStateView: UIView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         CategoriesProductcollection.dataSource = self
         CategoriesProductcollection.delegate = self
         initNib()
-        
+        emptyState ()
         viewModel = ProductViewModel()
         viewModel.bindProductsToViewController = {
             DispatchQueue.main.async {
                 self.CategoriesProductcollection.reloadData()
+                self.updateEmptyState()
+
             }
         }
         
         setQuery()
     }
-    
+    func updateEmptyState() {
+            if viewModel.finalResult.isEmpty {
+                emptyStateView?.isHidden = false
+                CategoriesProductcollection.isHidden = true
+            } else {
+                emptyStateView?.isHidden = true
+                CategoriesProductcollection.isHidden = false
+            }
+        }
+    func emptyState (){
+        if let emptyStateView = emptyStateView {
+            emptyStateView.isHidden = true
+            view.addSubview(emptyStateView)
+            emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                emptyStateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+                emptyStateView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+            ])
+        }
+    }
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.title = "Category"
         setupNavigationBarIcons()
+        setupLeftBarButt()
 
     }
     
@@ -75,6 +100,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         searchBar?.searchTextField.backgroundColor = .white
         searchBar?.showsCancelButton = true
         
+        self.tabBarController?.navigationItem.leftBarButtonItem = nil
         self.tabBarController?.navigationItem.titleView = searchBar
     }
     
@@ -85,9 +111,23 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
     func hideSearchBar() {
         self.tabBarController?.navigationItem.titleView = nil
         self.tabBarController?.title = "Category"
+        setupLeftBarButt()
     }
     
-    
+    func setupLeftBarButt() {
+            let storeName = UILabel()
+            storeName.text = "Shopify"
+            storeName.textColor = .white
+            storeName.font = .boldSystemFont(ofSize: 22)
+            
+            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
+                storeName.font = customFont
+            }
+            storeName.layer.shadowColor = UIColor.black.cgColor
+            storeName.layer.shadowOffset = CGSize(width: 1, height: 2)
+            storeName.layer.shadowOpacity = 0.4
+          tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: storeName)
+        }
     func setUpNavBarBtn(button: UIButton, systemName: String, selector: Selector) {
         if let icon = UIImage(systemName: systemName) {
             button.setImage(icon, for: .normal)
@@ -129,6 +169,9 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
     func initNib(){
             let nib = UINib(nibName: "CategoryCell", bundle: nil)
             CategoriesProductcollection.register(nib, forCellWithReuseIdentifier: "CategoryCell")
+        let emptyStateNib = UINib(nibName: "EmptyStateView", bundle: nil)
+              emptyStateView = emptyStateNib.instantiate(withOwner: nil, options: nil).first as? UIView
+              
             
         }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
