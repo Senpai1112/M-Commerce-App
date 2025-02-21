@@ -65,9 +65,15 @@ class ShoppingCartViewController: UIViewController {
     }
     
     @IBAction func checkOutButton(_ sender: Any) {
-        let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
-        let vc = storyBoard.instantiateViewController(identifier: "ChooseAddressViewController") as! ChooseAddressViewController
-        self.navigationController?.pushViewController(vc, animated: true)
+        if cartViewModel.localCartResult.cart!.count == 0{
+            let alert = UIAlertController(title: "Nothing in the Cart To Chekout", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in }))
+            self.present(alert, animated: true)
+        }else{
+            let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+            let vc = storyBoard.instantiateViewController(identifier: "ChooseAddressViewController") as! ChooseAddressViewController
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 
