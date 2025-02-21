@@ -29,12 +29,14 @@ class CustomerViewController: UIViewController {
                 print("   ID: \(customer.id ?? "N/A")")
                 print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
                 print("   Email: \(customer.email ?? "N/A")")
-                
+
                //navigate to login
                 let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
                 if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
+                    loginVC.customerId = customer.id ?? ""
                     self.navigationController?.pushViewController(loginVC, animated: true)
                 }
+                
             }
         }
 
@@ -44,6 +46,7 @@ class CustomerViewController: UIViewController {
                 self.showAlert(title: "Error", message: "\(errorMessage) \n Please try again.")
             }
         }
+     
     }
     @objc private func loginButtonTapped(){
         let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
@@ -153,8 +156,10 @@ class CustomerViewController: UIViewController {
     
        private func setupUI() {
            view.backgroundColor = .systemGray6
+
            //self.navigationItem.hidesBackButton = true
            //self.navigationController?.navigationBar.tintColor = .purple
+
            
            // Add subviews
            self.view.addSubview(headerView)
