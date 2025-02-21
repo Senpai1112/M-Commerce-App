@@ -134,5 +134,10 @@ extension AddressesDetailsViewController:
             self.present(alert, animated: true)
         }
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "UpdateAddressViewController") as! UpdateAddressViewController
+        vc.address = addressDetailsViewModel.addressResult[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }

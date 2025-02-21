@@ -18,6 +18,18 @@ class CashOnDeliveryViewController: UIViewController {
     
     @IBOutlet weak var placeOrder: UIButton!
     
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    @IBOutlet weak var cityLabel: UILabel!
+    
+    @IBOutlet weak var address1Label: UILabel!
+    
+    @IBOutlet weak var address2Label: UILabel!
+    
+    @IBOutlet weak var countryLabel: UILabel!
+    
+    @IBOutlet weak var phoneLabel: UILabel!
+    
     var customerDetails = CustomerDetails()
     var address = Addresses()
     var cartDetails = CartResponse()
@@ -38,7 +50,14 @@ class CashOnDeliveryViewController: UIViewController {
         subTotal.text = "\(newPrice) \(address.countryCode ?? "")"
         shippingFees.text = "30.0 \(address.countryCode ?? "")"
         let floatGrandTotal = (subTotal.text! as NSString).floatValue + 30.0
-        grandTotal.text = "\(floatGrandTotal)"
+        grandTotal.text = "\(floatGrandTotal) \(address.countryCode ?? "")"
+        
+        nameLabel.text = customerDetails.firstName
+        countryLabel.text = address.country
+        address1Label.text = address.address1
+        address2Label.text = address.address2
+        cityLabel.text = address.city
+        phoneLabel.text = address.phone
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {
@@ -68,6 +87,7 @@ class CashOnDeliveryViewController: UIViewController {
     func initUI(){
         placeOrder.layer.cornerRadius = placeOrder.frame.height / 2
         placeOrder.layer.cornerCurve = .continuous
+        placeOrder.tintColor = UIColor.purple
         placeOrder.clipsToBounds = true
     }
 

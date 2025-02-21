@@ -241,18 +241,18 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
         } else {
             print("Payment failed with status: \(result.status.rawValue)")
         }
-        
         completion(result)
     }
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        controller.dismiss(animated: true, completion: nil)
-        if let navigationController = self.navigationController {
-            let viewControllers = navigationController.viewControllers
-            if viewControllers.count >= 5 {
-                navigationController.popToViewController(viewControllers[viewControllers.count - 5], animated: true)
+        controller.dismiss(animated: true, completion: {
+            if let navigationController = self.navigationController {
+                let viewControllers = navigationController.viewControllers
+                if viewControllers.count >= 5 {
+                    navigationController.popToViewController(viewControllers[viewControllers.count - 5], animated: true)
+                }
             }
-        }
+        })
         print("payment finished")
     }
 }

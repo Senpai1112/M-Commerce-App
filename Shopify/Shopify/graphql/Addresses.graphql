@@ -74,3 +74,26 @@ mutation CustomerAddressDelete($token : String! ,$addressId : ID!) {
         deletedCustomerAddressId
     }
 }
+
+mutation CustomerAddressUpdate($token : String!,$address1 : String!,$address2 : String!,$city : String!,$country : String!,$phone : String!,$addressId : ID!) {
+    customerAddressUpdate(
+        customerAccessToken: $token
+        id: $addressId
+        address: { address1: $address1, address2: $address2, city: $city, country: $country, phone: $phone }
+    ) {
+        customerUserErrors {
+            code
+            field
+            message
+        }
+        customerAddress {
+            address1
+            address2
+            city
+            country
+            id
+            phone
+        }
+    }
+}
+
