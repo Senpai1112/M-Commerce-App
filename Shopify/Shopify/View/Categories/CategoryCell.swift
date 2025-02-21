@@ -17,6 +17,10 @@ class CategoryCell: UICollectionViewCell {
     @IBOutlet weak var currencyCodeLabel: UILabel!
     @IBOutlet weak var ProductBorder: UIView!
     
+    @IBOutlet weak var favButton: UIButton!
+    
+    var addToFavList: (()->())?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -38,4 +42,7 @@ class CategoryCell: UICollectionViewCell {
 
                 }
     
+    @IBAction func addToWishList(_ sender: UIButton) {
+        addToFavList?()
+    }
 }

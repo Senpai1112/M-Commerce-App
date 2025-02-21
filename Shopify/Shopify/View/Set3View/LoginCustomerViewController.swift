@@ -8,7 +8,7 @@
 import UIKit
 
 class LoginCustomerViewController: UIViewController {
-    
+    var customerId : String = ""
     private let authViewModel = AuthViewModel()
     
     override func viewDidLoad() {
@@ -31,6 +31,8 @@ class LoginCustomerViewController: UIViewController {
                 
                 // Save the value
                 UserDefaults.standard.set(accessToken.accessToken, forKey: "accessToken")
+                UserDefaults.standard.set(self.customerId, forKey: "customerID")
+
                 let tabBarController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "homeTabBar") as! UITabBarController
                     
               self.navigationController?.pushViewController(tabBarController, animated: true)
@@ -68,6 +70,9 @@ class LoginCustomerViewController: UIViewController {
         // Access the value
         if let value = UserDefaults.standard.string(forKey: "accessToken") {
             print(value)
+        }
+        if let valueId = UserDefaults.standard.string(forKey: "customerID") {
+            print("from user default\(valueId)")
         }
     }
     
@@ -143,6 +148,7 @@ class LoginCustomerViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .systemGray6
+
         //self.navigationItem.hidesBackButton = true
         //self.navigationController?.navigationBar.tintColor = .purple
         // Add subviews
