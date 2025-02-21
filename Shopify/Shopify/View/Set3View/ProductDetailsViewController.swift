@@ -69,6 +69,10 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
         self.navigationItem.title = "Details"
         print("Product ID: \(id ?? "No ID")")
         
+        if let cartID = UserDefaults.standard.string(forKey: "cartID") {
+            print("Retrieved Cart ID: \(cartID)")
+        }
+        
         setupHierarchy()
         setupComponents()
         setupConstraints()

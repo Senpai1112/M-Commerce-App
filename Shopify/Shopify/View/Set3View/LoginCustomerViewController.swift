@@ -10,6 +10,8 @@ import UIKit
 class LoginCustomerViewController: UIViewController {
     var customerId : String = ""
     private let authViewModel = AuthViewModel()
+    var newCartViewModel = NewCartViewModel()
+
     
     override func viewDidLoad() {
         
@@ -33,6 +35,9 @@ class LoginCustomerViewController: UIViewController {
                 UserDefaults.standard.set(accessToken.accessToken, forKey: "accessToken")
                 UserDefaults.standard.set(self.customerId, forKey: "customerID")
 
+                if let accessToken = accessToken.accessToken {
+                                    self.newCartViewModel.createCart(customerAccessToken: accessToken)
+                                }
                 let tabBarController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "homeTabBar") as! UITabBarController
                     
               self.navigationController?.pushViewController(tabBarController, animated: true)
@@ -55,6 +60,15 @@ class LoginCustomerViewController: UIViewController {
                 self.showAlert(title: "Login Error", message:" \(errorMessage) email or password incorrect")
             }
         }
+        newCartViewModel.onCartCreated = { cart in
+                    UserDefaults.standard.set(cart.id, forKey: "cartID")
+                    print("Cart ID: \(cart.id) saved successfully!")
+                }
+        newCartViewModel.onError = { errorMessage in
+                    DispatchQueue.main.async {
+                        print( "Cart Creation Error  \(errorMessage)")
+                    }
+                }
     }
     
     
