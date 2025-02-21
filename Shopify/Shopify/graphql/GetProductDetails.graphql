@@ -1,22 +1,28 @@
 query ProductDetailsQuery($id: ID!) {
     product(id: $id) {
-        availableForSale
-        description
-        id
-        title
-        totalInventory
-        images(first: 5) {
-            edges {
-                node {
-                    src
-                }
-            }
-        }
-        adjacentVariants {
-            price {
-                amount
-                currencyCode
+    id
+    title
+    availableForSale
+    description
+    totalInventory
+    images(first: 5) {
+        edges {
+            node {
+                src
             }
         }
     }
+    variants(first: 20) {
+      edges {
+        node {
+          id
+          title
+          priceV2 {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
 }

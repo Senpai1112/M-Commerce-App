@@ -84,6 +84,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ProductVariant": return MyApi.Objects.ProductVariant
     case "ProductVariantComponent": return MyApi.Objects.ProductVariantComponent
     case "ProductVariantComponentConnection": return MyApi.Objects.ProductVariantComponentConnection
+    case "ProductVariantConnection": return MyApi.Objects.ProductVariantConnection
+    case "ProductVariantEdge": return MyApi.Objects.ProductVariantEdge
     case "QueryRoot": return MyApi.Objects.QueryRoot
     case "SearchQuerySuggestion": return MyApi.Objects.SearchQuerySuggestion
     case "SellingPlan": return MyApi.Objects.SellingPlan
