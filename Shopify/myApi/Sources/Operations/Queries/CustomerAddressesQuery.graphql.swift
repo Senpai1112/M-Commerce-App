@@ -7,7 +7,7 @@ public class CustomerAddressesQuery: GraphQLQuery {
   public static let operationName: String = "CustomerAddresses"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query CustomerAddresses($token: String!) { customer(customerAccessToken: $token) { __typename addresses(first: 10) { __typename edges { __typename cursor node { __typename address1 address2 city country phone id } } } } }"#
+      #"query CustomerAddresses($token: String!) { customer(customerAccessToken: $token) { __typename addresses(first: 10) { __typename edges { __typename cursor node { __typename address1 address2 city country phone id countryCode } } } } }"#
     ))
 
   public var token: String
@@ -98,6 +98,7 @@ public class CustomerAddressesQuery: GraphQLQuery {
               .field("country", String?.self),
               .field("phone", String?.self),
               .field("id", MyApi.ID.self),
+              .field("countryCode", String?.self),
             ] }
 
             /// The first line of the address. Typically the street address or PO Box number.
@@ -114,6 +115,11 @@ public class CustomerAddressesQuery: GraphQLQuery {
             public var phone: String? { __data["phone"] }
             /// A globally-unique ID.
             public var id: MyApi.ID { __data["id"] }
+            /// The two-letter code for the country of the address.
+            ///
+            /// For example, US.
+            @available(*, deprecated, message: "Use `countryCodeV2` instead.")
+            public var countryCode: String? { __data["countryCode"] }
           }
         }
       }

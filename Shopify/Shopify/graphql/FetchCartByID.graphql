@@ -8,6 +8,7 @@ query FetchCartById($id : ID!) {
         buyerIdentity {
             email
             phone
+            countryCode
         }
         cost {
             subtotalAmountEstimated
@@ -53,6 +54,9 @@ query FetchCartById($id : ID!) {
                             }
                             image {
                                 url
+                            }
+                            product {
+                                title
                             }
                     }
                 }

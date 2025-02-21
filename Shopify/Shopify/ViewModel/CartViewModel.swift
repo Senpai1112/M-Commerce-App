@@ -42,7 +42,7 @@ class CartViewModel{
             cartItem.id = line.node.id
             
             if let productVariant = line.node.merchandise.asProductVariant {
-                var merch = Merchendise(id: productVariant.id)
+                var merch = Merchendise(id: productVariant.id, productTitle: productVariant.product.title)
                 merch.availableQuantity = productVariant.quantityAvailable != nil ? productVariant.quantityAvailable! : 0
                 merch.title = productVariant.title
                 merch.image = productVariant.image?.url
@@ -131,6 +131,29 @@ class CartViewModel{
     }
     
     func deleteCartInModel(cartID : String?,lineID : [String]? , indexPath :IndexPath) {
+        guard cartID != nil else {
+            print("Invalid cart ID.")
+            return
+        }
+        ApolloCartNetworkService.DeleteLineBy(cartID: cartID, lineID: lineID, completion:{ [weak self] result in
+            switch result {
+            case .success(let response):
+                guard let cartData = response.data else {
+                    print("Unable to extract raw data from response.")
+                    return
+                }
+                if !(cartData.cartLinesRemove?.userErrors.isEmpty)!{
+                    print((cartData.cartLinesRemove?.userErrors.first?.message)!)
+                }else{
+                    self?.getCartFromModel(cartID: cartID)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
+    }
+    
+    func deleteLineInCart(cartID : String?,lineID : [String]?) {
         guard cartID != nil else {
             print("Invalid cart ID.")
             return

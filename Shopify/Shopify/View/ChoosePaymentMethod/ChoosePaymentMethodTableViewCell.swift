@@ -23,6 +23,7 @@ class ChoosePaymentMethodTableViewCell: UITableViewCell {
     func initUI(){
         checkButton.layer.cornerRadius = 15
         checkButton.clipsToBounds = true
+        checkButton.tintColor = UIColor.purple
     }
     
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource , UISearchBarDelegate {
+class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate {
     
     @IBOutlet weak var CategoriesProductcollection: UICollectionView!
        var viewModel: ProductViewModel!
@@ -16,41 +16,135 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
 
        @IBOutlet weak var firstFilter: UISegmentedControl!
        @IBOutlet weak var secFilter: UISegmentedControl!
+
     
+    var searchBar: UISearchBar?
+    var emptyStateView: UIView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpSearchBar()
         CategoriesProductcollection.dataSource = self
-                CategoriesProductcollection.delegate = self
+        CategoriesProductcollection.delegate = self
+        initNib()
+        emptyState ()
+        viewModel = ProductViewModel()
+        viewModel.bindProductsToViewController = {
+            DispatchQueue.main.async {
+                self.CategoriesProductcollection.reloadData()
+                self.updateEmptyState()
 
-                initNib()
-                
-                viewModel = ProductViewModel()
-                viewModel.bindProductsToViewController = {
-                    DispatchQueue.main.async {
-                        
-                        self.CategoriesProductcollection.reloadData()
-                    }
-                }
+            }
+        }
+        
         setQuery()
-
-           // Do any additional setup after loading the view.
+    }
+    func updateEmptyState() {
+            if viewModel.finalResult.isEmpty {
+                emptyStateView?.isHidden = false
+                CategoriesProductcollection.isHidden = true
+            } else {
+                emptyStateView?.isHidden = true
+                CategoriesProductcollection.isHidden = false
+            }
+        }
+    func emptyState (){
+        if let emptyStateView = emptyStateView {
+            emptyStateView.isHidden = true
+            view.addSubview(emptyStateView)
+            emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                emptyStateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+                emptyStateView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+            ])
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.title = "Category"
+
         CategoriesProductcollection.reloadData()
 
-    }
-    func setUpSearchBar(){
-        let searchBar = UISearchBar()
-            searchBar.placeholder = "Search products..."
-            searchBar.delegate = self
-            searchBar.searchTextField.backgroundColor = .white
+        setupNavigationBarIcons()
+        setupLeftBarButt()
 
+
+    }
+    
+    func setupNavigationBarIcons() {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        
+        let searchButt = UIButton(type: .system)
+        setUpNavBarBtn(button: searchButt, systemName: "magnifyingglass", selector: #selector(searchTapped))
+        
+        let butt2 = UIButton(type: .system)
+        setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
+        
+        stackView.addArrangedSubview(searchButt)
+        stackView.addArrangedSubview(butt2)
+        
+        let barButtonItem = UIBarButtonItem(customView: stackView)
+        tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
+    }
+    
+    @objc func searchTapped() {
+        showSearchBar()
+    }
+    
+    @objc func favTapped() {
+        print("favTapped")
+    }
+    
+    func showSearchBar() {
+        searchBar = UISearchBar()
+        searchBar?.placeholder = "Search products..."
+        searchBar?.delegate = self
+        searchBar?.searchTextField.backgroundColor = .white
+        searchBar?.showsCancelButton = true
+        
+        self.tabBarController?.navigationItem.leftBarButtonItem = nil
         self.tabBarController?.navigationItem.titleView = searchBar
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        hideSearchBar()
+    }
+    
+    func hideSearchBar() {
+        self.tabBarController?.navigationItem.titleView = nil
+        self.tabBarController?.title = "Category"
+        setupLeftBarButt()
+    }
+    
+    func setupLeftBarButt() {
+            let storeName = UILabel()
+            storeName.text = "Shopify"
+            storeName.textColor = .white
+            storeName.font = .boldSystemFont(ofSize: 22)
+            
+            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
+                storeName.font = customFont
+            }
+            storeName.layer.shadowColor = UIColor.black.cgColor
+            storeName.layer.shadowOffset = CGSize(width: 1, height: 2)
+            storeName.layer.shadowOpacity = 0.4
+          tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: storeName)
+        }
+    func setUpNavBarBtn(button: UIButton, systemName: String, selector: Selector) {
+        if let icon = UIImage(systemName: systemName) {
+            button.setImage(icon, for: .normal)
+        }
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+
+
     @IBAction func firstFilterAction(_ sender: UISegmentedControl) {
         setQuery()
     }
@@ -61,15 +155,30 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
 
     func setQuery() {
         var first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
-        let sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
+        var sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
+        
         if first == "All" { first = "" }
-
-        viewModel.getProductsFromModel(query: "\(first) | \(sec)")
+        if sec == "All" { sec = "" }
+        
+        var result = ""
+        
+        if !first.isEmpty && !sec.isEmpty {
+            result = "\(first)|\(sec)"
+        } else {
+            result = first + sec
+        }
+        
+        print(result)
+        viewModel.getProductsFromModel(query: result)
     }
+
 
     func initNib(){
             let nib = UINib(nibName: "CategoryCell", bundle: nil)
             CategoriesProductcollection.register(nib, forCellWithReuseIdentifier: "CategoryCell")
+        let emptyStateNib = UINib(nibName: "EmptyStateView", bundle: nil)
+              emptyStateView = emptyStateNib.instantiate(withOwner: nil, options: nil).first as? UIView
+              
             
         }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -156,12 +265,23 @@ class CategoriesViewController: UIViewController ,UICollectionViewDelegateFlowLa
        }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        var first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
+        var sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
         
-            print("Search Text Changed: \(searchText)") // Print the search text
-            var first = firstFilter.titleForSegment(at: firstFilter.selectedSegmentIndex) ?? ""
-            let sec = secFilter.titleForSegment(at: secFilter.selectedSegmentIndex) ?? ""
-            if first == "All" { first = "" }
-
-        viewModel.getProductsFromModel(query: "\(first) | \(sec) | \(searchText)")
+        if first == "All" { first = "" }
+        if sec == "All" { sec = "" }
+        
+        var result = ""
+        if !first.isEmpty && !sec.isEmpty {
+            result = "\(first)|\(sec)"
+        } else {
+            result = first + sec
         }
+        if searchText.isEmpty {
+            viewModel.getProductsFromModel(query: result)
+        } else {
+            viewModel.getProductsFromModel(query: "\(result)|\(searchText)")
+        }
+    }
+
 }

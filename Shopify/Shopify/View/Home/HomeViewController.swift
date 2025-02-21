@@ -18,9 +18,6 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setUpSearchBar()
-
         homeCollection.dataSource = self
         homeCollection.delegate = self
         initNib()
@@ -32,14 +29,14 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.homeCollection.reloadData()
             }}
             viewModel.getBrandsFromModel()
-        
     }
    
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.title = "Home"
-        
+        setupNavigationBarIcons()
+        setupLeftBarButt()
 
-    
+
 
     }
     func compositionalLayout() {
@@ -77,10 +74,10 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! HeaderView
             switch indexPath.section {
             case 0:
-                header.headerLabel.text = "Discounts"
+                header.headerLabel.text = ""
             case 1:
                 header.headerLabel.text = "Brands"
-            default: header.headerLabel.text = ""
+            default: header.headerLabel.text = "Ads"
             }
             return header
         }
@@ -173,11 +170,8 @@ func drawAdsSection() -> NSCollectionLayoutSection {
                        item.transform = CGAffineTransform(scaleX: scale, y: scale)
                    }
                }
-    //header
-            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
-            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-            section.boundarySupplementaryItems = [header]
-         return section
+    return section
+
         }
 
         func drawBrandSection() -> NSCollectionLayoutSection {
@@ -212,15 +206,74 @@ func drawAdsSection() -> NSCollectionLayoutSection {
 
             return section
         }
-    ////search
-        func setUpSearchBar(){
-       let searchBar = UISearchBar()
-           searchBar.placeholder = "Search Brands..."
-           searchBar.delegate = self
-           searchBar.searchTextField.backgroundColor = .white
+    
+    ////setupNavigationBarIcons
+    func setupNavigationBarIcons() {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.distribution = .equalSpacing
+        
+        let searchButt = UIButton(type: .system)
+        setUpNavBarBtn(button: searchButt, systemName: "magnifyingglass", selector: #selector(searchTapped))
+        
+        let butt2 = UIButton(type: .system)
+        setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
+        
+        stackView.addArrangedSubview(searchButt)
+        stackView.addArrangedSubview(butt2)
+        
+        let barButtonItem = UIBarButtonItem(customView: stackView)
+        tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
+    }
+    
+    @objc func searchTapped() {
+        showSearchBar()
+        
+    }
+    
+    @objc func favTapped() {
+        print("favTapped")
+    }
+    
+    func showSearchBar() {
+        let searchBar = UISearchBar()
+            searchBar.placeholder = "Search Brands..."
+            searchBar.delegate = self
+            searchBar.searchTextField.backgroundColor = .white
+        searchBar.showsCancelButton = true
+        
+           self.tabBarController?.navigationItem.leftBarButtonItem = nil
+        self.tabBarController?.navigationItem.titleView = searchBar
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        hideSearchBar()
+    
+    }
 
-       self.tabBarController?.navigationItem.titleView = searchBar
-   }
+   
+    
+    func hideSearchBar() {
+        self.tabBarController?.navigationItem.titleView = nil
+        self.tabBarController?.title = "Home"
+        setupLeftBarButt()
+
+    }
+    
+   
+    
+    
+    func setUpNavBarBtn(button: UIButton, systemName: String, selector: Selector) {
+        if let icon = UIImage(systemName: systemName) {
+            button.setImage(icon, for: .normal)
+        }
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+
+    ////search
+       
        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 
                    print("Search Text Changed: \(searchText)")
@@ -229,7 +282,21 @@ func drawAdsSection() -> NSCollectionLayoutSection {
 
                    homeCollection.reloadData()
                }
-
-
+    
+    
+    func setupLeftBarButt() {
+            let storeName = UILabel()
+            storeName.text = "Shopify"
+            storeName.textColor = .white
+            storeName.font = .boldSystemFont(ofSize: 22)
+            
+            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
+                storeName.font = customFont
+            }
+            storeName.layer.shadowColor = UIColor.black.cgColor
+            storeName.layer.shadowOffset = CGSize(width: 1, height: 2)
+            storeName.layer.shadowOpacity = 0.4
+          tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: storeName)
+        }
        
 }

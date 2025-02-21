@@ -30,7 +30,7 @@ class SettingsViewController: UIViewController {
         details[0] = "Address"
         addressDetailsViewModel.bindResultToSettingTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
-                if self?.addressDetailsViewModel.defaultAddressResult == nil
+                if self?.addressDetailsViewModel.defaultAddressResult.city == ""
                 {
                     self?.details[0] = "Address"
                 }else{
@@ -39,6 +39,7 @@ class SettingsViewController: UIViewController {
                 self?.tableView.reloadData()
             }
         }
+        tableView.reloadData()
         addressDetailsViewModel.getDefaultAddressesFromModel(customerAccessToken: customerAccessToken)
     }
     func initNib(){
@@ -52,6 +53,8 @@ class SettingsViewController: UIViewController {
         logoutButton.layer.cornerRadius = logoutButton.frame.height / 2
         logoutButton.layer.cornerCurve = .continuous
         logoutButton.clipsToBounds = true
+        logoutButton.tintColor = UIColor.purple
+
     }
     
     @IBAction func logoutButton(_ sender: UIButton) {
@@ -79,10 +82,10 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableViewCell", for: indexPath) as! SettingsTableViewCell
         cell.detailsLabel.text = details[indexPath.row]
         cell.titleLabel.text = titles[indexPath.row]
-        cell.backgroundColor = .systemGray6
-        cell.layer.borderColor = UIColor.systemBackground.cgColor
-        cell.layer.borderWidth = 10
-        cell.clipsToBounds = true
+//        cell.backgroundColor = .systemGray6
+//        cell.layer.borderColor = UIColor.systemBackground.cgColor
+//        cell.layer.borderWidth = 10
+//        cell.clipsToBounds = true
         return cell
     }
     

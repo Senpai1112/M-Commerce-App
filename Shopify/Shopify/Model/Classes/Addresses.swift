@@ -14,4 +14,5 @@ struct Addresses{
     var address2 : String?
     var phone : String?
     var id : String?
+    var countryCode : String?
 }

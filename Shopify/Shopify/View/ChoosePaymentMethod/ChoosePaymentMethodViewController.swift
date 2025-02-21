@@ -10,21 +10,24 @@ import PassKit
 
 class ChoosePaymentMethodViewController: UIViewController {
     
+    let customerDetailsViewModel = CustomerDetailsViewModel()
+    let cartViewModel = CartViewModel()
+    
+    let orderViewModel = OrderViewModel()
+    
+    var newPrice = ""
+    
     @IBOutlet weak var continueToPayment: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
     
     var customerAccessToken  = "fc1bea2489ae90f294f2c8795e0dd7ff"
+    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
     
-    var customer = Customer(id: "12"
-                            ,firstName: "youssab"
-                            ,lastName: "yasser"
-                            ,email: "youssabyasser@gmail.com"
-                            ,password: "01227213372")
-    
-    var price = Price(amount: "1234.50", currencyCode: "EGP")
-    
+    //var price = Price(amount: "1234.50", currencyCode: "EGP")
+    var customerDetails = CustomerDetails()
     var address = Addresses()
+    var cartDetails = CartResponse()
     var selectedIndex: IndexPath?
     var headersForSections : [String] = ["Online Payment","More Payment Options"]
     var titlesForRow : [String] = [" Apple Pay","Cash On Delivery (COD)"]
@@ -39,6 +42,18 @@ class ChoosePaymentMethodViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Payment Options"
+        self.customerDetailsViewModel.bindResultToPaymentMethod = {[weak self] in
+            DispatchQueue.main.async{
+                self?.customerDetails = (self?.customerDetailsViewModel.customerDetails)!
+            }
+        }
+        customerDetailsViewModel.getCustomerDetails(customerAccessToken: customerAccessToken)
+        self.cartViewModel.bindResultToShoppingCartTableViewController = {[weak self] in
+            DispatchQueue.main.async{
+                self?.cartDetails = (self?.cartViewModel.cartResult)!
+            }
+        }
+        cartViewModel.getCartFromModel(cartID: cartId)
     }
     
     @IBAction func continueToPayment(_ sender: UIButton) {
@@ -49,12 +64,15 @@ class ChoosePaymentMethodViewController: UIViewController {
         }
         else{
             if selectedIndex?.section == 0{
-                startApplePay(address: address, customer: customer, price: price)
+                startApplePay(address: address, customer: customerDetails, cart : cartDetails)
             }else{
                 let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "CashOnDeliveryViewController") as! CashOnDeliveryViewController
+                vc.customerDetails = customerDetailsViewModel.customerDetails
+                vc.address = address
+                vc.cartDetails = cartViewModel.cartResult
+                vc.newPrice = newPrice
                 self.navigationController?.present(vc, animated: true)
-                
             }
         }
     }
@@ -68,6 +86,8 @@ class ChoosePaymentMethodViewController: UIViewController {
         continueToPayment.layer.cornerRadius = continueToPayment.frame.height / 2
         continueToPayment.layer.cornerCurve = .continuous
         continueToPayment.clipsToBounds = true
+        continueToPayment.tintColor = UIColor.purple
+
     }
     
     
@@ -136,7 +156,7 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         tableView.reloadData()
     }
     
-    func startApplePay(address : Addresses , customer : Customer , price : Price) {
+    func startApplePay(address : Addresses , customer : CustomerDetails , cart : CartResponse) {
         let paymentRequest = PKPaymentRequest()
         
         // Configure your Merchant ID merchant.2jd4vk6g4v2prs6z
@@ -144,44 +164,43 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         paymentRequest.merchantIdentifier = "merchant.2jd4vk6g4v2prs6z"
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .threeDSecure
-        paymentRequest.countryCode = "EG"
-        paymentRequest.currencyCode = price.currencyCode
+        paymentRequest.countryCode = address.countryCode!
+        paymentRequest.currencyCode = "EGP"
         
         // Required fields
         paymentRequest.requiredShippingContactFields = [.name, .postalAddress, .phoneNumber, .emailAddress]
         
         // Payment Summary Items
-        let item1 = PKPaymentSummaryItem(label: "Product 1", amount: NSDecimalNumber(string: "19.99"))
-        let item2 = PKPaymentSummaryItem(label: "Tax", amount: NSDecimalNumber(string: "1.99"))
-        let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: price.amount))
-        
-        paymentRequest.paymentSummaryItems = [item1, item2, total]
-        
-        if #available(iOS 11.0, *) {
-            let shippingContact = PKContact()
-            
-            // Set up the name (optional)
-            var nameComponents = PersonNameComponents()
-            nameComponents.givenName = customer.firstName
-            nameComponents.familyName = customer.lastName
-            shippingContact.name = nameComponents
-            
-            // Set up the postal address
-            let postalAddress = CNMutablePostalAddress()
-            postalAddress.street = address.address2!
-            postalAddress.city = address.city!
-            postalAddress.state = address.country!
-            postalAddress.postalCode = "95014"
-            postalAddress.country = address.country!
-            shippingContact.postalAddress = postalAddress
-
-            
-            shippingContact.emailAddress = customer.email
-            
-            paymentRequest.shippingContact = shippingContact
+        var items = [PKPaymentSummaryItem]()
+        for item in cart.cart! {
+            let tempItems = PKPaymentSummaryItem(label: (item.merchandise?.title)!, amount: NSDecimalNumber(string: item.cost?.totalAmount?.amount))
+            items.append(tempItems)
         }
         
-        // Present Apple Pay sheet
+        let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: newPrice))
+        items.append(total)
+        paymentRequest.paymentSummaryItems = items
+        
+        let shippingContact = PKContact()
+        
+        var nameComponents = PersonNameComponents()
+        nameComponents.givenName = customer.firstName
+        nameComponents.familyName = customer.lastName
+        shippingContact.name = nameComponents
+        
+        let postalAddress = CNMutablePostalAddress()
+        postalAddress.street = address.address2!
+        postalAddress.city = address.city!
+        postalAddress.state = address.country!
+        postalAddress.postalCode = "95014"
+        postalAddress.country = address.country!
+        shippingContact.postalAddress = postalAddress
+        
+        
+        shippingContact.emailAddress = customer.email
+        
+        paymentRequest.shippingContact = shippingContact
+        
         if let paymentVC = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) {
             paymentVC.delegate = self
             present(paymentVC, animated: true, completion: nil)
@@ -190,29 +209,43 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         }
     }
     
+    func extractVariantID(from gid: String) -> String? {
+        let components = gid.components(separatedBy: "/")
+        return components.last
+    }
 }
 
 extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControllerDelegate {
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                             didAuthorizePayment payment: PKPayment,
                                             handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
-
+        
         let paymentToken = payment.token
         print("Payment Token: \(paymentToken)")
         
-        // Handle success or failure
         let status = PKPaymentAuthorizationStatus.success
         let result = PKPaymentAuthorizationResult(status: status, errors: nil)
         if result.status == .success {
             print("Payment succeeded")
+            var ids = [String]()
+            for item in cartDetails.cart! {
+                let variantId = extractVariantID(from: item.merchandise!.id)
+                let intVariantId = variantId?.codingKey.intValue
+                let address = Address(address1: address.address1!, phone: address.phone!, city: address.city!, country: address.country!)
+                let newPriceDouble = Double(newPrice)
+                orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
+                ids.append(item.id!)
+            }
+            cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
         } else {
             print("Payment failed with status: \(result.status.rawValue)")
         }
-
+        
         completion(result)
     }
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true, completion: nil)
+        print("payment finished")
     }
 }

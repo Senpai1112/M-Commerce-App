@@ -7,7 +7,7 @@ public class FetchCartByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchCartById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchCartById($id: ID!) { cart(id: $id) { __typename checkoutUrl id note totalQuantity updatedAt buyerIdentity { __typename email phone } cost { __typename subtotalAmountEstimated totalAmountEstimated totalDutyAmountEstimated totalTaxAmountEstimated checkoutChargeAmount { __typename amount currencyCode } subtotalAmount { __typename amount currencyCode } totalAmount { __typename amount currencyCode } totalTaxAmount { __typename amount currencyCode } } lines(first: 100) { __typename edges { __typename node { __typename id merchandise { __typename ... on ProductVariant { id quantityAvailable requiresComponents requiresShipping sku taxable title weight weightUnit components(first: 100) { __typename nodes { __typename quantity } } image { __typename url } } } quantity cost { __typename amountPerQuantity { __typename amount currencyCode } totalAmount { __typename amount currencyCode } subtotalAmount { __typename amount currencyCode } } } } } } }"#
+      #"query FetchCartById($id: ID!) { cart(id: $id) { __typename checkoutUrl id note totalQuantity updatedAt buyerIdentity { __typename email phone countryCode } cost { __typename subtotalAmountEstimated totalAmountEstimated totalDutyAmountEstimated totalTaxAmountEstimated checkoutChargeAmount { __typename amount currencyCode } subtotalAmount { __typename amount currencyCode } totalAmount { __typename amount currencyCode } totalTaxAmount { __typename amount currencyCode } } lines(first: 100) { __typename edges { __typename node { __typename id merchandise { __typename ... on ProductVariant { id quantityAvailable requiresComponents requiresShipping sku taxable title weight weightUnit components(first: 100) { __typename nodes { __typename quantity } } image { __typename url } product { __typename title } } } quantity cost { __typename amountPerQuantity { __typename amount currencyCode } totalAmount { __typename amount currencyCode } subtotalAmount { __typename amount currencyCode } } } } } } }"#
     ))
 
   public var id: ID
@@ -80,12 +80,15 @@ public class FetchCartByIdQuery: GraphQLQuery {
           .field("__typename", String.self),
           .field("email", String?.self),
           .field("phone", String?.self),
+          .field("countryCode", GraphQLEnum<MyApi.CountryCode>?.self),
         ] }
 
         /// The email address of the buyer that's interacting with the cart.
         public var email: String? { __data["email"] }
         /// The phone number of the buyer that's interacting with the cart.
         public var phone: String? { __data["phone"] }
+        /// The country where the buyer is located.
+        public var countryCode: GraphQLEnum<MyApi.CountryCode>? { __data["countryCode"] }
       }
 
       /// Cart.Cost
@@ -302,6 +305,7 @@ public class FetchCartByIdQuery: GraphQLQuery {
                   .field("weightUnit", GraphQLEnum<MyApi.WeightUnit>.self),
                   .field("components", Components.self, arguments: ["first": 100]),
                   .field("image", Image?.self),
+                  .field("product", Product.self),
                 ] }
 
                 /// A globally-unique ID.
@@ -327,6 +331,8 @@ public class FetchCartByIdQuery: GraphQLQuery {
                 public var components: Components { __data["components"] }
                 /// Image associated with the product variant. This field falls back to the product image if no image is available.
                 public var image: Image? { __data["image"] }
+                /// The product object that the product variant belongs to.
+                public var product: Product { __data["product"] }
 
                 /// Cart.Lines.Edge.Node.Merchandise.AsProductVariant.Components
                 ///
@@ -383,6 +389,24 @@ public class FetchCartByIdQuery: GraphQLQuery {
                   ///
                   /// If you need multiple variations of the same image, then you can use [GraphQL aliases](https://graphql.org/learn/queries/#aliases).
                   public var url: MyApi.URL { __data["url"] }
+                }
+
+                /// Cart.Lines.Edge.Node.Merchandise.AsProductVariant.Product
+                ///
+                /// Parent Type: `Product`
+                public struct Product: MyApi.SelectionSet {
+                  public let __data: DataDict
+                  public init(_dataDict: DataDict) { __data = _dataDict }
+
+                  public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.Product }
+                  public static var __selections: [ApolloAPI.Selection] { [
+                    .field("__typename", String.self),
+                    .field("title", String.self),
+                  ] }
+
+                  /// The name for the product that displays to customers. The title is used to construct the product's handle.
+                  /// For example, if a product is titled "Black Sunglasses", then the handle is `black-sunglasses`.
+                  public var title: String { __data["title"] }
                 }
               }
             }

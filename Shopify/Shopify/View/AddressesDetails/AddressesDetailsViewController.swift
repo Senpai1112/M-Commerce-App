@@ -45,6 +45,8 @@ class AddressesDetailsViewController: UIViewController {
         addNewAddress.layer.cornerRadius = addNewAddress.frame.height / 2
         addNewAddress.layer.cornerCurve = .continuous
         addNewAddress.clipsToBounds = true
+        addNewAddress.tintColor = UIColor.purple
+
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.color = .gray
@@ -78,9 +80,6 @@ extension AddressesDetailsViewController:
         cell.cityAndAdressDetails.text = addressDetailsViewModel.addressResult[indexPath.row].city
         cell.phoneNumber.text = addressDetailsViewModel.addressResult[indexPath.row].phone
         cell.countryName.text = addressDetailsViewModel.addressResult[indexPath.row].country
-        cell.backgroundColor = .systemGray6
-        cell.layer.borderColor = UIColor.systemBackground.cgColor
-        cell.layer.borderWidth = 10
         cell.clipsToBounds = true
     }
     

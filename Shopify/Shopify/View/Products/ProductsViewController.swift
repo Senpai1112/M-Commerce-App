@@ -13,7 +13,8 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var Productscollection: UICollectionView!
     @IBOutlet weak var productsSearchBar: UISearchBar!
-    
+    var emptyStateView: UIView?
+
     var products: [ProductModel] = []
     var filteredProducts: [ProductModel] = []
     var isFilterVisible = false
@@ -24,8 +25,8 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpSearchBar()
-        title = "Products"
-
+        //title = "Products"
+        emptyState()
         Productscollection.dataSource = self
         Productscollection.delegate = self
         initNib()
@@ -34,6 +35,7 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         filteredProducts = products
         mySlider.isHidden = true
         priceLabel.isHidden = true
+        emptyState()
         Productscollection.reloadData()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -45,12 +47,38 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
     func initNib(){
         let nib = UINib(nibName: "ProductCell", bundle: nil)
         Productscollection.register(nib, forCellWithReuseIdentifier: "ProductCell")
+        let emptyStateNib = UINib(nibName: "EmptyStateView", bundle: nil)
+              emptyStateView = emptyStateNib.instantiate(withOwner: nil, options: nil).first as? UIView
+    }
+    
+    func updateEmptyState() {
+            if filteredProducts.isEmpty {
+                emptyStateView?.isHidden = false
+                Productscollection.isHidden = true
+            } else {
+                emptyStateView?.isHidden = true
+                Productscollection.isHidden = false
+            }
+        }
         
+    func emptyState() {
+        if let emptyStateView = emptyStateView {
+                    emptyStateView.isHidden = true
+                    view.addSubview(emptyStateView)
+                    
+                    emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+                    NSLayoutConstraint.activate([
+                        emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                        emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                        emptyStateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+                        emptyStateView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+                    ])
+                }
     }
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
            let selectedPrice = sender.value
-           priceLabel.text = "Price: \(selectedPrice)"
+        priceLabel.text = String(format: "Price: %.2f", selectedPrice)
         currentPriceFilter = Int(selectedPrice)
         applyfilters()
         filteredProducts = products.filter { Int(($0.price ?? 0)) <= Int(selectedPrice)
@@ -65,7 +93,8 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
                mySlider.maximumValue = Float(maxPrice)
                mySlider.value = Float(maxPrice)
                currentPriceFilter = Int(maxPrice)
-               priceLabel.text = "Max: \(maxPrice)"
+               priceLabel.text = String(format: "Max: %.2f", maxPrice)
+
            }
 
        }
@@ -101,7 +130,7 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
             cell.PriceLabel.text = "\(price)"
         }
         cell.currencyCodeLabel.text = product.currencyCode
-
+        cell.productTitle.text = product.title
         if let imageURL = product.image, let url = URL(string: imageURL) {
             cell.productImageView.kf.setImage(with: url, placeholder: UIImage(named: "1"))
         }
@@ -184,7 +213,8 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
 
                     return matchesTitle && matchesPrice
                 }
-
+        updateEmptyState()
                 Productscollection.reloadData()
+        ()
     }
 }

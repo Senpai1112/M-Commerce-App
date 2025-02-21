@@ -156,8 +156,10 @@ class CustomerViewController: UIViewController {
     
        private func setupUI() {
            view.backgroundColor = .systemGray6
-         // self.navigationItem.hidesBackButton = true
-         //  self.navigationController?.navigationBar.tintColor = .purple
+
+           //self.navigationItem.hidesBackButton = true
+           //self.navigationController?.navigationBar.tintColor = .purple
+
            
            // Add subviews
            self.view.addSubview(headerView)
