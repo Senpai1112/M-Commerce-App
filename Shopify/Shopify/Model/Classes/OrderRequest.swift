@@ -1,83 +1,49 @@
-////
-////  Orders.swift
-////  Shopify
-////
-////  Created by Yasser Yasser on 20/02/2025.
-////
 //
-//import Foundation
+//  Orders.swift
+//  Shopify
 //
-//// MARK: - Order Model
-//struct OrderRequest: Codable {
-//    let order: Order?
-//}
+//  Created by Yasser Yasser on 20/02/2025.
 //
-//struct Order: Codable {
-//    let lineItems: [LineItem]?
-//    let customer: CustomerModelJson?
-//    let billingAddress: Address?
-//    let shippingAddress: Address?
-//    let email: String?
-//    let transactions: [Transaction]?
-//    let financialStatus: String?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case lineItems = "line_items"
-//        case customer
-//        case billingAddress = "billing_address"
-//        case shippingAddress = "shipping_address"
-//        case email
-//        case transactions
-//        case financialStatus = "financial_status"
-//    }
-//}
-//
-//struct LineItem: Codable {
-//    let variantID: Int?
-//    let quantity: Int?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case variantID = "variant_id"
-//        case quantity
-//    }
-//}
-//
-//struct CustomerModelJson: Codable {
-//    let firstName: String?
-//    let lastName: String?
-//    let email: String?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case firstName = "first_name"
-//        case lastName = "last_name"
-//        case email
-//    }
-//}
-//
-//struct Address: Codable {
-//    let firstName: String?
-//    let lastName: String?
-//    let address1: String?
-//    let phone: String?
-//    let city: String?
-//    let province: String?
-//    let country: String?
-//    let zip: String?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case firstName = "first_name"
-//        case lastName = "last_name"
-//        case address1
-//        case phone
-//        case city
-//        case province
-//        case country
-//        case zip
-//    }
-//}
-//
-//struct Transaction: Codable {
-//    let kind: String?
-//    let status: String?
-//    let amount: Double?
-//}
+
+import Foundation
+
+// MARK: - Order Model
+
+// MARK: - OrderRequest Model
+struct OrderRequest: Codable {
+    var order: Order
+}
+
+struct Order: Codable {
+    var line_items: [LineItem]
+    var customer: CustomerModel
+    var billing_address: Address
+    var shipping_address: Address
+    var email: String
+    var transactions: [Transaction]
+    var financial_status: String
+}
+
+struct LineItem: Codable {
+    var variant_id: Int
+    var quantity: Int
+}
+
+struct CustomerModel: Codable {
+    var first_name: String
+    var last_name: String
+    var email: String
+}
+
+struct Address: Codable {
+    var address1: String
+    var phone: String
+    var city: String
+    var country: String
+}
+
+struct Transaction: Codable {
+    var kind: String
+    var status: String
+    var amount: Double
+}

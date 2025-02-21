@@ -13,6 +13,10 @@ class ChoosePaymentMethodViewController: UIViewController {
     let customerDetailsViewModel = CustomerDetailsViewModel()
     let cartViewModel = CartViewModel()
     
+    let orderViewModel = OrderViewModel()
+    
+    var newPrice = ""
+    
     @IBOutlet weak var continueToPayment: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
@@ -67,6 +71,7 @@ class ChoosePaymentMethodViewController: UIViewController {
                 vc.customerDetails = customerDetailsViewModel.customerDetails
                 vc.address = address
                 vc.cartDetails = cartViewModel.cartResult
+                vc.newPrice = newPrice
                 self.navigationController?.present(vc, animated: true)
             }
         }
@@ -172,7 +177,7 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
             items.append(tempItems)
         }
         
-        let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: cart.totalCost?.totalAmount?.amount))
+        let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: newPrice))
         items.append(total)
         paymentRequest.paymentSummaryItems = items
         
@@ -204,6 +209,10 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         }
     }
     
+    func extractVariantID(from gid: String) -> String? {
+        let components = gid.components(separatedBy: "/")
+        return components.last
+    }
 }
 
 extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControllerDelegate {
@@ -218,6 +227,16 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
         let result = PKPaymentAuthorizationResult(status: status, errors: nil)
         if result.status == .success {
             print("Payment succeeded")
+            var ids = [String]()
+            for item in cartDetails.cart! {
+                let variantId = extractVariantID(from: item.merchandise!.id)
+                let intVariantId = variantId?.codingKey.intValue
+                let address = Address(address1: address.address1!, phone: address.phone!, city: address.city!, country: address.country!)
+                let newPriceDouble = Double(newPrice)
+                orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
+                ids.append(item.id!)
+            }
+            cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
         } else {
             print("Payment failed with status: \(result.status.rawValue)")
         }
