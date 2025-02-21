@@ -43,18 +43,25 @@ class CashOnDeliveryViewController: UIViewController {
     
     @IBAction func placeOrder(_ sender: UIButton) {
         var ids = [String]()
-        for item in cartDetails.cart! {
-            let variantId = extractVariantID(from: item.merchandise!.id)
-            let intVariantId = variantId?.codingKey.intValue
-            let address = Address(address1: address.address1!, phone: address.phone!, city: address.city!, country: address.country!)
-            let newPriceDouble = Double(newPrice)
-            orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
-            ids.append(item.id!)
+        if let cart = cartDetails.cart{
+            for item in cart {
+                let variantId = extractVariantID(from: item.merchandise!.id)
+                let intVariantId = variantId?.codingKey.intValue
+                let address = Address(address1: address.address1!, phone: address.phone!, city: address.city!, country: address.country!)
+                let newPriceDouble = Double(newPrice)
+                orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
+                ids.append(item.id!)
+            }
         }
         cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
-            self?.navigationController?.popViewController(animated: true)
+            if let navigationController = self?.navigationController {
+                let viewControllers = navigationController.viewControllers
+                if viewControllers.count >= 6 {
+                    navigationController.popToViewController(viewControllers[viewControllers.count - 6], animated: true)
+                }
+            }
         })
         self.present(alert, animated: true)
     }

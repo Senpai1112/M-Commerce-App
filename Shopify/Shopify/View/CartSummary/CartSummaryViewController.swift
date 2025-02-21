@@ -15,6 +15,7 @@ class CartSummaryViewController: UIViewController {
     
     var address = Addresses()
     
+    @IBOutlet weak var discount: UILabel!
     @IBOutlet weak var validationLabel: UILabel!
     var discoundCopons = ["SUMMER30","WINTER30"]
     @IBOutlet weak var continueToPayment: UIButton!
@@ -70,6 +71,7 @@ class CartSummaryViewController: UIViewController {
                         self?.performDiscount()
                     }else{
                         self?.validationLabel.text = "Not Valid"
+                        self?.discount.text = "No Discount"
                         self?.validationLabel.textColor = UIColor.black
                         self?.newPrice = (self?.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount)!
                         self?.totalPriceOfProducts.text = self?.newPrice
@@ -81,8 +83,11 @@ class CartSummaryViewController: UIViewController {
         }
     func performDiscount(){
         let floatPrice = Float(totalPriceOfProducts.text ?? "0.0")
-        let discound = floatPrice! * 70 / 100
-        newPrice = "\(discound)"
+        let discountPrice = floatPrice! * 70 / 100
+        let discountAmount = floatPrice! * 30 / 100
+        let newDiscount = "\(discountAmount)"
+        discount.text = newDiscount
+        newPrice = "\(discountPrice)"
         totalPriceOfProducts.text = newPrice
     }
     func initNib(){

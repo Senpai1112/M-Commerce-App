@@ -11,7 +11,8 @@ class ChooseAddressViewController: UIViewController {
     
     private var addressDetailsViewModel = AddressDetailsViewModel()
     var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
-    
+    var backgroundImageView: UIImageView?
+
     var selectedIndex: IndexPath?
     @IBOutlet weak var continueToPayment: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -27,10 +28,31 @@ class ChooseAddressViewController: UIViewController {
         self.navigationItem.title = "Choose Address"
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
+                if self?.addressDetailsViewModel.addressResult.count == 0{
+                    self?.addBackgroundImage(named: "noLocation")
+                }else{
+                    self?.removeBackgroundImage()
+                }
                 self?.tableView.reloadData()
             }
         }
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
+    }
+    
+    func addBackgroundImage(named imageName: String) {
+        let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
+           imageView.image = UIImage(named: imageName)
+        imageView.contentMode = .scaleAspectFit
+           imageView.tag = 100  // Assign a tag to easily remove later
+        self.tableView.addSubview(imageView)
+        self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
+           backgroundImageView = imageView
+       }
+    
+    func removeBackgroundImage() {
+        if let imageView = self.tableView.viewWithTag(100) {
+            imageView.removeFromSuperview()
+        }
     }
     
     func initNib(){

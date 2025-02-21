@@ -13,7 +13,8 @@ class AddressesDetailsViewController: UIViewController {
     private let addressDetailsViewModel = AddressDetailsViewModel()
     var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
     let activityIndicator = UIActivityIndicatorView(style: .large)
-    
+    var backgroundImageView: UIImageView?
+
     @IBOutlet weak var addNewAddress: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
@@ -28,13 +29,32 @@ class AddressesDetailsViewController: UIViewController {
         self.navigationItem.title = "Addresses Details"
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
+                if self?.addressDetailsViewModel.addressResult.count == 0{
+                    self?.addBackgroundImage(named: "noLocation")
+                }else{
+                    self?.removeBackgroundImage()
+                }
                 self?.tableView.reloadData()
                 self?.activityIndicator.stopAnimating()
             }
         }
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
     }
+    func addBackgroundImage(named imageName: String) {
+        let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
+           imageView.image = UIImage(named: imageName)
+        imageView.contentMode = .scaleAspectFit
+           imageView.tag = 100  // Assign a tag to easily remove later
+        self.tableView.addSubview(imageView)
+        self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
+           backgroundImageView = imageView
+       }
     
+    func removeBackgroundImage() {
+        if let imageView = self.tableView.viewWithTag(100) {
+            imageView.removeFromSuperview()
+        }
+    }
     func initNib(){
         tableView.dataSource = self
         tableView.delegate = self

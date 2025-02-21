@@ -72,7 +72,7 @@ class ChoosePaymentMethodViewController: UIViewController {
                 vc.address = address
                 vc.cartDetails = cartViewModel.cartResult
                 vc.newPrice = newPrice
-                self.navigationController?.present(vc, animated: true)
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }
     }
@@ -165,18 +165,19 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .threeDSecure
         paymentRequest.countryCode = address.countryCode!
-        paymentRequest.currencyCode = "EGP"
+        paymentRequest.currencyCode = "USD"
         
         // Required fields
         paymentRequest.requiredShippingContactFields = [.name, .postalAddress, .phoneNumber, .emailAddress]
         
         // Payment Summary Items
         var items = [PKPaymentSummaryItem]()
-        for item in cart.cart! {
-            let tempItems = PKPaymentSummaryItem(label: (item.merchandise?.title)!, amount: NSDecimalNumber(string: item.cost?.totalAmount?.amount))
-            items.append(tempItems)
+        if let cart = cart.cart{
+            for item in cart {
+                let tempItems = PKPaymentSummaryItem(label: (item.merchandise?.title)!, amount: NSDecimalNumber(string: item.cost?.totalAmount?.amount))
+                items.append(tempItems)
+            }
         }
-        
         let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: newPrice))
         items.append(total)
         paymentRequest.paymentSummaryItems = items
@@ -246,6 +247,12 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true, completion: nil)
+        if let navigationController = self.navigationController {
+            let viewControllers = navigationController.viewControllers
+            if viewControllers.count >= 5 {
+                navigationController.popToViewController(viewControllers[viewControllers.count - 5], animated: true)
+            }
+        }
         print("payment finished")
     }
 }

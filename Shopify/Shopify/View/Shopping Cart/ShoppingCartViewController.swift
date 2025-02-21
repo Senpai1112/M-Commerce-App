@@ -18,6 +18,7 @@ class ShoppingCartViewController: UIViewController {
     @IBOutlet weak var totalPriceOfProducts: UILabel!
     
     var cartCount = 0
+    var backgroundImageView: UIImageView?
     
     private let cartViewModel = CartViewModel()
     let activityIndicator = UIActivityIndicatorView(style: .large)
@@ -37,6 +38,11 @@ class ShoppingCartViewController: UIViewController {
         self.cartViewModel.bindResultToShoppingCartTableViewController = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
+                if self.cartViewModel.localCartResult.cart?.count == 0{
+                    self.addBackgroundImage(named: "emptyCart")
+                }else{
+                    self.removeBackgroundImage()
+                }
                 self.cartCount = self.cartViewModel.localCartResult.cart?.count ?? 0
                 self.activityIndicator.stopAnimating()
                 self.totalPriceOfProducts.text = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount
@@ -45,6 +51,23 @@ class ShoppingCartViewController: UIViewController {
         }
         cartViewModel.getCartFromModel(cartID: cartId)
     }
+    
+    func addBackgroundImage(named imageName: String) {
+        let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
+           imageView.image = UIImage(named: imageName)
+        imageView.contentMode = .scaleAspectFit
+           imageView.tag = 100  // Assign a tag to easily remove later
+        self.tableView.addSubview(imageView)
+        self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
+           backgroundImageView = imageView
+       }
+    
+    func removeBackgroundImage() {
+        if let imageView = self.tableView.viewWithTag(100) {
+            imageView.removeFromSuperview()
+        }
+    }
+    
     func initNib(){
         tableView.dataSource = self
         tableView.delegate = self
@@ -65,7 +88,7 @@ class ShoppingCartViewController: UIViewController {
     }
     
     @IBAction func checkOutButton(_ sender: Any) {
-        if cartViewModel.localCartResult.cart!.count == 0{
+        if cartViewModel.localCartResult.cart == nil || cartViewModel.localCartResult.cart?.count == 0{
             let alert = UIAlertController(title: "Nothing in the Cart To Chekout", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in }))
             self.present(alert, animated: true)

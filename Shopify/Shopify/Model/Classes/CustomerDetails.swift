@@ -14,4 +14,5 @@ struct CustomerDetails{
     var id : String?
     var lastName : String?
     var phone : String?
+    var countryCode : String?
 }
