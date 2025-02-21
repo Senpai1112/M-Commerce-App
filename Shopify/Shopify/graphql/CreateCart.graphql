@@ -1,0 +1,18 @@
+mutation CartCreate ( $customerAccessToken: String! ) {
+    cartCreate(input: { buyerIdentity: {customerAccessToken: $customerAccessToken } }) {
+        cart {
+            checkoutUrl
+            createdAt
+            id
+            note
+            totalQuantity
+            updatedAt
+        }
+        userErrors {
+            code
+            field
+            message
+        }
+    }
+}
+
