@@ -175,76 +175,75 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     }
     
     @objc func toggleFavorite() {
-        //        guard let product = product else { return }
-        //        favoriteButton.isSelected = !favoriteButton.isSelected
-        //
-        //        if favoriteButton.isSelected {
-        //            favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
-        //            CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
-        //            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
-        //        } else {
-        //            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        //            CoreDataManager.deleteFromCoreData(productName: product.title)
-        //            UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
-        //        }
-        guard let product = product else { return }
-        favoriteButton.isSelected = !favoriteButton.isSelected
-        
-        if favoriteButton.isSelected {
-            favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
-            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+            
+            guard let product = product else { return }
+            favoriteButton.isSelected = !favoriteButton.isSelected
+            
+            if favoriteButton.isSelected {
+                favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
+                UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
+            } else {
+                favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                CoreDataManager.deleteFromCoreData(productId: product.id)
+                UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+            }
         } else {
-            favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            CoreDataManager.deleteFromCoreData(productId: product.id)
-            UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+            showLoginAlert()
         }
     }
     
+    func showLoginAlert() {
+            let alert = UIAlertController(title: "Alert", message: "You must log in to do this action.", preferredStyle: .alert)
+            let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+                self.navigationController?.pushViewController(loginVC, animated: true)        }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(loginAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
+    
     @objc func addToCartTapped() {
-//        variantPicker.selectRow(0, inComponent: 0, animated: false)
-//
-//        print("Add to Cart Tapped")
-//        // Combine the logic: Adding to cart and setting up observers
-//        if let cartID = UserDefaults.standard.string(forKey: "cartID") {
-//            print("Retrieved Cart ID: \(cartID)")
-//            addToCartViewModel.addLineToCart(cartId: cartID, lines: lines)
-//
-//        }
-//
-//        // Setup ViewModel observers within the same function
-
-        let selectedRow = variantPicker.selectedRow(inComponent: 0)
-               let selectedVariant = product?.variants[selectedRow] ?? product?.variants.first
-               
-               if let variant = selectedVariant {
-                   lines = [CartLineInput(quantity: 1, merchandiseId: variant.id)]
-                   print("Add to Cart Tapped with Variant: \(variant.title), Price: \(variant.price.amount) \(variant.price.currencyCode)  ID: \(variant.id)")
-                   
-                   // Assuming cartID is retrieved and lines are properly populated
-                   if let cartID = UserDefaults.standard.string(forKey: "cartID") {
-                       addToCartViewModel.addLineToCart(cartId: cartID, lines: lines)
-                   }
-               }
-                addToCartViewModel.onCartUpdated = { [weak self] cart in
-                    // Update UI with new cart data (e.g., navigate to checkout)
-                    let alertController = UIAlertController(title: "Success", message: "Item has been added to your cart.", preferredStyle: .alert)
-                        
-                        // Add an OK button to dismiss the alert
-                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                        alertController.addAction(okAction)
-                        
-                        // Present the alert
-                    self?.present(alertController, animated: true, completion: nil)
-                    print("Cart updated: \(cart.id)")
-        
-                    print("Checkout URL: \(cart.checkoutUrl ?? "No URL")")
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+            let selectedRow = variantPicker.selectedRow(inComponent: 0)
+            let selectedVariant = product?.variants[selectedRow] ?? product?.variants.first
+            
+            if let variant = selectedVariant {
+                lines = [CartLineInput(quantity: 1, merchandiseId: variant.id)]
+                print("Add to Cart Tapped with Variant: \(variant.title), Price: \(variant.price.amount) \(variant.price.currencyCode)  ID: \(variant.id)")
+                
+                // Assuming cartID is retrieved and lines are properly populated
+                if let cartID = UserDefaults.standard.string(forKey: "cartID") {
+                    addToCartViewModel.addLineToCart(cartId: cartID, lines: lines)
                 }
-        
-                viewModel.onError = { error in
-                    // Handle error (e.g., show alert to user)
-                    print("Error: \(error)")
-                }
+            }
+            addToCartViewModel.onCartUpdated = { [weak self] cart in
+                // Update UI with new cart data (e.g., navigate to checkout)
+                let alertController = UIAlertController(title: "Success", message: "Item has been added to your cart.", preferredStyle: .alert)
+                
+                // Add an OK button to dismiss the alert
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alertController.addAction(okAction)
+                
+                // Present the alert
+                self?.present(alertController, animated: true, completion: nil)
+                print("Cart updated: \(cart.id)")
+                
+                print("Checkout URL: \(cart.checkoutUrl ?? "No URL")")
+            }
+            
+            viewModel.onError = { error in
+                // Handle error (e.g., show alert to user)
+                print("Error: \(error)")
+            }
+        }else {
+            showLoginAlert()
+        }
     }
     
     private func setupViewModelObservers() {

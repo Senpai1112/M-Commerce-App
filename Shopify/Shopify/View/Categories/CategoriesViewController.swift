@@ -219,44 +219,45 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
                }
         productKey = "\((product.id) ?? "")"
        
-       var favIsSelected =  UserDefaults.standard.bool(forKey: productKey)
-
-      cell.favButton.isSelected =   UserDefaults.standard.bool(forKey: productKey)
-       
-       if UserDefaults.standard.bool(forKey: productKey){
-           cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-           cell.favButton.tintColor = .white
-
-             }else{
-                 cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
-
-                 cell.favButton.tintColor = .white
-           }
-           
-
-       cell.addToFavList = { [unowned self] in
-
-           cell.favButton.isSelected = !cell.favButton.isSelected
-           if  cell.favButton.isSelected {
-
-               cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-               cell.favButton.tintColor = .white
-               //cell.favButton.foregroundColor = .red
-                // save to core data
-               CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price)", productImage: product.image ?? "", productId: product.id ?? "")
+        // Check if accessToken exists
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+            // Handle favorite button based on the access token and user's preference
+            var favIsSelected = UserDefaults.standard.bool(forKey: productKey)
+            
+            cell.favButton.isSelected = favIsSelected
+            
+            if favIsSelected {
+                cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                cell.favButton.tintColor = .white
+            } else {
+                cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                cell.favButton.tintColor = .white
+            }
+            
+            cell.addToFavList = { [unowned self] in
+                cell.favButton.isSelected = !cell.favButton.isSelected
+                
+                if cell.favButton.isSelected {
+                    cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                    cell.favButton.tintColor = .white
                     
-                 UserDefaults.standard.set(true,forKey: "\(product.id ?? "")")
-
-                }else{
-                    // delete from core data and change state
+                    // Save to Core Data and update UserDefaults
+                    CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price ?? 0)", productImage: product.image ?? "", productId: product.id ?? "")
+                    UserDefaults.standard.set(true, forKey: "\(product.id ?? "")")
+                } else {
                     cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
                     cell.favButton.tintColor = .white
-
-                    CoreDataManager.deleteFromCoreData(productId: product.id ?? "" )
-                    UserDefaults.standard.set(false,
-                                              forKey: "\(product.id ?? "")")
+                    
+                    // Delete from Core Data and update UserDefaults
+                    CoreDataManager.deleteFromCoreData(productId: product.id ?? "")
+                    UserDefaults.standard.set(false, forKey: "\(product.id ?? "")")
                 }
-      }
+            }
+        } else {
+            cell.addToFavList = { [unowned self] in
+                showLoginAlert()
+            }
+        }
        
 
                return cell
