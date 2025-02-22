@@ -26,6 +26,7 @@ class ShoppingCartTableViewCell: UITableViewCell {
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var productPrice: UILabel!
     @IBOutlet weak var productName: UILabel!
+    @IBOutlet weak var currencyCode: UILabel!
     @IBOutlet weak var productImage: UIImageView!
     
     override func awakeFromNib() {

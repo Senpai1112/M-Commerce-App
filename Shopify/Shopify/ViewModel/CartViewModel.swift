@@ -23,17 +23,17 @@ class CartViewModel{
     func parseCartResponse(from data: FetchCartByIdQuery.Data) -> CartResponse? {
         guard let cartData = data.cart else { return nil }
         
-        func mapCost(amount: String?) -> Cost? {
+        func mapCost(amount: String? , currencyCode : String?) -> Cost? {
             guard let amount = amount else { return nil }
-            return Cost(amount: amount, currencyCode: nil) // ignore currencyCode
+            return Cost(amount: amount, currencyCode: currencyCode)
         }
         
         let totalCost: TotalCost? = {
             let cost = cartData.cost
             return TotalCost(
-                checkoutChargeAmount: mapCost(amount: cost.checkoutChargeAmount.amount),
-                subtotalAmount: mapCost(amount: cost.subtotalAmount.amount),
-                totalAmount: mapCost(amount: cost.totalAmount.amount)
+                checkoutChargeAmount: mapCost(amount: cost.checkoutChargeAmount.amount, currencyCode: cost.checkoutChargeAmount.currencyCode.rawValue),
+                subtotalAmount: mapCost(amount: cost.subtotalAmount.amount , currencyCode: cost.subtotalAmount.currencyCode.rawValue),
+                totalAmount: mapCost(amount: cost.totalAmount.amount, currencyCode: cost.totalAmount.currencyCode.rawValue)
             )
         }()
         
@@ -54,9 +54,9 @@ class CartViewModel{
             cartItem.cost = {
                 let lineCost = line.node.cost
                 return TotalCost(
-                    checkoutChargeAmount: mapCost(amount: lineCost.amountPerQuantity.amount),
-                    subtotalAmount: mapCost(amount: lineCost.subtotalAmount.amount),
-                    totalAmount: mapCost(amount: lineCost.totalAmount.amount)
+                    checkoutChargeAmount: mapCost(amount: lineCost.amountPerQuantity.amount, currencyCode: lineCost.amountPerQuantity.currencyCode.rawValue),
+                    subtotalAmount: mapCost(amount: lineCost.subtotalAmount.amount, currencyCode: lineCost.subtotalAmount.currencyCode.rawValue),
+                    totalAmount: mapCost(amount: lineCost.totalAmount.amount, currencyCode: lineCost.totalAmount.currencyCode.rawValue)
                 )
             }()
             

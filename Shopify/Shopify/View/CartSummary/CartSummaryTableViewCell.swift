@@ -16,6 +16,8 @@ class CartSummaryTableViewCell: UITableViewCell {
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var productImage: UIImageView!
     
+    @IBOutlet weak var currencyCode: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
