@@ -148,6 +148,7 @@ extension AddressesDetailsViewController:
         let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: "UpdateAddressViewController") as! UpdateAddressViewController
         vc.address = addressDetailsViewModel.addressResult[indexPath.row]
+        vc.customerAccessToken = customerAccessToken
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

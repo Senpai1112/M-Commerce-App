@@ -36,8 +36,9 @@ class UpdateAddressViewModel{
                 }
                 if data.data != nil{
                     DispatchQueue.main.async{
-                        let address = data.data?.customerAddressUpdate?.customerAddress
-                        self?.updatedAddressResult = Addresses(country: address?.country ,city: address?.city , address1: address?.address1 , address2: address?.address2 , phone : address?.phone,id: address?.id)
+                        if let address = data.data?.customerAddressUpdate?.customerAddress{
+                            self?.updatedAddressResult = Addresses(country: address.country ,city: address.city , address1: address.address1 , address2: address.address2 , phone : address.phone,id: address.id)
+                        }
                     }
                 }
             case .failure(let error):

@@ -89,7 +89,7 @@ class UpdateAddressViewController: UIViewController {
                 print("Access Token is invalid")
                 return
             }
-            guard let existingAddress = address else {
+            guard address != nil else {
                 print("address data is missing")
                 return
             }
