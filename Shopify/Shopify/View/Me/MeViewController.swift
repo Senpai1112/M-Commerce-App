@@ -32,8 +32,15 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     override func viewWillAppear(_ animated: Bool) {
        self.tabBarController?.title = "Me"
         setupNavigationBarIcons()
-
-}
+        if let token = UserDefaults.standard.string(forKey: "accessToken"), !token.isEmpty  {
+                    removeLoginView()
+                } else {
+                    showLoginView()
+                }
+        
+    }
+    
+    
     func initNib(){
         let nib = UINib(nibName: "OrderCell", bundle: nil)
         self.ordersTable.register(nib, forCellReuseIdentifier: "OrderCell")
@@ -111,7 +118,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     /////count of orders
     var displayedOrders = 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(viewModel.finalResult.count, displayedOrders)
+        return min(viewModel?.finalResult.count ?? 0, displayedOrders)
     }
     @IBAction func moreOrdersAction(_ sender: Any) {
         displayedOrders = viewModel.finalResult.count
@@ -130,4 +137,50 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60   }
+   
+    
+    func showLoginView() {
+            let loginView = UIView()
+        loginView.tag = 100
+            loginView.frame = view.bounds
+            loginView.backgroundColor = .white
+            
+            let messageLabel = UILabel()
+            messageLabel.text = "Please log in to view your profile."
+            messageLabel.textAlignment = .center
+        messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        messageLabel.textColor = .lightGray
+            messageLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            let loginButton = UIButton(type: .system)
+            loginButton.setTitle("Log In", for: .normal)
+            loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+            loginButton.backgroundColor = .purple
+            loginButton.setTitleColor(.white, for: .normal)
+            loginButton.layer.cornerRadius = 8
+            loginButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            loginView.addSubview(messageLabel)
+            loginView.addSubview(loginButton)
+            view.addSubview(loginView)
+            
+            NSLayoutConstraint.activate([
+                messageLabel.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
+                messageLabel.centerYAnchor.constraint(equalTo: loginView.centerYAnchor, constant: -20),
+                loginButton.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
+                loginButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20),
+                loginButton.widthAnchor.constraint(equalToConstant: 120),
+                loginButton.heightAnchor.constraint(equalToConstant: 40)
+            ])
+        }
+      
+      @objc func loginTapped() {
+          let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+          let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+          navigationController?.pushViewController(loginVC, animated: true)
+      }
+
+func removeLoginView() {
+          view.viewWithTag(100)?.removeFromSuperview()
+          }
 }
