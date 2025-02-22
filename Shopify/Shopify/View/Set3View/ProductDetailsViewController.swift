@@ -576,11 +576,11 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
    //            imageIndicatorStackView.heightAnchor.constraint(equalToConstant: 8),
    //            imageIndicatorStackView.bottomAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 16),
                
-               titleLabel.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 16),
+               titleLabel.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 4),
                titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
                
-               priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+               priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
                priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                
    //            ratingStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16),
@@ -593,13 +593,14 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
                variantPicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                variantPicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
                variantPicker.heightAnchor.constraint(equalToConstant: 200), // Set a fixed height
+              
 
                
-               ratingAndReviewStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
+               ratingAndReviewStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 4),
                ratingAndReviewStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                ratingAndReviewStackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -16),
                
-               descriptionStackView.topAnchor.constraint(equalTo: ratingAndReviewStackView.bottomAnchor, constant: 16),
+               descriptionStackView.topAnchor.constraint(equalTo: ratingAndReviewStackView.bottomAnchor, constant: 4),
                descriptionStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                descriptionStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
                
