@@ -104,9 +104,9 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
     // MARK: - Helper Methods
     func checkIfFavorite() {
 //        guard let product = product else { return }
-//        
+//
 //        let favoriteProducts = CoreDataManager.fetchFromCoreData()
-//        
+//
 //        for favorite in favoriteProducts {
 //            if favorite.productId == product.id {
 //                favoriteButton.isSelected = true
@@ -114,7 +114,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //                return
 //            }
 //        }
-//        
+//
 //        favoriteButton.isSelected = false
 //        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         guard let product = product else { return }
@@ -124,14 +124,17 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
             for favorite in favoriteProducts {
                 if favorite.productId == product.id {
                     favoriteButton.isSelected = true
-                    favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                    favoriteButton.tintColor = .red
+                    let image = UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal)
+
+                    favoriteButton.setImage(image, for: .normal)
                     return
                 }
             }
             
             favoriteButton.isSelected = false
-            favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        let image = UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate)
+
+            favoriteButton.setImage(image, for: .normal)
             favoriteButton.tintColor = .lightGray
     }
     
@@ -152,12 +155,11 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
             favoriteButton.isSelected = !favoriteButton.isSelected
 
             if favoriteButton.isSelected {
-                favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                favoriteButton.tintColor = .red
+                favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
                 CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
                 UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
             } else {
-                favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate), for: .normal)
                 favoriteButton.tintColor = .lightGray
                 CoreDataManager.deleteFromCoreData(productId: product.id)
                 UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
@@ -263,7 +265,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
                 
                 // Button styling to ensure it's circular if needed
-            favoriteButton.tintColor = .red
+        favoriteButton.tintColor = .white
               //  favoriteButton.layer.cornerRadius = 25 // Make it circular if needed
              //   favoriteButton.clipsToBounds = true // Clip any overflow
    //     favoriteButton.imageView?.contentMode = .scaleToFill
@@ -380,12 +382,12 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //    // Image indicator (dots) below the carousel
 //    let imageIndicatorStackView = UIStackView()
 //    var indicatorViews: [UIView] = []
-//    
+//
 //    // Section for description and rating
 //    let descriptionStackView = UIStackView()
 //    let descriptionLabel = UILabel()
 //    let ratingStackView = UIStackView()
-//    
+//
 //    // Section for product title, price and buttons (Add to Cart, Add to Favorites)
 //    let titleLabel: UILabel = {
 //        let label = UILabel()
@@ -394,7 +396,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        label.textColor = .black
 //       // label.textAlignment = .center
 //        label.numberOfLines = 2
-//        label.lineBreakMode = .byWordWrapping 
+//        label.lineBreakMode = .byWordWrapping
 //        return label
 //    }()
 //    var priceLabel : UILabel = {
@@ -424,7 +426,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 ////        label.translatesAutoresizingMaskIntoConstraints = false
 ////        return label
 ////    }()
-//    
+//
 //    let staticDescriptionLabel: UILabel = {
 //        let label = UILabel()
 //        label.text = "Description"  //  Static label text
@@ -433,7 +435,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        label.textAlignment = .left
 //        return label
 //    }()
-//    
+//
 //
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
@@ -444,15 +446,15 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        setupConstraints()
 //        setupIndicator()
 //        carousel.delegate = self
-//        
+//
 //        print("Fetching product data...")
 //        setupViewModelObservers()
 //        viewModel.fetchProduct(pid: id ?? "gid://shopify/Product/7226328383543" )
 //      //  fetchProductData()
 //    }
-//    
+//
 //    override func viewWillAppear(_ animated: Bool) {
-//        
+//
 //        let favIsSelected =  UserDefaults.standard.bool(forKey: "\((id) ?? "")")
 //        favoriteButton.isSelected =  favIsSelected
 //        if favIsSelected {
@@ -463,10 +465,10 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //    }
 //    func checkIfFavorite() {
 //           guard let product = product else { return }
-//           
+//
 //           // Check if the product exists in Core Data (Favorite Product list)
 //        let favoriteProducts = CoreDataManager.fetchFromCoreData()
-//           
+//
 //           // Check if the current product is in the favorites list
 //           for favorite in favoriteProducts {
 //               if favorite.productId == product.id {
@@ -475,11 +477,11 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //                   return
 //               }
 //           }
-//           
+//
 //           favoriteButton.isSelected = false
 //           favoriteButton.setImage(UIImage(named: "unFavorite"), for: .normal) // Gray for not favorite
 //       }
-//    
+//
 //    @objc func toggleFavorite(){
 //        guard let product = product else { return }
 //        favoriteButton.isSelected = !favoriteButton.isSelected
@@ -487,7 +489,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        if favoriteButton.isSelected {
 //            favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
 //            CoreDataManager.saveProductToCoreData(productName: product.title , productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
-//            
+//
 //            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
 //
 //        }else{
@@ -528,7 +530,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        print("Available for Sale: \(product.availableForSale ? "Yes" : "No")")
 //        print("Total Inventory: \(product.totalInventory)")
 //        print("Price: \(product.price) EGP")
-//        
+//
 //        print("\n Images:")
 //        for imageUrl in product.images {
 //            print("   - \(imageUrl)")
@@ -540,14 +542,14 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        //  Update Images in the Carousel
 //        if !product.images.isEmpty {
 //            let urls = product.images.compactMap { URL(string: $0) }
-//            
+//
 //            DispatchQueue.main.async {
 //                self.carousel.updateImages(with: urls) // Call the method to update carousel
 //            }
 //        }
 //        checkIfFavorite()
 //    }
-//    
+//
 //    // Set up the view hierarchy
 //    func setupHierarchy() {
 //        self.view.addSubview(headerView)
@@ -558,14 +560,14 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        self.view.addSubview(descriptionStackView) // Add description section
 //        self.view.addSubview(ratingStackView) // Add rating section
 //        self.view.addSubview(buttonsStackView) // Add buttons section
-//        
+//
 //        // Add description to descriptionStackView
 //        descriptionStackView.addArrangedSubview(staticDescriptionLabel)
 //        descriptionStackView.addArrangedSubview(descriptionLabel)
-//        
+//
 //        // Add rating to ratingStackView (using stars)
 //        ratingStackView.addArrangedSubview(createRatingStars(rating: 4))
-//        
+//
 //        // Add buttons to buttonsStackView
 //        buttonsStackView.addArrangedSubview(favoriteButton)
 //        buttonsStackView.addArrangedSubview(addToCartButton)
@@ -585,16 +587,16 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        titleLabel.text = "ASICS Tiger | GEL-LYTE V '30 YEARS OF GEL' PACK"
 //        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
 //        titleLabel.textColor = .black
-//        
+//
 //        // Set up price label
 //        priceLabel.text = "3447.38 EGP"
 //        priceLabel.font = UIFont.boldSystemFont(ofSize: 24)
 //        priceLabel.textColor = .black
-//        
+//
 //        // Set up description
 //        descriptionLabel.text = "The iconic ASICS Tiger GEL-Lyte III was originally released in 1990. Having over two decades of performance heritage, it offers fine design detailing and a padded split tongue."
 //        descriptionLabel.numberOfLines = 0
-//        
+//
 //        // Set up buttons
 //        addToCartButton.setTitle("Add to Bag", for: .normal)
 //        addToCartButton.backgroundColor = .purple
@@ -603,19 +605,19 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        addToCartButton.addTarget(self, action: #selector(addToCartTapped), for: .touchUpInside)
 //
 //        addToCartButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-//        
+//
 //        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
 //        favoriteButton.tintColor = .lightGray
 //        favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
 //        favoriteButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-//        
+//
 //        // Set up stack views
 //        descriptionStackView.axis = .vertical  //Stack items in a column
 //            descriptionStackView.spacing = 4
-//        
+//
 //        ratingStackView.axis = .horizontal
 //        ratingStackView.spacing = 4
-//        
+//
 //        buttonsStackView.axis = .horizontal
 //        buttonsStackView.spacing = 16
 //        buttonsStackView.distribution = .fillEqually
@@ -628,7 +630,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 //            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 //            headerView.heightAnchor.constraint(equalToConstant: 80), // Adjust height
-//               
+//
 //               //Carousel Below Header
 //            carousel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10),
 //            carousel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -646,20 +648,20 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //            titleLabel.topAnchor.constraint(equalTo: imageIndicatorStackView.bottomAnchor, constant: 16),
 //            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 //            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            
+//
 //            // Price constraints
 //            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
 //            priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            
+//
 //            // Rating constraints
 //            ratingStackView.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 8),
 //            ratingStackView.topAnchor.constraint(equalTo: priceLabel.topAnchor),
-//            
+//
 //            // Description constraints
 //            descriptionStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16),
 //            descriptionStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 //            descriptionStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            
+//
 //            // Buttons constraints
 //            buttonsStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
 //            buttonsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -681,7 +683,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //            indicatorViews.append(indicatorDot) // Add the dot to the array of indicators
 //            imageIndicatorStackView.addArrangedSubview(indicatorDot) // Add the dot to the stack view
 //        }
-//        
+//
 //        // Initially highlight the first dot
 //        updateIndicator(selectedIndex: 0)
 //    }
@@ -703,7 +705,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //            dot.backgroundColor = (index == selectedIndex) ? .darkGray : .lightGray // Active dot
 //        }
 //    }
-//    
+//
 //    // Create rating stars for the rating section
 //    func createRatingStars(rating: Int) -> UIStackView {
 //        let ratingStackView = UIStackView()
@@ -744,3 +746,4 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate {
 //        updateIndicator(selectedIndex: selectedIndex)
 //    }
 //}
+

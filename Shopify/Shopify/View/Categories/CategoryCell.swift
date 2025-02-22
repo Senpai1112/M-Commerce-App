@@ -36,7 +36,8 @@ class CategoryCell: UICollectionViewCell {
         vendorLabel.textAlignment = .center
         PriceLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         currencyCodeLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-
+        titleLabel.numberOfLines = 2
+        titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.font = UIFont.systemFont(ofSize: 10, weight: .medium)
         vendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
 

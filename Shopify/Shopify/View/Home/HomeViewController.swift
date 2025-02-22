@@ -233,7 +233,11 @@ func drawAdsSection() -> NSCollectionLayoutSection {
     }
     
     @objc func favTapped() {
-        print("favTapped")
+        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+        let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
+        
+        navigationController?.pushViewController(favouritesVC, animated: true)
+        
     }
     
     func showSearchBar() {

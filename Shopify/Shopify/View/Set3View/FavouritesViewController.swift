@@ -11,12 +11,16 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
 
     @IBOutlet weak var myFavTableView: UITableView!
     var wishList = [FavoriteProduct]()
-    
+    var emptyStateView: UIView?
+
     
     override func viewWillAppear(_ animated: Bool) {
         self.myFavTableView.reloadData()
+        
+        initNib()
         DispatchQueue.main.asyncAfter(deadline: .now()+1) {
             self.checkIfTableEmty()
+
         }
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
@@ -26,11 +30,47 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
         myFavTableView.delegate = self
         myFavTableView.dataSource = self
         myFavTableView.separatorStyle = .none
+        emptyState() 
 
         //
         
         
     }
+    func emptyState() {
+        if let emptyStateView = emptyStateView {
+                    emptyStateView.isHidden = true
+                    view.addSubview(emptyStateView)
+                    
+                    emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+                    NSLayoutConstraint.activate([
+                        emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                        emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                        emptyStateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+                        emptyStateView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+                    ])
+                }
+    }
+    func updateEmptyState() {
+            if wishList.isEmpty {
+                emptyStateView?.isHidden = false
+                myFavTableView.isHidden = true
+            } else {
+                emptyStateView?.isHidden = true
+                myFavTableView.isHidden = false
+            }
+        }
+    
+    func initNib(){
+        let nib = UINib(nibName: "FavouriteCell", bundle: nil)
+        self.myFavTableView.register(nib, forCellReuseIdentifier: "FavouriteCell")
+        let emptyStateNib = UINib(nibName: "favEmptyState", bundle: nil)
+              emptyStateView = emptyStateNib.instantiate(withOwner: nil, options: nil).first as? UIView
+        if let emptyStateView = emptyStateView {
+                   view.addSubview(emptyStateView)
+                   emptyStateView.isHidden = true
+               }
+            
+        }
     func checkIfTableEmty(){
         if wishList.count == 0 {
             myFavTableView.isHidden = true
@@ -42,6 +82,8 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
     override func viewDidAppear(_ animated: Bool) {
         wishList = CoreDataManager.fetchFromCoreData()
         myFavTableView.reloadData()
+        updateEmptyState()
+
         
     }
    
@@ -54,20 +96,23 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "favCell") as! FavouritesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteCell") as! FavouriteCell
         
-        cell.contentView.layer.cornerRadius = 20
-        cell.contentView.layer.masksToBounds = true
-        cell.contentView.layer.borderWidth = 1
         
         let product = wishList[indexPath.row]
-        cell.setUpCell(photo: product.productImage ?? "" , name: product.productName ?? "", price: product.productPrice ?? "")
+        cell.favTitle.text = product.productName
+        if let price = product.productPrice {
+            cell.favPrice.text = "\(price) "
+        }
+        if let imageURL = product.productImage, let url = URL(string: imageURL) {
+            cell.favImage.kf.setImage(with: url, placeholder: UIImage(named: "1"))
+        }
+
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        return 90
     }
-    
     
     
     // Override to support editing the table view.
@@ -107,6 +152,8 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
             myFavTableView.deleteRows(at: [indexPath], with: .fade)
             
             self.myFavTableView.reloadData()
+            updateEmptyState()
+
             
         }))
         
