@@ -55,7 +55,7 @@ class CartSummaryViewController: UIViewController {
                 self.activityIndicator.stopAnimating()
                 self.totalPriceOfProducts.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0")"
                 self.newPrice = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0.0"
-                self.currencyCode.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.currencyCode ?? "0")"
+                self.currencyCode.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.currencyCode ?? "EGP")"
                 self.tableView.reloadData()
             }
         }
@@ -92,13 +92,12 @@ class CartSummaryViewController: UIViewController {
             cancellable?.cancel()
         }
     func performDiscount(){
-        let floatPrice = Float(totalPriceOfProducts.text ?? "0.0")
-        let discountPrice = floatPrice! * 70 / 100
-        let discountAmount = floatPrice! * 30 / 100
-        let newDiscount = "\(discountAmount)"
-        discount.text = newDiscount
-        newPrice = "\(discountPrice)"
-        totalPriceOfProducts.text = "\(newPrice)"
+        let doublePrice = Double(totalPriceOfProducts.text ?? "0.0")
+        let discountPrice = doublePrice! * 70 / 100
+        let discountAmount = doublePrice! * 30 / 100
+        discount.text = "\((discountAmount * 100).rounded() / 100)"
+        totalPriceOfProducts.text = "\((discountPrice * 100).rounded() / 100)"
+        newPrice = "\((discountPrice * 100).rounded() / 100)"
     }
     func initNib(){
         tableView.dataSource = self

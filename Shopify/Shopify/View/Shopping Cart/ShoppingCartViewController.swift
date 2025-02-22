@@ -48,8 +48,9 @@ class ShoppingCartViewController: UIViewController {
                 }
                 self.cartCount = self.cartViewModel.localCartResult.cart?.count ?? 0
                 self.activityIndicator.stopAnimating()
-                self.totalPriceOfProducts.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0")"
-                self.currencyCode.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.currencyCode ?? "US")"
+                let totalPrice = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0"
+                self.totalPriceOfProducts.text = "\(totalPrice)"
+                self.currencyCode.text = self.cartViewModel.localCartResult.totalCost?.totalAmount?.currencyCode ?? "EGP"
                 self.tableView.reloadData()
             }
         }
@@ -124,11 +125,11 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
             cell.productName.text = item.merchandise?.productTitle
             cell.productDetails.text = item.merchandise?.title
             cell.productPrice.text = "\(item.cost?.checkoutChargeAmount?.amount ?? "0")"
-            cell.currencyCode.text = "\(item.cost?.checkoutChargeAmount?.currencyCode ?? "USD")"
+            cell.currencyCode.text = item.cost?.checkoutChargeAmount?.currencyCode ?? "EGP"
             quantaty = item.quantity!
             cell.productQuantaty.text = item.quantity?.codingKey.stringValue
             if let urlStr = item.merchandise?.image, let url = URL(string: urlStr) {
-                cell.productImage.sd_setImage(with: url, placeholderImage: UIImage(named: "Ad"))
+                cell.productImage.sd_setImage(with: url, placeholderImage: UIImage(named: "1"))
             }
         }
         cell.configure(with: indexPath , quantity: quantaty)

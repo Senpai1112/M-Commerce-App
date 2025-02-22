@@ -13,11 +13,12 @@ class SettingsViewController: UIViewController {
         return UserDefaults.standard.string(forKey: "accessToken") ?? ""
     }
     var addressDetailsViewModel = AddressDetailsViewModel()
+    var currencyViewModel = CurrencyViewModel()
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     let titles = ["Address" , "Currency" , "Contact Us","About Us"]
-    var details = ["address" , "USD" ,"",""]
+    var details = ["address" , UserDefaults.standard.string(forKey: "currencyCode") ,"",""]
     
     
     override func viewDidLoad() {
@@ -41,8 +42,10 @@ class SettingsViewController: UIViewController {
                 self?.tableView.reloadData()
             }
         }
+        currencyViewModel.bindResultToViewController = {}
         tableView.reloadData()
         addressDetailsViewModel.getDefaultAddressesFromModel(customerAccessToken: customerAccessToken)
+        currencyViewModel.fetchCurrencyFromModel()
     }
     func initNib(){
         tableView.dataSource = self
@@ -118,10 +121,21 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
         let alert = UIAlertController(title: "Choose you Currency", message: "", preferredStyle: .alert)
         let egp = UIAlertAction(title: "EGP", style: .default, handler: {  _ in
             self.details[1] = "EGP"
+            UserDefaults.standard.set("EGP", forKey: "currencyCode")
+            UserDefaults.standard.set(1.0, forKey: "currencyValue")
             self.tableView.reloadData()
         })
         let usd = UIAlertAction(title: "USD", style: .default, handler: { _ in
             self.details[1] = "USD"
+            UserDefaults.standard.set("USD", forKey: "currencyCode")
+            guard let currencyValue = self.currencyViewModel.currencyResult.data else {return}
+            for currency in currencyValue{
+                if currency.key == "USD"{
+                    guard let currencyValue = currency.value.value else { return }
+                    UserDefaults.standard.set(currencyValue, forKey: "currencyValue")
+                    print(currencyValue)
+                }
+            }
             self.tableView.reloadData()
         })
         alert.addAction(egp)

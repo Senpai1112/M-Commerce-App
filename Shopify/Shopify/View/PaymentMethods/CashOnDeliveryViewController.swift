@@ -64,18 +64,21 @@ class CashOnDeliveryViewController: UIViewController {
     }
     func updateUI(){
         subTotal.text = "\(newPrice)"
-        shippingFees.text = "30.0"
-        let floatGrandTotal = (subTotal.text! as NSString).floatValue + 30.0
-        grandTotal.text = "\(floatGrandTotal)"
+        let doubleShippingFees = 30.0 * UserDefaults.standard.double(forKey: "currencyValue")
+        shippingFees.text = "\((doubleShippingFees * 100).rounded() / 100)"
+
+        let doubleGrandTotal = (subTotal.text! as NSString).doubleValue + doubleShippingFees
+        
+        grandTotal.text = "\((doubleGrandTotal * 100).rounded() / 100)"
         nameLabel.text = customerDetails.firstName
         countryLabel.text = address.country
         address1Label.text = address.address1
         address2Label.text = address.address2
         cityLabel.text = address.city
         phoneLabel.text = address.phone
-        currencyCodeSubTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "USD"
-        currencyCodeGrandTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "USD"
-        currencyCodeShippingFees.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "USD"
+        currencyCodeSubTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
+        currencyCodeGrandTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
+        currencyCodeShippingFees.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {
