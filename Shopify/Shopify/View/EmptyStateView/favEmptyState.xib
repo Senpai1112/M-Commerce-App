@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="mGV-HH-3mv" userLabel="fav Empty State " customClass="EmptyStateView" customModule="Shopify" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can add an item to your favourites by clicking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Bz-WZ-Kit">
+                    <rect key="frame" x="40" y="332" width="295" height="14"/>
+                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="12"/>
+                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no fav" translatesAutoresizingMaskIntoConstraints="NO" id="5ZI-Dl-NNQ">
+                    <rect key="frame" x="57" y="127" width="278" height="197"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="197" id="9mm-kt-Pjx"/>
+                        <constraint firstAttribute="width" constant="278" id="bDD-kb-Ais"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="CbC-wi-M3D">
+                    <rect key="frame" x="331" y="330" width="21" height="21"/>
+                    <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="BuA-Og-kfb"/>
+                        <constraint firstAttribute="width" constant="21" id="a5R-yk-e7u"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Favourites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zjP-FB-L0P">
+                    <rect key="frame" x="139" y="303" width="115" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="919-OD-YL3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="919-OD-YL3" firstAttribute="trailing" secondItem="zjP-FB-L0P" secondAttribute="trailing" constant="139" id="3E5-FV-gLE"/>
+                <constraint firstItem="919-OD-YL3" firstAttribute="trailing" secondItem="5ZI-Dl-NNQ" secondAttribute="trailing" constant="58" id="4D1-f9-x9B"/>
+                <constraint firstItem="CbC-wi-M3D" firstAttribute="top" secondItem="5ZI-Dl-NNQ" secondAttribute="bottom" constant="4" id="F8B-Xk-YEj"/>
+                <constraint firstItem="zjP-FB-L0P" firstAttribute="top" secondItem="919-OD-YL3" secondAttribute="top" constant="244" id="Rgd-WP-aEE"/>
+                <constraint firstItem="CbC-wi-M3D" firstAttribute="leading" secondItem="919-OD-YL3" secondAttribute="leading" constant="331" id="Wv7-P0-3Ih"/>
+                <constraint firstItem="5ZI-Dl-NNQ" firstAttribute="top" secondItem="919-OD-YL3" secondAttribute="top" constant="68" id="cDv-Pr-BcP"/>
+                <constraint firstItem="zjP-FB-L0P" firstAttribute="leading" secondItem="919-OD-YL3" secondAttribute="leading" constant="139" id="dZ0-tf-rhf"/>
+                <constraint firstItem="919-OD-YL3" firstAttribute="trailing" secondItem="5Bz-WZ-Kit" secondAttribute="trailing" constant="58" id="fYh-SV-u2Z"/>
+                <constraint firstItem="5Bz-WZ-Kit" firstAttribute="leading" secondItem="919-OD-YL3" secondAttribute="leading" constant="40" id="hfc-tt-SNO"/>
+                <constraint firstItem="5Bz-WZ-Kit" firstAttribute="top" secondItem="5ZI-Dl-NNQ" secondAttribute="bottom" constant="8" id="tvu-Ma-z0U"/>
+                <constraint firstItem="5ZI-Dl-NNQ" firstAttribute="leading" secondItem="919-OD-YL3" secondAttribute="leading" constant="57" id="uji-cY-QXt"/>
+            </constraints>
+            <point key="canvasLocation" x="-802.29007633587787" y="-287.32394366197184"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="heart" catalog="system" width="128" height="107"/>
+        <image name="no fav" width="325" height="193"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

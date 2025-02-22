@@ -97,8 +97,10 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func favTapped() {
-        print("favTapped")
-    }
+        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+        let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
+        
+        navigationController?.pushViewController(favouritesVC, animated: true)    }
     
     func showSearchBar() {
         searchBar = UISearchBar()
@@ -178,7 +180,6 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
             CategoriesProductcollection.register(nib, forCellWithReuseIdentifier: "CategoryCell")
         let emptyStateNib = UINib(nibName: "EmptyStateView", bundle: nil)
               emptyStateView = emptyStateNib.instantiate(withOwner: nil, options: nil).first as? UIView
-              
             
         }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

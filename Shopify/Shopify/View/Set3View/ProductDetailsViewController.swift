@@ -143,66 +143,71 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     }
     
     // MARK: - Helper Methods
-    func checkIfFavorite() {
-        //        guard let product = product else { return }
-        //
-        //        let favoriteProducts = CoreDataManager.fetchFromCoreData()
-        //
-        //        for favorite in favoriteProducts {
-        //            if favorite.productId == product.id {
-        //                favoriteButton.isSelected = true
-        //                favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
-        //                return
-        //            }
-        //        }
-        //
-        //        favoriteButton.isSelected = false
-        //        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+func checkIfFavorite() {
+//        guard let product = product else { return }
+//
+//        let favoriteProducts = CoreDataManager.fetchFromCoreData()
+//
+//        for favorite in favoriteProducts {
+//            if favorite.productId == product.id {
+//                favoriteButton.isSelected = true
+//                favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+//                return
+//            }
+//        }
+//
+//        favoriteButton.isSelected = false
+//        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         guard let product = product else { return }
-        
-        let favoriteProducts = CoreDataManager.fetchFromCoreData()
-        
-        for favorite in favoriteProducts {
-            if favorite.productId == product.id {
-                favoriteButton.isSelected = true
-                favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                favoriteButton.tintColor = .red
-                return
+            
+            let favoriteProducts = CoreDataManager.fetchFromCoreData()
+            
+            for favorite in favoriteProducts {
+                if favorite.productId == product.id {
+                    favoriteButton.isSelected = true
+                    let image = UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal)
+
+                    favoriteButton.setImage(image, for: .normal)
+                    return
+                }
             }
-        }
-        
-        favoriteButton.isSelected = false
-        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        favoriteButton.tintColor = .lightGray
-    }
-    
-    @objc func toggleFavorite() {
-        //        guard let product = product else { return }
-        //        favoriteButton.isSelected = !favoriteButton.isSelected
-        //
-        //        if favoriteButton.isSelected {
-        //            favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
-        //            CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
-        //            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
-        //        } else {
-        //            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        //            CoreDataManager.deleteFromCoreData(productName: product.title)
-        //            UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
-        //        }
-        guard let product = product else { return }
-        favoriteButton.isSelected = !favoriteButton.isSelected
-        
-        if favoriteButton.isSelected {
-            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            favoriteButton.tintColor = .red
-            CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
-            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
-        } else {
-            favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            
+            favoriteButton.isSelected = false
+        let image = UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate)
+
+            favoriteButton.setImage(image, for: .normal)
             favoriteButton.tintColor = .lightGray
-            CoreDataManager.deleteFromCoreData(productId: product.id)
-            UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
-        }
+    }
+
+        
+
+    
+@objc func toggleFavorite() {
+//        guard let product = product else { return }
+//        favoriteButton.isSelected = !favoriteButton.isSelected
+//
+//        if favoriteButton.isSelected {
+//            favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+//            CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
+//            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
+//        } else {
+//            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+//            CoreDataManager.deleteFromCoreData(productName: product.title)
+//            UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+//        }
+        guard let product = product else { return }
+            favoriteButton.isSelected = !favoriteButton.isSelected
+
+            if favoriteButton.isSelected {
+                favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
+                UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
+            } else {
+                favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate), for: .normal)
+                favoriteButton.tintColor = .lightGray
+                CoreDataManager.deleteFromCoreData(productId: product.id)
+                UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+            }
     }
     
     @objc func addToCartTapped() {
@@ -217,6 +222,18 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
 //        }
 //        
 //        // Setup ViewModel observers within the same function
+
+
+            if favoriteButton.isSelected {
+                favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
+                UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
+            } else {
+                favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate), for: .normal)
+                favoriteButton.tintColor = .lightGray
+                CoreDataManager.deleteFromCoreData(productId: product.id)
+                UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+            }
 
         let selectedRow = variantPicker.selectedRow(inComponent: 0)
                let selectedVariant = product?.variants[selectedRow] ?? product?.variants.first
@@ -249,6 +266,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
                     // Handle error (e.g., show alert to user)
                     print("Error: \(error)")
                 }
+
     }
     
     private func setupViewModelObservers() {
@@ -387,12 +405,13 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         //favoriteButton.setImage(UIImage(named: "heart.fill"), for: .normal)
         //favoriteButton.tintColor = .red
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
-        
-        // Button styling to ensure it's circular if needed
-        favoriteButton.tintColor = .red
-        //  favoriteButton.layer.cornerRadius = 25 // Make it circular if needed
-        //   favoriteButton.clipsToBounds = true // Clip any overflow
-        //     favoriteButton.imageView?.contentMode = .scaleToFill
+                
+                // Button styling to ensure it's circular if needed
+        favoriteButton.tintColor = .white
+              //  favoriteButton.layer.cornerRadius = 25 // Make it circular if needed
+             //   favoriteButton.clipsToBounds = true // Clip any overflow
+   //     favoriteButton.imageView?.contentMode = .scaleToFill
+
         //favoriteButton.imageView?.contentMode = .scaleAspectFit // Ensure the image is not stretched
         
         favoriteButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -653,7 +672,10 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         }
         return ratingStackView
     }
-    
+
+
+        self.view.addSubview(titleLabel)
+
     // MARK: - UIPickerView Delegate and DataSource
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -681,6 +703,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
             scrollView.isScrollEnabled = false
         }
     }
+
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         // Re-enable scrolling after interacting with the picker
@@ -710,3 +733,4 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
 //        updateIndicator(selectedIndex: selectedIndex)
 //    }
 //}
+

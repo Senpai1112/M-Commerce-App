@@ -31,6 +31,8 @@ class ProductCell: UICollectionViewCell {
         ProductBorder.layer.borderWidth = 0.5
         PriceLabel.textAlignment = .center
         PriceLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        productTitle.numberOfLines = 2
+        productTitle.lineBreakMode = .byWordWrapping
         productTitle.font = UIFont.systemFont(ofSize: 12, weight: .medium)
 
                 }
