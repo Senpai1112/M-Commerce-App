@@ -119,13 +119,12 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShoppingCartTableViewCell", for: indexPath) as! ShoppingCartTableViewCell
         var quantaty : Int = 0
         cell.cartViewModel = self.cartViewModel
-        print(cartViewModel.localCartResult.totalCost?.checkoutChargeAmount?.currencyCode ?? "NOTHING IN CURRENCY")
         cell.delegate = self
         if let item = self.cartViewModel.localCartResult.cart?[indexPath.row] {
             cell.productName.text = item.merchandise?.productTitle
             cell.productDetails.text = item.merchandise?.title
             cell.productPrice.text = "\(item.cost?.checkoutChargeAmount?.amount ?? "0")"
-            cell.currencyCode.text = "\(item.cost?.checkoutChargeAmount?.currencyCode ?? "US")"
+            cell.currencyCode.text = "\(item.cost?.checkoutChargeAmount?.currencyCode ?? "USD")"
             quantaty = item.quantity!
             cell.productQuantaty.text = item.quantity?.codingKey.stringValue
             if let urlStr = item.merchandise?.image, let url = URL(string: urlStr) {
@@ -157,7 +156,7 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(self.cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.title ?? "")", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \(self.cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.productTitle ?? "")", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .destructive) { [self]_ in
                 let lineId = [self.cartViewModel.localCartResult.cart?[indexPath.row].id ?? ""]
                 self.cartViewModel.deleteCartInModel(cartID: cartId, lineID: lineId, indexPath: indexPath)

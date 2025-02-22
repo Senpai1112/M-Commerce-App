@@ -72,9 +72,9 @@ class CashOnDeliveryViewController: UIViewController {
         address2Label.text = address.address2
         cityLabel.text = address.city
         phoneLabel.text = address.phone
-        currencyCodeSubTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "US"
-        currencyCodeGrandTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "US"
-        currencyCodeShippingFees.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "US"
+        currencyCodeSubTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "USD"
+        currencyCodeGrandTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "USD"
+        currencyCodeShippingFees.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "USD"
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {

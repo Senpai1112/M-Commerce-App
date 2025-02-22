@@ -505,8 +505,8 @@
                         <outlet property="nameLabel" destination="YVG-zQ-7la" id="MBY-Q2-9eP"/>
                         <outlet property="phoneLabel" destination="kfx-kP-qRc" id="zfb-yW-PMR"/>
                         <outlet property="placeOrder" destination="xZh-KC-SNZ" id="2AZ-05-bfi"/>
-                        <outlet property="shippingFees" destination="6AD-uH-aUj" id="PWu-sz-aak"/>
-                        <outlet property="subTotal" destination="XYp-YL-sHM" id="jye-8k-OS0"/>
+                        <outlet property="shippingFees" destination="XYp-YL-sHM" id="byN-MC-pD2"/>
+                        <outlet property="subTotal" destination="6AD-uH-aUj" id="4DA-nj-AKz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ACj-z2-1rN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -17,11 +17,9 @@ class CartSummaryViewController: UIViewController {
     
     @IBOutlet weak var discount: UILabel!
     @IBOutlet weak var validationLabel: UILabel!
-    var discoundCopons = ["SUMMER30","WINTER30"]
     @IBOutlet weak var continueToPayment: UIButton!
     
     @IBOutlet weak var totalPriceOfProducts: UILabel!
-    
     @IBOutlet weak var currencyCode: UILabel!
     
     private let cartViewModel = CartViewModel()
@@ -29,6 +27,7 @@ class CartSummaryViewController: UIViewController {
 
     let activityIndicator = UIActivityIndicatorView(style: .large)
 
+    var discoundCopons = ["SUMMER30","WINTER30"]
     var cartId : String {
         return UserDefaults.standard.string(forKey: "cartID") ?? ""
     }
