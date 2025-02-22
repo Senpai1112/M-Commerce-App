@@ -143,71 +143,66 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     }
     
     // MARK: - Helper Methods
-func checkIfFavorite() {
-//        guard let product = product else { return }
-//
-//        let favoriteProducts = CoreDataManager.fetchFromCoreData()
-//
-//        for favorite in favoriteProducts {
-//            if favorite.productId == product.id {
-//                favoriteButton.isSelected = true
-//                favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
-//                return
-//            }
-//        }
-//
-//        favoriteButton.isSelected = false
-//        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+    func checkIfFavorite() {
+        //        guard let product = product else { return }
+        //
+        //        let favoriteProducts = CoreDataManager.fetchFromCoreData()
+        //
+        //        for favorite in favoriteProducts {
+        //            if favorite.productId == product.id {
+        //                favoriteButton.isSelected = true
+        //                favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+        //                return
+        //            }
+        //        }
+        //
+        //        favoriteButton.isSelected = false
+        //        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         guard let product = product else { return }
-            
-            let favoriteProducts = CoreDataManager.fetchFromCoreData()
-            
-            for favorite in favoriteProducts {
-                if favorite.productId == product.id {
-                    favoriteButton.isSelected = true
-                    let image = UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal)
-
-                    favoriteButton.setImage(image, for: .normal)
-                    return
-                }
-            }
-            
-            favoriteButton.isSelected = false
-        let image = UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate)
-
-            favoriteButton.setImage(image, for: .normal)
-            favoriteButton.tintColor = .lightGray
-    }
-
         
-
-    
-@objc func toggleFavorite() {
-//        guard let product = product else { return }
-//        favoriteButton.isSelected = !favoriteButton.isSelected
-//
-//        if favoriteButton.isSelected {
-//            favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
-//            CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
-//            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
-//        } else {
-//            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-//            CoreDataManager.deleteFromCoreData(productName: product.title)
-//            UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
-//        }
-        guard let product = product else { return }
-            favoriteButton.isSelected = !favoriteButton.isSelected
-
-            if favoriteButton.isSelected {
-                favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
-                CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
-                UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
-            } else {
-                favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate), for: .normal)
-                favoriteButton.tintColor = .lightGray
-                CoreDataManager.deleteFromCoreData(productId: product.id)
-                UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+        let favoriteProducts = CoreDataManager.fetchFromCoreData()
+        
+        for favorite in favoriteProducts {
+            if favorite.productId == product.id {
+                favoriteButton.isSelected = true
+                favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                favoriteButton.tintColor = .red
+                return
             }
+        }
+        
+        favoriteButton.isSelected = false
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        favoriteButton.tintColor = .lightGray
+    }
+    
+    @objc func toggleFavorite() {
+        //        guard let product = product else { return }
+        //        favoriteButton.isSelected = !favoriteButton.isSelected
+        //
+        //        if favoriteButton.isSelected {
+        //            favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+        //            CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
+        //            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
+        //        } else {
+        //            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        //            CoreDataManager.deleteFromCoreData(productName: product.title)
+        //            UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+        //        }
+        guard let product = product else { return }
+        favoriteButton.isSelected = !favoriteButton.isSelected
+        
+        if favoriteButton.isSelected {
+            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            favoriteButton.tintColor = .red
+            CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
+            UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
+        } else {
+            favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            favoriteButton.tintColor = .lightGray
+            CoreDataManager.deleteFromCoreData(productId: product.id)
+            UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+        }
     }
     
     @objc func addToCartTapped() {
@@ -220,20 +215,8 @@ func checkIfFavorite() {
 //            addToCartViewModel.addLineToCart(cartId: cartID, lines: lines)
 //
 //        }
-//        
+//
 //        // Setup ViewModel observers within the same function
-
-
-            if favoriteButton.isSelected {
-                favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
-                CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
-                UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
-            } else {
-                favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate), for: .normal)
-                favoriteButton.tintColor = .lightGray
-                CoreDataManager.deleteFromCoreData(productId: product.id)
-                UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
-            }
 
         let selectedRow = variantPicker.selectedRow(inComponent: 0)
                let selectedVariant = product?.variants[selectedRow] ?? product?.variants.first
@@ -266,7 +249,6 @@ func checkIfFavorite() {
                     // Handle error (e.g., show alert to user)
                     print("Error: \(error)")
                 }
-
     }
     
     private func setupViewModelObservers() {
@@ -405,13 +387,12 @@ func checkIfFavorite() {
         //favoriteButton.setImage(UIImage(named: "heart.fill"), for: .normal)
         //favoriteButton.tintColor = .red
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
-                
-                // Button styling to ensure it's circular if needed
-        favoriteButton.tintColor = .white
-              //  favoriteButton.layer.cornerRadius = 25 // Make it circular if needed
-             //   favoriteButton.clipsToBounds = true // Clip any overflow
-   //     favoriteButton.imageView?.contentMode = .scaleToFill
-
+        
+        // Button styling to ensure it's circular if needed
+        favoriteButton.tintColor = .red
+        //  favoriteButton.layer.cornerRadius = 25 // Make it circular if needed
+        //   favoriteButton.clipsToBounds = true // Clip any overflow
+        //     favoriteButton.imageView?.contentMode = .scaleToFill
         //favoriteButton.imageView?.contentMode = .scaleAspectFit // Ensure the image is not stretched
         
         favoriteButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -472,7 +453,7 @@ func checkIfFavorite() {
             ratingAndReviewStackView.topAnchor.constraint(equalTo: pickerStackView.bottomAnchor, constant: 8),
             ratingAndReviewStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             ratingAndReviewStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
-//            
+//
 //            variantPicker.topAnchor.constraint(equalTo: ratingAndReviewStackView.bottomAnchor, constant: 16),
 //            variantPicker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 //            variantPicker.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
@@ -502,7 +483,7 @@ func checkIfFavorite() {
 //                scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 //                scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 //            ])
-//            
+//
 //            // Constraints for contentView
 //            NSLayoutConstraint.activate([
 //                contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -510,35 +491,35 @@ func checkIfFavorite() {
 //                contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
 //                contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
 //                contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor), ])
-//        
+//
 //        NSLayoutConstraint.activate([
 ////            headerView.topAnchor.constraint(equalTo: view.topAnchor),
 ////            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 ////            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 ////            headerView.heightAnchor.constraint(equalToConstant: 80),
-//            
+//
 //            carousel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
 //            carousel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 //            carousel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 //            carousel.heightAnchor.constraint(equalToConstant: 250),
-////            
+////
 ////            imageIndicatorStackView.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 8),
 ////            imageIndicatorStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 ////            imageIndicatorStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 ////            imageIndicatorStackView.heightAnchor.constraint(equalToConstant: 8),
 ////            imageIndicatorStackView.bottomAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 16),
-//            
+//
 //            titleLabel.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 16),
 //            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 //            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-//            
+//
 //            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
 //            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//            
+//
 //            ratingAndReviewStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
 //                   ratingAndReviewStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 //                   ratingAndReviewStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
-//                   
+//
 //                   // Position the variant picker below the rating and review stack view
 //                   variantPicker.topAnchor.constraint(equalTo: ratingAndReviewStackView.bottomAnchor, constant: 16),
 //                   variantPicker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -547,7 +528,7 @@ func checkIfFavorite() {
 ////            ratingStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16),
 ////            ratingStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 ////            ratingStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-////                    
+////
 //                    // Position the variant picker below stars
 ////            variantPicker.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
 ////        //  variantPicker.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -16),
@@ -560,16 +541,16 @@ func checkIfFavorite() {
 //////            descriptionStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 ////            ratingStackView.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 8),
 ////            ratingStackView.topAnchor.constraint(equalTo: priceLabel.topAnchor),
-//            
+//
 //            descriptionStackView.topAnchor.constraint(equalTo: variantPicker.bottomAnchor, constant: 16),
 //            descriptionStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 //            descriptionStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-//            
+//
 //            buttonsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
 //            buttonsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 //            buttonsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 //            buttonsStackView.heightAnchor.constraint(equalToConstant: 50),
-//            
+//
 //            addToCartButton.widthAnchor.constraint(equalToConstant: 160),
 //            addToCartButton.heightAnchor.constraint(equalToConstant: 50),
 //            favoriteButton.widthAnchor.constraint(equalToConstant: 60),
@@ -672,10 +653,7 @@ func checkIfFavorite() {
         }
         return ratingStackView
     }
-
-
-        self.view.addSubview(titleLabel)
-
+    
     // MARK: - UIPickerView Delegate and DataSource
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -703,7 +681,6 @@ func checkIfFavorite() {
             scrollView.isScrollEnabled = false
         }
     }
-
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         // Re-enable scrolling after interacting with the picker
@@ -733,4 +710,3 @@ func checkIfFavorite() {
 //        updateIndicator(selectedIndex: selectedIndex)
 //    }
 //}
-
