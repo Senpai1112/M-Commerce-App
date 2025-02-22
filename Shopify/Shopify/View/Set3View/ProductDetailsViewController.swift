@@ -195,7 +195,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     }
     
     func showLoginAlert() {
-            let alert = UIAlertController(title: "Alert", message: "You must log in to access this page.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Alert", message: "You must log in to do this action.", preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
