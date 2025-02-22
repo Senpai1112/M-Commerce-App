@@ -76,7 +76,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="zuW-5z-XHb"/>
-                        <color key="backgroundColor" red="0.92161493589999999" green="0.92426015029999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TWV-uf-j3v" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
