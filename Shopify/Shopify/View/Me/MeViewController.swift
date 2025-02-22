@@ -10,7 +10,6 @@ import UIKit
 class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var moreOrders: UIButton!
-    @IBOutlet weak var login: UIButton!
     @IBOutlet weak var ordersTable: UITableView!
 
     var viewModel: OrdersViewModel!
@@ -65,21 +64,42 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     
     @objc func settingsTapped() {
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+            let storyBord = UIStoryboard(name: "Set2", bundle: nil)
+            let settingsVc = storyBord.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+            navigationController?.pushViewController(settingsVc, animated: true)
+        } else {
+            showLoginAlert()
+        }
+    }
+
+   
+    @objc func cartTapped() {
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+            let storyBord = UIStoryboard(name: "Set2", bundle: nil)
+            let cartVc = storyBord.instantiateViewController(withIdentifier: "ShoppingCartViewController") as! ShoppingCartViewController
+            navigationController?.pushViewController(cartVc, animated: true)
+        } else {
+            showLoginAlert()
+        }
+    }
+
+
+    func showLoginAlert() {
+        let alert = UIAlertController(title: "Alert", message: "You must log in to access this page.", preferredStyle: .alert)
+        let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
+            let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+            let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+            self.navigationController?.pushViewController(loginVC, animated: true)        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        let storyBord = UIStoryboard(name: "Set2", bundle: nil)
-        let settingsVc = storyBord.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
-     
-        navigationController?.pushViewController(settingsVc, animated: true)
+        alert.addAction(loginAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
     }
     
-   
-    
-    @objc func cartTapped() {
-        let storyBord = UIStoryboard(name: "Set2", bundle: nil)
-        let cartVc = storyBord.instantiateViewController(withIdentifier: "ShoppingCartViewController") as! ShoppingCartViewController
-     
-        navigationController?.pushViewController(cartVc, animated: true)    }
-    
+
     func setUpNavBarBtn(button: UIButton, systemName: String, selector: Selector) {
         if let icon = UIImage(systemName: systemName) {
             button.setImage(icon, for: .normal)
@@ -107,12 +127,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         return cell
     }
     
-    @IBAction func loginAction(_ sender: Any) {
-        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
-        let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
-       
-        navigationController?.pushViewController(loginVC, animated: true)
-    }
+   
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60   }
 }
