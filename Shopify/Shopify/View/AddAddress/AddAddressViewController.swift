@@ -13,7 +13,9 @@ class AddAddressViewController: UIViewController {
     private var addAddressViewModel = AddAddressViewModel()
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    var customerAccessToken : String?
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
     
     @IBOutlet weak var addAddressButton: UIButton!
     @IBOutlet weak var viewForMapAnimation: UIView!

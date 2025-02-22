@@ -14,7 +14,9 @@ class UpdateAddressViewController: UIViewController {
     private var updateAddressViewModel = UpdateAddressViewModel()
     let activityIndicator = UIActivityIndicatorView(style: .large)
     var address : Addresses?
-    var customerAccessToken : String?
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
     
     @IBOutlet weak var updateAddressButton: UIButton!
     @IBOutlet weak var viewForMapAnimation: UIView!
@@ -85,11 +87,11 @@ class UpdateAddressViewController: UIViewController {
             self.present(alert, animated: true)
         }
         else{
-            guard let customerAccessToken = customerAccessToken else {
+            if customerAccessToken == ""  {
                 print("Access Token is invalid")
                 return
             }
-            guard address != nil else {
+            guard address == nil else {
                 print("address data is missing")
                 return
             }

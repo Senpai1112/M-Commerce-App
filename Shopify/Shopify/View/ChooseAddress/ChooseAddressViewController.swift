@@ -10,12 +10,10 @@ import UIKit
 class ChooseAddressViewController: UIViewController {
     
     private var addressDetailsViewModel = AddressDetailsViewModel()
-/*
+
     var customerAccessToken: String {
-        return UserDefaults.standard.string(forKey: "customerAccessToken") ?? ""
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
     }
-*/
-    var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
     var backgroundImageView: UIImageView?
 
     var selectedIndex: IndexPath?

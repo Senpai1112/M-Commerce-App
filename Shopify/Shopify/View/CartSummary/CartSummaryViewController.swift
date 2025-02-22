@@ -25,12 +25,10 @@ class CartSummaryViewController: UIViewController {
     private var cancellable: AnyCancellable?
 
     let activityIndicator = UIActivityIndicatorView(style: .large)
-/*
-    var cartId: String {
-        return UserDefaults.standard.string(forKey: "cartId") ?? ""
+
+    var cartId : String {
+        return UserDefaults.standard.string(forKey: "cartID") ?? ""
     }
-*/
-    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
     
     var newPrice = ""
 

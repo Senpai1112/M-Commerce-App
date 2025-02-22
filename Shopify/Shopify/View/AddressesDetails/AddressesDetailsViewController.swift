@@ -11,7 +11,9 @@ import Lottie
 class AddressesDetailsViewController: UIViewController {
     
     private let addressDetailsViewModel = AddressDetailsViewModel()
-    var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
     let activityIndicator = UIActivityIndicatorView(style: .large)
     var backgroundImageView: UIImageView?
 
@@ -88,7 +90,6 @@ class AddressesDetailsViewController: UIViewController {
     @IBAction func addNewAddress(_ sender: Any) {
         let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
         let viewController = storyBoard.instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        viewController.customerAccessToken = customerAccessToken
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     /*
@@ -148,7 +149,6 @@ extension AddressesDetailsViewController:
         let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: "UpdateAddressViewController") as! UpdateAddressViewController
         vc.address = addressDetailsViewModel.addressResult[indexPath.row]
-        vc.customerAccessToken = customerAccessToken
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

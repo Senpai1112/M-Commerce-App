@@ -21,8 +21,12 @@ class ChoosePaymentMethodViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var customerAccessToken  = "fc1bea2489ae90f294f2c8795e0dd7ff"
-    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
+    var cartId : String {
+        return UserDefaults.standard.string(forKey: "cartID") ?? ""
+    }
     
     //var price = Price(amount: "1234.50", currencyCode: "EGP")
     var customerDetails = CustomerDetails()

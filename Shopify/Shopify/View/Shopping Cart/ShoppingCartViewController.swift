@@ -23,7 +23,9 @@ class ShoppingCartViewController: UIViewController {
     private let cartViewModel = CartViewModel()
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
+    var cartId : String {
+        return UserDefaults.standard.string(forKey: "cartID") ?? ""
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
