@@ -27,11 +27,13 @@ class CartSummaryViewController: UIViewController {
 
     let activityIndicator = UIActivityIndicatorView(style: .large)
 
-    var discoundCopons = ["SUMMER30","WINTER30"]
     var cartId : String {
         return UserDefaults.standard.string(forKey: "cartID") ?? ""
     }
-    
+    var discoundCopons : [String] {
+        return [UserDefaults.standard.string(forKey: "SUMMER30") ?? "" , UserDefaults.standard.string(forKey: "WINTER30") ?? ""]
+    }
+    var selectedDiscoundCopon = ""
     var newPrice = ""
 
     @IBOutlet weak var discoundCopon: UITextField!
@@ -66,20 +68,23 @@ class CartSummaryViewController: UIViewController {
             cancellable = publisher
                 .map { ($0.object as? UITextField)?.text ?? "" }
                 .sink { [weak self] newText in
-                    if newText == self?.discoundCopons[0]{
+                    if newText == self?.discoundCopons[0] && self?.discoundCopons[0] != ""{
                         self?.validationLabel.text = "Valid"
                         self?.validationLabel.textColor = UIColor.red
                         self?.performDiscount()
-                    }else if newText == self?.discoundCopons[1]{
+                        self?.selectedDiscoundCopon = (self?.discoundCopons[0])!
+                    }else if newText == self?.discoundCopons[1] && self?.discoundCopons[1] != ""{
                         self?.validationLabel.text = "Valid"
                         self?.validationLabel.textColor = UIColor.red
                         self?.performDiscount()
+                        self?.selectedDiscoundCopon = (self?.discoundCopons[1])!
                     }else{
                         self?.validationLabel.text = "Not Valid"
                         self?.discount.text = "No Discount"
                         self?.validationLabel.textColor = UIColor.black
                         self?.newPrice = (self?.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount)!
                         self?.totalPriceOfProducts.text = "\(self?.newPrice ?? "0")"
+                        self?.selectedDiscoundCopon = ""
                     }
                 }
         }
@@ -119,6 +124,7 @@ class CartSummaryViewController: UIViewController {
         let vc = storyBoard.instantiateViewController(withIdentifier: "ChoosePaymentMethodViewController") as! ChoosePaymentMethodViewController
         vc.address = address
         vc.newPrice = newPrice
+        vc.selectedDiscountCopon = selectedDiscoundCopon
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -17,6 +17,8 @@ class ChoosePaymentMethodViewController: UIViewController {
     
     var newPrice = ""
     
+    var selectedDiscountCopon = ""
+    
     @IBOutlet weak var continueToPayment: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
@@ -75,6 +77,7 @@ class ChoosePaymentMethodViewController: UIViewController {
                 vc.address = address
                 vc.cartDetails = cartViewModel.cartResult
                 vc.newPrice = newPrice
+                vc.selectedDiscountCopon = selectedDiscountCopon
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
@@ -227,22 +230,30 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
         if result.status == .success {
             print("Payment succeeded")
             paymentSuccess = true
+            var lineItems = [LineItem]()
             var ids = [String]()
-            for item in cartDetails.cart! {
-                
-                let variantId = extractVariantID(from: item.merchandise!.id)
-                let intVariantId = variantId?.codingKey.intValue
-                guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country else {
-                    print("Address details are missing")
-                    return
-                }
-                let address = Address(address1: address1, phone: phone, city: city, country: country)
-                
-                let newPriceDouble = Double(newPrice)
-                orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
-                ids.append(item.id!)
+            guard let items = cartDetails.cart else { return }
+            guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country , let address2 = address.address2 else {
+                print("Address details are missing")
+                return
             }
+            let newPriceDouble = Double(newPrice)
+            let address = Address(address1: address1, phone: phone, city: city, country: country)
+            
+            for item in items {
+                guard let merchandise = item.merchandise else { return }
+                guard let quantaty = item.quantity else {return}
+                let variantId = extractVariantID(from: merchandise.id)
+                let intVariantId = variantId?.codingKey.intValue
+                guard let intVariantId = intVariantId else {return}
+                
+                guard let id = item.id else { return }
+                ids.append(id)
+                lineItems.append(LineItem(variant_id: intVariantId, quantity: quantaty))
+            }
+            orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
             cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
+            UserDefaults.standard.set("", forKey: selectedDiscountCopon)
         } else {
             print("Payment failed with status: \(result.status.rawValue)")
         }

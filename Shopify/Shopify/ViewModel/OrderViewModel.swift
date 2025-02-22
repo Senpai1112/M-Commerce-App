@@ -22,25 +22,24 @@ class OrderViewModel: ObservableObject {
     }
 
     func createOrder(
-        first_name: String,
-        last_name: String,
+        firstName: String,
+        lastName: String,
         email: String,
-        variant_id: Int,
-        quantity: Int,
-        billing_address: Address,
-        shipping_address: Address,
-        transaction_amount: Double
+        lineItems : [LineItem],
+        billingAddress: Address,
+        shippingAddress: Address,
+        transactionAmount: Double
     ) {
         isLoading = true
         errorMessage = nil
 
         let order = Order(
-            line_items: [LineItem(variant_id: variant_id, quantity: quantity)],
-            customer: CustomerModel(first_name: first_name, last_name: last_name, email: email),
-            billing_address: billing_address,
-            shipping_address: shipping_address,
+            line_items: lineItems,
+            customer: CustomerModel(first_name: firstName, last_name: lastName, email: email),
+            billing_address: billingAddress,
+            shipping_address: shippingAddress,
             email: email,
-            transactions: [Transaction(kind: "authorization", status: "success", amount: transaction_amount)],
+            transactions: [Transaction(kind: "authorization", status: "success", amount: transactionAmount)],
             financial_status: "partially_paid"
         )
 

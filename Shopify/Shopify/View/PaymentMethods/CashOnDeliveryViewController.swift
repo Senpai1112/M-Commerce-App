@@ -8,7 +8,7 @@
 import UIKit
 
 class CashOnDeliveryViewController: UIViewController {
-
+    
     @IBOutlet weak var subTotal: UILabel!
     
     @IBOutlet weak var shippingFees: UILabel!
@@ -35,10 +35,11 @@ class CashOnDeliveryViewController: UIViewController {
     
     @IBOutlet weak var currencyCodeGrandTotal: UILabel!
     
+    var selectedDiscountCopon = ""
     var customerDetails = CustomerDetails()
     var address = Addresses()
     var cartDetails = CartResponse()
-
+    
     let orderViewModel = OrderViewModel()
     let cartViewModel = CartViewModel()
     
@@ -53,7 +54,7 @@ class CashOnDeliveryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         initUI()
     }
@@ -78,18 +79,32 @@ class CashOnDeliveryViewController: UIViewController {
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {
+        var lineItems = [LineItem]()
         var ids = [String]()
-        if let cart = cartDetails.cart{
-            for item in cart {
-                let variantId = extractVariantID(from: item.merchandise!.id)
-                let intVariantId = variantId?.codingKey.intValue
-                let address = Address(address1: address.address1!, phone: address.phone!, city: address.city!, country: address.country!)
-                let newPriceDouble = Double(newPrice)
-                orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
-                ids.append(item.id!)
-            }
+        guard let items = cartDetails.cart else { return }
+        guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country , let address2 = address.address2 else {
+            print("Address details are missing")
+            return
         }
+        let newPriceDouble = Double(newPrice)
+        let address = Address(address1: address1, phone: phone, city: city, country: country)
+        
+        for item in items {
+            guard let merchandise = item.merchandise else { return }
+            guard let quantaty = item.quantity else {return}
+            let variantId = extractVariantID(from: merchandise.id)
+            let intVariantId = variantId?.codingKey.intValue
+            guard let intVariantId = intVariantId else {return}
+            //variants.append(intVariantId)
+            
+            guard let id = item.id else { return }
+            ids.append(id)
+            lineItems.append(LineItem(variant_id: intVariantId, quantity: quantaty))
+        }
+        orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
         cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
+        UserDefaults.standard.set("", forKey: selectedDiscountCopon)
+
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
             if let navigationController = self?.navigationController {
@@ -107,19 +122,19 @@ class CashOnDeliveryViewController: UIViewController {
         placeOrder.tintColor = UIColor.purple
         placeOrder.clipsToBounds = true
     }
-
+    
     func extractVariantID(from gid: String) -> String? {
         let components = gid.components(separatedBy: "/")
         return components.last
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
