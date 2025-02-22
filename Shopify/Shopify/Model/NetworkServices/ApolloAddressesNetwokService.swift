@@ -64,6 +64,25 @@ class ApolloAddressesNetwokService {
         }
     }
     
+    static func updateCustomerAddresses(token : String ,address : Addresses ,completion: @escaping (Result<GraphQLResult<CustomerAddressUpdateMutation.Data>, Error>) -> Void) {
+        ApolloAddressesNetwokService.shared.apollo.perform(mutation: CustomerAddressUpdateMutation(
+            token: token,
+            address1: address.address1!,
+            address2: address.address2!,
+            city: address.city!,
+            country: address.country!,
+            phone: address.phone!,
+            addressId: address.id!)) { result in
+            switch result {
+            case .success(let graphQLResult):
+                completion(.success(graphQLResult))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    
     static func createCustomerAddresses(token : String,address : Addresses ,completion: @escaping (Result<GraphQLResult<CustomerAddressCreateMutation.Data>, Error>) -> Void) {
         ApolloAddressesNetwokService.shared.apollo.perform(mutation: CustomerAddressCreateMutation(
             token: token,

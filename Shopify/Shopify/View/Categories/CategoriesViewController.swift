@@ -97,10 +97,27 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func favTapped() {
-        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
-        let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
-        
-        navigationController?.pushViewController(favouritesVC, animated: true)    }
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
+                navigationController?.pushViewController(favouritesVC, animated: true)
+            } else {
+                showLoginAlert()
+            }
+    }
+    func showLoginAlert() {
+            let alert = UIAlertController(title: "Alert", message: "You must log in to access this page.", preferredStyle: .alert)
+            let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+                self.navigationController?.pushViewController(loginVC, animated: true)        }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(loginAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
     
     func showSearchBar() {
         searchBar = UISearchBar()
@@ -207,7 +224,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
       cell.favButton.isSelected =   UserDefaults.standard.bool(forKey: productKey)
        
        if UserDefaults.standard.bool(forKey: productKey){
-           cell.favButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+           cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
            cell.favButton.tintColor = .white
 
              }else{
@@ -222,7 +239,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
            cell.favButton.isSelected = !cell.favButton.isSelected
            if  cell.favButton.isSelected {
 
-               cell.favButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+               cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
                cell.favButton.tintColor = .white
                //cell.favButton.foregroundColor = .red
                 // save to core data
