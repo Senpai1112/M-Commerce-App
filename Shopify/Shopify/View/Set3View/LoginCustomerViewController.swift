@@ -34,7 +34,8 @@ class LoginCustomerViewController: UIViewController {
                 // Save the value
                 UserDefaults.standard.set(accessToken.accessToken, forKey: "accessToken")
                 UserDefaults.standard.set(self.customerId, forKey: "customerID")
-
+                UserDefaults.standard.set("SUMMER30", forKey: "SUMMER30")
+                UserDefaults.standard.set("WINTER30", forKey: "WINTER30")
                 if let accessToken = accessToken.accessToken {
                                     self.newCartViewModel.createCart(customerAccessToken: accessToken)
                                 }
