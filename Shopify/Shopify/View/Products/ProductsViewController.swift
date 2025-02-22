@@ -122,10 +122,70 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         return filteredProducts.count
     }
 
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
+//        let product = filteredProducts[indexPath.item]
+//        
+//        if let price = product.price {
+//            cell.PriceLabel.text = "\(price)"
+//        }
+//        cell.currencyCodeLabel.text = product.currencyCode
+//        cell.productTitle.text = product.title
+//        if let imageURL = product.image, let url = URL(string: imageURL) {
+//            cell.productImageView.kf.setImage(with: url, placeholder: UIImage(named: "1"))
+//        }
+//        productKey = "\((product.id) ?? "")"
+//        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+//            var favIsSelected =  UserDefaults.standard.bool(forKey: productKey)
+//            
+//            cell.favButton.isSelected =   UserDefaults.standard.bool(forKey: productKey)
+//            
+//            if UserDefaults.standard.bool(forKey: productKey){
+//                cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+//                cell.favButton.tintColor = .white
+//                
+//            }else{
+//                cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+//                
+//                cell.favButton.tintColor = .white
+//            }
+//        }
+//            if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+//                
+//                cell.addToFavList = { [unowned self] in
+//                    
+//                    cell.favButton.isSelected = !cell.favButton.isSelected
+//                    if  cell.favButton.isSelected {
+//                        
+//                        cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+//                        cell.favButton.tintColor = .white
+//                        
+//                        // save to core data
+//                        CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price)", productImage: product.image ?? "", productId: product.id ?? "")
+//                        
+//                        UserDefaults.standard.set(true,forKey: "\(product.id ?? "")")
+//                        
+//                    }else{
+//                        // delete from core data and change state
+//                        cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+//                        cell.favButton.tintColor = .white
+//                        
+//                        CoreDataManager.deleteFromCoreData(productId: product.id ?? "" )
+//                        UserDefaults.standard.set(false,
+//                                                  forKey: "\(product.id ?? "")")
+//                    }
+//                }
+//            }else{
+//                showLoginAlert()
+//            }
+//    
+//
+//        return cell
+//    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
         let product = filteredProducts[indexPath.item]
-
+        
         if let price = product.price {
             cell.PriceLabel.text = "\(price)"
         }
@@ -135,48 +195,50 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
             cell.productImageView.kf.setImage(with: url, placeholder: UIImage(named: "1"))
         }
         productKey = "\((product.id) ?? "")"
-       
-       var favIsSelected =  UserDefaults.standard.bool(forKey: productKey)
-
-      cell.favButton.isSelected =   UserDefaults.standard.bool(forKey: productKey)
-       
-       if UserDefaults.standard.bool(forKey: productKey){
-           cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-           cell.favButton.tintColor = .white
-
-             }else{
-                 cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
-
-                 cell.favButton.tintColor = .white
-           }
-           
-
-       cell.addToFavList = { [unowned self] in
-
-           cell.favButton.isSelected = !cell.favButton.isSelected
-           if  cell.favButton.isSelected {
-
-               cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-               cell.favButton.tintColor = .white
-               
-                // save to core data
-               CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price)", productImage: product.image ?? "", productId: product.id ?? "")
+        
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+            // Handle favorite button based on the access token and user's preference
+            var favIsSelected = UserDefaults.standard.bool(forKey: productKey)
+            
+            cell.favButton.isSelected = favIsSelected
+            
+            if favIsSelected {
+                cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                cell.favButton.tintColor = .white
+            } else {
+                cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                cell.favButton.tintColor = .white
+            }
+            
+            cell.addToFavList = { [unowned self] in
+                cell.favButton.isSelected = !cell.favButton.isSelected
+                
+                if cell.favButton.isSelected {
+                    cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                    cell.favButton.tintColor = .white
                     
-                 UserDefaults.standard.set(true,forKey: "\(product.id ?? "")")
-
-                }else{
-                    // delete from core data and change state
+                    // Save to Core Data and update UserDefaults
+                    CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price ?? 0)", productImage: product.image ?? "", productId: product.id ?? "")
+                    UserDefaults.standard.set(true, forKey: "\(product.id ?? "")")
+                } else {
                     cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
                     cell.favButton.tintColor = .white
-
-                    CoreDataManager.deleteFromCoreData(productId: product.id ?? "" )
-                    UserDefaults.standard.set(false,
-                                              forKey: "\(product.id ?? "")")
+                    
+                    // Delete from Core Data and update UserDefaults
+                    CoreDataManager.deleteFromCoreData(productId: product.id ?? "")
+                    UserDefaults.standard.set(false, forKey: "\(product.id ?? "")")
                 }
-      }
-
+            }
+        } else {
+            cell.addToFavList = { [unowned self] in
+                showLoginAlert()
+            }
+        }
+        
         return cell
     }
+
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
          let storyBord = UIStoryboard(name: "Set3", bundle: nil)
          let detailsVC = storyBord.instantiateViewController(withIdentifier: "detailsVC") as! ProductDetailsViewController
@@ -217,4 +279,17 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
                 Productscollection.reloadData()
         ()
     }
+    func showLoginAlert() {
+            let alert = UIAlertController(title: "Alert", message: "You must log in to do this action.", preferredStyle: .alert)
+            let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+                self.navigationController?.pushViewController(loginVC, animated: true)        }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(loginAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
 }
