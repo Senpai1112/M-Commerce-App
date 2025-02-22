@@ -23,7 +23,7 @@ class UpdateAddressViewModel{
         }
     }
     
-    func createAddressInModel(customerAccessToken : String? , address : Addresses?) {
+    func updateAddressInModel(customerAccessToken : String? , address : Addresses?) {
         ApolloAddressesNetwokService.updateCustomerAddresses(token: customerAccessToken ?? "", address: address!, completion: { [weak self] result in
             switch result {
             case .success(let data):
@@ -37,7 +37,7 @@ class UpdateAddressViewModel{
                 if data.data != nil{
                     DispatchQueue.main.async{
                         let address = data.data?.customerAddressUpdate?.customerAddress
-                        self?.updatedAddressResult = Addresses(country: address?.country ,city: address?.city , address1: address?.address1 , address2: address?.address2 , phone : address?.phone)
+                        self?.updatedAddressResult = Addresses(country: address?.country ,city: address?.city , address1: address?.address1 , address2: address?.address2 , phone : address?.phone,id: address?.id)
                     }
                 }
             case .failure(let error):

@@ -53,19 +53,20 @@ class ShoppingCartViewController: UIViewController {
     }
     
     func addBackgroundImage(named imageName: String) {
-        let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
-           imageView.image = UIImage(named: imageName)
-        imageView.contentMode = .scaleAspectFit
-           imageView.tag = 100  // Assign a tag to easily remove later
-        self.tableView.addSubview(imageView)
-        self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
-           backgroundImageView = imageView
-       }
+        if backgroundImageView == nil {
+            let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
+            imageView.image = UIImage(named: imageName)
+            imageView.contentMode = .scaleAspectFit
+            imageView.tag = 100  // Assign a tag to easily remove later
+            self.tableView.addSubview(imageView)
+            self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
+            backgroundImageView = imageView
+        }
+    }
     
     func removeBackgroundImage() {
-        if let imageView = self.tableView.viewWithTag(100) {
-            imageView.removeFromSuperview()
-        }
+        backgroundImageView?.removeFromSuperview()
+        backgroundImageView = nil
     }
     
     func initNib(){

@@ -28,7 +28,7 @@ class SettingsViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Settings"
         details[0] = "Address"
-        addressDetailsViewModel.bindResultToSettingTableViewController = { () in
+        addressDetailsViewModel.bindResultToSettingTableViewController = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 if self?.addressDetailsViewModel.defaultAddressResult.city == ""
                 {

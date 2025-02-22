@@ -10,6 +10,11 @@ import UIKit
 class ChooseAddressViewController: UIViewController {
     
     private var addressDetailsViewModel = AddressDetailsViewModel()
+/*
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "customerAccessToken") ?? ""
+    }
+*/
     var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
     var backgroundImageView: UIImageView?
 
@@ -26,7 +31,7 @@ class ChooseAddressViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Choose Address"
-        addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
+        addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 if self?.addressDetailsViewModel.addressResult.count == 0{
                     self?.addBackgroundImage(named: "noLocation")

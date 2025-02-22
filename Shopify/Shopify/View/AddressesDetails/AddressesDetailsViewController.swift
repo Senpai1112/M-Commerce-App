@@ -41,12 +41,22 @@ class AddressesDetailsViewController: UIViewController {
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
     }
     func addBackgroundImage(named imageName: String) {
-        let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        self.view.addSubview(imageView)
+
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 250),
+            imageView.heightAnchor.constraint(equalToConstant: 500)
+        ])
            imageView.image = UIImage(named: imageName)
         imageView.contentMode = .scaleAspectFit
-           imageView.tag = 100  // Assign a tag to easily remove later
+           imageView.tag = 100
         self.tableView.addSubview(imageView)
-        self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
+        self.tableView.sendSubviewToBack(imageView)
            backgroundImageView = imageView
        }
     

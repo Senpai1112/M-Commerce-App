@@ -39,6 +39,15 @@ class CashOnDeliveryViewController: UIViewController {
     
     var newPrice = ""
     
+/*
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "customerAccessToken") ?? ""
+    }
+
+    var cartId: String {
+        return UserDefaults.standard.string(forKey: "cartId") ?? ""
+    }
+*/
     var customerAccessToken  = "fc1bea2489ae90f294f2c8795e0dd7ff"
     var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
     
@@ -47,6 +56,12 @@ class CashOnDeliveryViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         initUI()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        updateUI()
+    }
+    func updateUI(){
         subTotal.text = "\(newPrice) \(address.countryCode ?? "")"
         shippingFees.text = "30.0 \(address.countryCode ?? "")"
         let floatGrandTotal = (subTotal.text! as NSString).floatValue + 30.0
@@ -77,8 +92,8 @@ class CashOnDeliveryViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
             if let navigationController = self?.navigationController {
                 let viewControllers = navigationController.viewControllers
-                if viewControllers.count >= 6 {
-                    navigationController.popToViewController(viewControllers[viewControllers.count - 6], animated: true)
+                if viewControllers.count >= 5 {
+                    navigationController.popToViewController(viewControllers[viewControllers.count - 5], animated: true)
                 }
             }
         })

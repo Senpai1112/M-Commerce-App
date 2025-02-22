@@ -71,7 +71,8 @@ class ApolloAddressesNetwokService {
             address2: address.address2!,
             city: address.city!,
             country: address.country!,
-            phone: address.phone!, addressId: address.id!)) { result in
+            phone: address.phone!,
+            addressId: address.id!)) { result in
             switch result {
             case .success(let graphQLResult):
                 completion(.success(graphQLResult))

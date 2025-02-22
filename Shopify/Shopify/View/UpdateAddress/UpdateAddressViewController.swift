@@ -85,8 +85,18 @@ class UpdateAddressViewController: UIViewController {
             self.present(alert, animated: true)
         }
         else{
+            guard let customerAccessToken = customerAccessToken else {
+                print("Access Token is invalid")
+                return
+            }
+            guard let existingAddress = address else {
+                print("address data is missing")
+                return
+            }
+
+
             let address : Addresses = Addresses(country: countryName.text!, city: cityName.text!, address1 : streetName.text!, address2 : apartmentNumber.text!, phone: phoneNumber.text!, id : address?.id)
-            
+            print(address)
             updateAddressViewModel.bindErrorToUpdateAddressViewController = { [weak self] in
                 self?.activityIndicator.stopAnimating()
                 if  let error = self?.updateAddressViewModel.updatedAddressError.message{
@@ -104,7 +114,7 @@ class UpdateAddressViewController: UIViewController {
                 })
                 self!.present(alert, animated: true)
             }
-            updateAddressViewModel.createAddressInModel(customerAccessToken: customerAccessToken, address: address)
+            updateAddressViewModel.updateAddressInModel(customerAccessToken: customerAccessToken, address: address)
             view.addSubview(activityIndicator)
             activityIndicator.startAnimating()
         }
