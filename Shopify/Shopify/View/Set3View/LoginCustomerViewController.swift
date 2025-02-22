@@ -36,6 +36,9 @@ class LoginCustomerViewController: UIViewController {
                 UserDefaults.standard.set(self.customerId, forKey: "customerID")
                 UserDefaults.standard.set("SUMMER30", forKey: "SUMMER30")
                 UserDefaults.standard.set("WINTER30", forKey: "WINTER30")
+                UserDefaults.standard.set("EGP", forKey: "currencyCode")
+                UserDefaults.standard.set(1 , forKey: "currencyValue")
+
                 if let accessToken = accessToken.accessToken {
                                     self.newCartViewModel.createCart(customerAccessToken: accessToken)
                                 }
@@ -89,6 +92,12 @@ class LoginCustomerViewController: UIViewController {
         if let valueId = UserDefaults.standard.string(forKey: "customerID") {
             print("from user default\(valueId)")
         }
+        if let currencyCode = UserDefaults.standard.string(forKey: "currencyCode") {
+            print("from user default\(currencyCode)")
+        }
+        let currencyValue = UserDefaults.standard.integer(forKey: "currencyValue")
+            print("from user default\(currencyValue)")
+        
     }
     
     @objc private func goToRegister() {
