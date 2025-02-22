@@ -207,7 +207,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
       cell.favButton.isSelected =   UserDefaults.standard.bool(forKey: productKey)
        
        if UserDefaults.standard.bool(forKey: productKey){
-           cell.favButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+           cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
            cell.favButton.tintColor = .white
 
              }else{
