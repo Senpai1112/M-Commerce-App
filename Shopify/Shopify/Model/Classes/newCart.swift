@@ -21,3 +21,7 @@ struct NewCart {
         self.updatedAt = updatedAt
     }
 }
+struct CartLineInputData {
+    let quantity: Int
+    let merchandiseId: String
+}

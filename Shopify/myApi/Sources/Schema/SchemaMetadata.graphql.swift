@@ -31,6 +31,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CartCreatePayload": return MyApi.Objects.CartCreatePayload
     case "CartLine": return MyApi.Objects.CartLine
     case "CartLineCost": return MyApi.Objects.CartLineCost
+    case "CartLinesAddPayload": return MyApi.Objects.CartLinesAddPayload
     case "CartLinesRemovePayload": return MyApi.Objects.CartLinesRemovePayload
     case "CartLinesUpdatePayload": return MyApi.Objects.CartLinesUpdatePayload
     case "CartUserError": return MyApi.Objects.CartUserError
@@ -84,6 +85,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ProductVariant": return MyApi.Objects.ProductVariant
     case "ProductVariantComponent": return MyApi.Objects.ProductVariantComponent
     case "ProductVariantComponentConnection": return MyApi.Objects.ProductVariantComponentConnection
+    case "ProductVariantConnection": return MyApi.Objects.ProductVariantConnection
+    case "ProductVariantEdge": return MyApi.Objects.ProductVariantEdge
     case "QueryRoot": return MyApi.Objects.QueryRoot
     case "SearchQuerySuggestion": return MyApi.Objects.SearchQuerySuggestion
     case "SellingPlan": return MyApi.Objects.SellingPlan

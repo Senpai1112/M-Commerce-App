@@ -7,7 +7,7 @@ public class ProductDetailsQuery: GraphQLQuery {
   public static let operationName: String = "ProductDetailsQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query ProductDetailsQuery($id: ID!) { product(id: $id) { __typename availableForSale description id title totalInventory images(first: 5) { __typename edges { __typename node { __typename src } } } adjacentVariants { __typename price { __typename amount currencyCode } } } }"#
+      #"query ProductDetailsQuery($id: ID!) { product(id: $id) { __typename id title availableForSale description totalInventory images(first: 5) { __typename edges { __typename node { __typename src } } } variants(first: 20) { __typename edges { __typename node { __typename id title priceV2 { __typename amount currencyCode } } } } } }"#
     ))
 
   public var id: ID
@@ -40,38 +40,30 @@ public class ProductDetailsQuery: GraphQLQuery {
       public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.Product }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("availableForSale", Bool.self),
-        .field("description", String.self),
         .field("id", MyApi.ID.self),
         .field("title", String.self),
+        .field("availableForSale", Bool.self),
+        .field("description", String.self),
         .field("totalInventory", Int?.self),
         .field("images", Images.self, arguments: ["first": 5]),
-        .field("adjacentVariants", [AdjacentVariant].self),
+        .field("variants", Variants.self, arguments: ["first": 20]),
       ] }
 
-      /// Indicates if at least one product variant is available for sale.
-      public var availableForSale: Bool { __data["availableForSale"] }
-      /// A single-line description of the product, with [HTML tags](https://developer.mozilla.org/en-US/docs/Web/HTML) removed.
-      public var description: String { __data["description"] }
       /// A globally-unique ID.
       public var id: MyApi.ID { __data["id"] }
       /// The name for the product that displays to customers. The title is used to construct the product's handle.
       /// For example, if a product is titled "Black Sunglasses", then the handle is `black-sunglasses`.
       public var title: String { __data["title"] }
+      /// Indicates if at least one product variant is available for sale.
+      public var availableForSale: Bool { __data["availableForSale"] }
+      /// A single-line description of the product, with [HTML tags](https://developer.mozilla.org/en-US/docs/Web/HTML) removed.
+      public var description: String { __data["description"] }
       /// The quantity of inventory that's in stock.
       public var totalInventory: Int? { __data["totalInventory"] }
       /// List of images associated with the product.
       public var images: Images { __data["images"] }
-      /// A list of variants whose selected options differ with the provided selected options by one, ordered by variant id.
-      /// If selected options are not provided, adjacent variants to the first available variant is returned.
-      ///
-      /// Note that this field returns an array of variants. In most cases, the number of variants in this array will be low.
-      /// However, with a low number of options and a high number of values per option, the number of variants returned
-      /// here can be high. In such cases, it recommended to avoid using this field.
-      ///
-      /// This list of variants can be used in combination with the `options` field to build a rich variant picker that
-      /// includes variant availability or other variant information.
-      public var adjacentVariants: [AdjacentVariant] { __data["adjacentVariants"] }
+      /// A list of [variants](/docs/api/storefront/latest/objects/ProductVariant) that are associated with the product.
+      public var variants: Variants { __data["variants"] }
 
       /// Product.Images
       ///
@@ -125,40 +117,81 @@ public class ProductDetailsQuery: GraphQLQuery {
         }
       }
 
-      /// Product.AdjacentVariant
+      /// Product.Variants
       ///
-      /// Parent Type: `ProductVariant`
-      public struct AdjacentVariant: MyApi.SelectionSet {
+      /// Parent Type: `ProductVariantConnection`
+      public struct Variants: MyApi.SelectionSet {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
-        public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.ProductVariant }
+        public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.ProductVariantConnection }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .field("price", Price.self),
+          .field("edges", [Edge].self),
         ] }
 
-        /// The product variant’s price.
-        public var price: Price { __data["price"] }
+        /// A list of edges.
+        public var edges: [Edge] { __data["edges"] }
 
-        /// Product.AdjacentVariant.Price
+        /// Product.Variants.Edge
         ///
-        /// Parent Type: `MoneyV2`
-        public struct Price: MyApi.SelectionSet {
+        /// Parent Type: `ProductVariantEdge`
+        public struct Edge: MyApi.SelectionSet {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.MoneyV2 }
+          public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.ProductVariantEdge }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
-            .field("amount", MyApi.Decimal.self),
-            .field("currencyCode", GraphQLEnum<MyApi.CurrencyCode>.self),
+            .field("node", Node.self),
           ] }
 
-          /// Decimal money amount.
-          public var amount: MyApi.Decimal { __data["amount"] }
-          /// Currency of the money.
-          public var currencyCode: GraphQLEnum<MyApi.CurrencyCode> { __data["currencyCode"] }
+          /// The item at the end of ProductVariantEdge.
+          public var node: Node { __data["node"] }
+
+          /// Product.Variants.Edge.Node
+          ///
+          /// Parent Type: `ProductVariant`
+          public struct Node: MyApi.SelectionSet {
+            public let __data: DataDict
+            public init(_dataDict: DataDict) { __data = _dataDict }
+
+            public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.ProductVariant }
+            public static var __selections: [ApolloAPI.Selection] { [
+              .field("__typename", String.self),
+              .field("id", MyApi.ID.self),
+              .field("title", String.self),
+              .field("priceV2", PriceV2.self),
+            ] }
+
+            /// A globally-unique ID.
+            public var id: MyApi.ID { __data["id"] }
+            /// The product variant’s title.
+            public var title: String { __data["title"] }
+            /// The product variant’s price.
+            @available(*, deprecated, message: "Use `price` instead.")
+            public var priceV2: PriceV2 { __data["priceV2"] }
+
+            /// Product.Variants.Edge.Node.PriceV2
+            ///
+            /// Parent Type: `MoneyV2`
+            public struct PriceV2: MyApi.SelectionSet {
+              public let __data: DataDict
+              public init(_dataDict: DataDict) { __data = _dataDict }
+
+              public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.MoneyV2 }
+              public static var __selections: [ApolloAPI.Selection] { [
+                .field("__typename", String.self),
+                .field("amount", MyApi.Decimal.self),
+                .field("currencyCode", GraphQLEnum<MyApi.CurrencyCode>.self),
+              ] }
+
+              /// Decimal money amount.
+              public var amount: MyApi.Decimal { __data["amount"] }
+              /// Currency of the money.
+              public var currencyCode: GraphQLEnum<MyApi.CurrencyCode> { __data["currencyCode"] }
+            }
+          }
         }
       }
     }
