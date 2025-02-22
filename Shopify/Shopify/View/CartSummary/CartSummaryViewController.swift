@@ -21,6 +21,9 @@ class CartSummaryViewController: UIViewController {
     @IBOutlet weak var continueToPayment: UIButton!
     
     @IBOutlet weak var totalPriceOfProducts: UILabel!
+    
+    @IBOutlet weak var currencyCode: UILabel!
+    
     private let cartViewModel = CartViewModel()
     private var cancellable: AnyCancellable?
 
@@ -49,9 +52,9 @@ class CartSummaryViewController: UIViewController {
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.activityIndicator.stopAnimating()
-                self.totalPriceOfProducts.text = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount
+                self.totalPriceOfProducts.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0")"
                 self.newPrice = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0.0"
-
+                self.currencyCode.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.currencyCode ?? "0")"
                 self.tableView.reloadData()
             }
         }
@@ -77,7 +80,7 @@ class CartSummaryViewController: UIViewController {
                         self?.discount.text = "No Discount"
                         self?.validationLabel.textColor = UIColor.black
                         self?.newPrice = (self?.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount)!
-                        self?.totalPriceOfProducts.text = self?.newPrice
+                        self?.totalPriceOfProducts.text = "\(self?.newPrice ?? "0")"
                     }
                 }
         }
@@ -91,7 +94,7 @@ class CartSummaryViewController: UIViewController {
         let newDiscount = "\(discountAmount)"
         discount.text = newDiscount
         newPrice = "\(discountPrice)"
-        totalPriceOfProducts.text = newPrice
+        totalPriceOfProducts.text = "\(newPrice)"
     }
     func initNib(){
         tableView.dataSource = self
@@ -133,10 +136,10 @@ extension CartSummaryViewController : UITableViewDelegate, UITableViewDataSource
             }
             
             cell.productName.text = cartItem.merchandise?.productTitle ?? "Unknown Product"
-            cell.productPrice.text = cartItem.cost?.totalAmount?.amount ?? "0.00"
+        cell.productPrice.text = "\(cartItem.cost?.totalAmount?.amount ?? "0.00")"
             cell.productDetails.text = cartItem.merchandise?.title ?? "No details available"
             cell.productQuantaty.text = "\(cartItem.quantity ?? 0)"
-            
+        cell.currencyCode.text = cartItem.cost?.totalAmount?.currencyCode ?? "EGP"
             if let urlStr = cartItem.merchandise?.image, let url = URL(string: urlStr) {
                 cell.productImage.sd_setImage(with: url, placeholderImage: UIImage(named: "1"))
             }
@@ -144,7 +147,7 @@ extension CartSummaryViewController : UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 130
     }
 
     

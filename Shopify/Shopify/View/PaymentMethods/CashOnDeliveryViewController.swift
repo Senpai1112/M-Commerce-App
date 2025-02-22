@@ -30,6 +30,11 @@ class CashOnDeliveryViewController: UIViewController {
     
     @IBOutlet weak var phoneLabel: UILabel!
     
+    @IBOutlet weak var currencyCodeSubTotal: UILabel!
+    @IBOutlet weak var currencyCodeShippingFees: UILabel!
+    
+    @IBOutlet weak var currencyCodeGrandTotal: UILabel!
+    
     var customerDetails = CustomerDetails()
     var address = Addresses()
     var cartDetails = CartResponse()
@@ -57,17 +62,19 @@ class CashOnDeliveryViewController: UIViewController {
         updateUI()
     }
     func updateUI(){
-        subTotal.text = "\(newPrice) \(address.countryCode ?? "")"
-        shippingFees.text = "30.0 \(address.countryCode ?? "")"
+        subTotal.text = "\(newPrice)"
+        shippingFees.text = "30.0"
         let floatGrandTotal = (subTotal.text! as NSString).floatValue + 30.0
-        grandTotal.text = "\(floatGrandTotal) \(address.countryCode ?? "")"
-        
+        grandTotal.text = "\(floatGrandTotal)"
         nameLabel.text = customerDetails.firstName
         countryLabel.text = address.country
         address1Label.text = address.address1
         address2Label.text = address.address2
         cityLabel.text = address.city
         phoneLabel.text = address.phone
+        currencyCodeSubTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "US"
+        currencyCodeGrandTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "US"
+        currencyCodeShippingFees.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "US"
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {

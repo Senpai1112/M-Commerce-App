@@ -90,7 +90,7 @@ class ChoosePaymentMethodViewController: UIViewController {
         continueToPayment.layer.cornerCurve = .continuous
         continueToPayment.clipsToBounds = true
         continueToPayment.tintColor = UIColor.purple
-
+        
     }
     
     
@@ -162,8 +162,8 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         paymentRequest.merchantIdentifier = "merchant.2jd4vk6g4v2prs6z"
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .threeDSecure
-        paymentRequest.countryCode = address.countryCode ?? "US"
-        paymentRequest.currencyCode = "USD"
+        paymentRequest.countryCode = address.countryCode ?? "EG"
+        paymentRequest.currencyCode = "EGP"
         
         // Required fields
         paymentRequest.requiredShippingContactFields = [.name, .postalAddress, .phoneNumber, .emailAddress]
@@ -218,7 +218,7 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                             didAuthorizePayment payment: PKPayment,
                                             handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
-        
+        var paymentSuccess = false
         let paymentToken = payment.token
         print("Payment Token: \(paymentToken)")
         
@@ -226,6 +226,7 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
         let result = PKPaymentAuthorizationResult(status: status, errors: nil)
         if result.status == .success {
             print("Payment succeeded")
+            paymentSuccess = true
             var ids = [String]()
             for item in cartDetails.cart! {
                 
@@ -236,7 +237,7 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
                     return
                 }
                 let address = Address(address1: address1, phone: phone, city: city, country: country)
-
+                
                 let newPriceDouble = Double(newPrice)
                 orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
                 ids.append(item.id!)
@@ -246,17 +247,23 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
             print("Payment failed with status: \(result.status.rawValue)")
         }
         completion(result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
+            controller.dismiss(animated: true) {
+                print("Apple Pay dismissed")
+                
+                // Navigate back only if payment was successful
+                if paymentSuccess, let navigationController = self.navigationController {
+                    let viewControllers = navigationController.viewControllers
+                    let targetIndex = max(0, viewControllers.count - 5) // Go back 4 times
+                    navigationController.popToViewController(viewControllers[targetIndex], animated: true)
+                }
+            }
+        }
     }
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        controller.dismiss(animated: true, completion: {
-            if let navigationController = self.navigationController {
-                let viewControllers = navigationController.viewControllers
-                if viewControllers.count >= 4 {
-                    navigationController.popToViewController(viewControllers[viewControllers.count - 4], animated: true)
-                }
-            }
-        })
+        controller.dismiss(animated: true, completion:nil)
         print("payment finished")
     }
 }
