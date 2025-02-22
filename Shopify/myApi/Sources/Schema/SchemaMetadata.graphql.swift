@@ -31,6 +31,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CartCreatePayload": return MyApi.Objects.CartCreatePayload
     case "CartLine": return MyApi.Objects.CartLine
     case "CartLineCost": return MyApi.Objects.CartLineCost
+    case "CartLinesAddPayload": return MyApi.Objects.CartLinesAddPayload
     case "CartLinesRemovePayload": return MyApi.Objects.CartLinesRemovePayload
     case "CartLinesUpdatePayload": return MyApi.Objects.CartLinesUpdatePayload
     case "CartUserError": return MyApi.Objects.CartUserError

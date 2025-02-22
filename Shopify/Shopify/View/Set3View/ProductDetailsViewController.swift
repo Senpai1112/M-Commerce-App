@@ -5,11 +5,14 @@
 //  Created by Rokaya El Shahed on 13/02/2025.
 //
 import UIKit
+import MyApi
 
 class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: - Properties
     var viewModel = ProductDetailsViewModel()
+    var lines : [CartLineInput] = []
+    var addToCartViewModel = AddToCartViewModel()
     var id: String?
     var product: Product?
     
@@ -168,7 +171,49 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     }
     
     @objc func addToCartTapped() {
-        print("Add to Cart Tapped")
+//        variantPicker.selectRow(0, inComponent: 0, animated: false)
+//
+//        print("Add to Cart Tapped")
+//        // Combine the logic: Adding to cart and setting up observers
+//        if let cartID = UserDefaults.standard.string(forKey: "cartID") {
+//            print("Retrieved Cart ID: \(cartID)")
+//            addToCartViewModel.addLineToCart(cartId: cartID, lines: lines)
+//
+//        }
+//        
+//        // Setup ViewModel observers within the same function
+
+        let selectedRow = variantPicker.selectedRow(inComponent: 0)
+               let selectedVariant = product?.variants[selectedRow] ?? product?.variants.first
+               
+               if let variant = selectedVariant {
+                   lines = [CartLineInput(quantity: 1, merchandiseId: variant.id)]
+                   print("Add to Cart Tapped with Variant: \(variant.title), Price: \(variant.price.amount) \(variant.price.currencyCode)  ID: \(variant.id)")
+                   
+                   // Assuming cartID is retrieved and lines are properly populated
+                   if let cartID = UserDefaults.standard.string(forKey: "cartID") {
+                       addToCartViewModel.addLineToCart(cartId: cartID, lines: lines)
+                   }
+               }
+                addToCartViewModel.onCartUpdated = { [weak self] cart in
+                    // Update UI with new cart data (e.g., navigate to checkout)
+                    let alertController = UIAlertController(title: "Success", message: "Item has been added to your cart.", preferredStyle: .alert)
+                        
+                        // Add an OK button to dismiss the alert
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(okAction)
+                        
+                        // Present the alert
+                    self?.present(alertController, animated: true, completion: nil)
+                    print("Cart updated: \(cart.id)")
+        
+                    print("Checkout URL: \(cart.checkoutUrl ?? "No URL")")
+                }
+        
+                viewModel.onError = { error in
+                    // Handle error (e.g., show alert to user)
+                    print("Error: \(error)")
+                }
     }
     
     private func setupViewModelObservers() {
@@ -215,6 +260,8 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
             }
         }
         checkIfFavorite()
+        variantPicker.selectRow(0, inComponent: 0, animated: false)
+
     }
     
     // MARK: - UI Setup
@@ -407,8 +454,10 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if let selectedVariant = product?.variants[row] {
-            print("Price: \(selectedVariant.price.amount) \(selectedVariant.price.currencyCode) \(selectedVariant.id)")
-            
+            print("Price: \(selectedVariant.price.amount) \(selectedVariant.price.currencyCode) \(selectedVariant.id) \(selectedVariant.title)")
+             lines = [CartLineInput(quantity: 1, merchandiseId: selectedVariant.id)]
+              
+        
         }
     }
     
