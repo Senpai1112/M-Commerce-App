@@ -222,7 +222,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
            cell.favButton.isSelected = !cell.favButton.isSelected
            if  cell.favButton.isSelected {
 
-               cell.favButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
+               cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
                cell.favButton.tintColor = .white
                //cell.favButton.foregroundColor = .red
                 // save to core data

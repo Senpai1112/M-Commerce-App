@@ -165,15 +165,13 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         for favorite in favoriteProducts {
             if favorite.productId == product.id {
                 favoriteButton.isSelected = true
-                favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                favoriteButton.tintColor = .red
+                favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
                 return
             }
         }
         
         favoriteButton.isSelected = false
-        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        favoriteButton.tintColor = .lightGray
+        favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
     }
     
     @objc func toggleFavorite() {
@@ -193,13 +191,11 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         favoriteButton.isSelected = !favoriteButton.isSelected
         
         if favoriteButton.isSelected {
-            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            favoriteButton.tintColor = .red
+            favoriteButton.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
             CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
             UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
         } else {
-            favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            favoriteButton.tintColor = .lightGray
+            favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
             CoreDataManager.deleteFromCoreData(productId: product.id)
             UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
         }
@@ -389,7 +385,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
         
         // Button styling to ensure it's circular if needed
-        favoriteButton.tintColor = .red
+        favoriteButton.tintColor = UIColor(white: 0.95, alpha: 1.2)
         //  favoriteButton.layer.cornerRadius = 25 // Make it circular if needed
         //   favoriteButton.clipsToBounds = true // Clip any overflow
         //     favoriteButton.imageView?.contentMode = .scaleToFill
