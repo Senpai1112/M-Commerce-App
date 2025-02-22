@@ -233,7 +233,7 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
             var lineItems = [LineItem]()
             var ids = [String]()
             guard let items = cartDetails.cart else { return }
-            guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country , let address2 = address.address2 else {
+            guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country else {
                 print("Address details are missing")
                 return
             }
