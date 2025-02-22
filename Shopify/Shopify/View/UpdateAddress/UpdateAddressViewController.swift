@@ -91,11 +91,6 @@ class UpdateAddressViewController: UIViewController {
                 print("Access Token is invalid")
                 return
             }
-            guard address == nil else {
-                print("address data is missing")
-                return
-            }
-
 
             let address : Addresses = Addresses(country: countryName.text!, city: cityName.text!, address1 : streetName.text!, address2 : apartmentNumber.text!, phone: phoneNumber.text!, id : address?.id)
             print(address)
