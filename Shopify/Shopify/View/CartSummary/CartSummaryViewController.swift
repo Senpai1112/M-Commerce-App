@@ -25,8 +25,10 @@ class CartSummaryViewController: UIViewController {
     private var cancellable: AnyCancellable?
 
     let activityIndicator = UIActivityIndicatorView(style: .large)
-    
-    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
+
+    var cartId : String {
+        return UserDefaults.standard.string(forKey: "cartID") ?? ""
+    }
     
     var newPrice = ""
 
@@ -48,7 +50,8 @@ class CartSummaryViewController: UIViewController {
                 guard let self = self else { return }
                 self.activityIndicator.stopAnimating()
                 self.totalPriceOfProducts.text = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount
-                self.newPrice = (self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount)!
+                self.newPrice = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0.0"
+
                 self.tableView.reloadData()
             }
         }
@@ -125,16 +128,18 @@ extension CartSummaryViewController : UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CartSummaryTableViewCell", for: indexPath) as! CartSummaryTableViewCell
-        cell.productName.text = cartViewModel.localCartResult.cart![indexPath.row].merchandise?.productTitle
-        
-        cell.productPrice.text = cartViewModel.localCartResult.cart![indexPath.row].cost?.totalAmount?.amount
-        
-        cell.productDetails.text = cartViewModel.localCartResult.cart![indexPath.row].merchandise?.title
-        
-        cell.productQuantaty.text = "\(cartViewModel.localCartResult.cart![indexPath.row].quantity ?? 0)"
-        if let urlStr = cartViewModel.cartResult.cart![indexPath.row].merchandise?.image, let url = URL(string: urlStr) {
-            cell.productImage.sd_setImage(with: url, placeholderImage: UIImage(named: "Ad"))
-        }
+        guard let cartItem = cartViewModel.localCartResult.cart?[indexPath.row] else {
+                return cell
+            }
+            
+            cell.productName.text = cartItem.merchandise?.productTitle ?? "Unknown Product"
+            cell.productPrice.text = cartItem.cost?.totalAmount?.amount ?? "0.00"
+            cell.productDetails.text = cartItem.merchandise?.title ?? "No details available"
+            cell.productQuantaty.text = "\(cartItem.quantity ?? 0)"
+            
+            if let urlStr = cartItem.merchandise?.image, let url = URL(string: urlStr) {
+                cell.productImage.sd_setImage(with: url, placeholderImage: UIImage(named: "1"))
+            }
         return cell
     }
     

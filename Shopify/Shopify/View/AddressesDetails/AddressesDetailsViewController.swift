@@ -11,7 +11,9 @@ import Lottie
 class AddressesDetailsViewController: UIViewController {
     
     private let addressDetailsViewModel = AddressDetailsViewModel()
-    var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
     let activityIndicator = UIActivityIndicatorView(style: .large)
     var backgroundImageView: UIImageView?
 
@@ -41,12 +43,22 @@ class AddressesDetailsViewController: UIViewController {
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
     }
     func addBackgroundImage(named imageName: String) {
-        let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        self.view.addSubview(imageView)
+
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 250),
+            imageView.heightAnchor.constraint(equalToConstant: 500)
+        ])
            imageView.image = UIImage(named: imageName)
         imageView.contentMode = .scaleAspectFit
-           imageView.tag = 100  // Assign a tag to easily remove later
+           imageView.tag = 100
         self.tableView.addSubview(imageView)
-        self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
+        self.tableView.sendSubviewToBack(imageView)
            backgroundImageView = imageView
        }
     
@@ -78,7 +90,6 @@ class AddressesDetailsViewController: UIViewController {
     @IBAction func addNewAddress(_ sender: Any) {
         let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
         let viewController = storyBoard.instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        viewController.customerAccessToken = customerAccessToken
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     /*
@@ -134,5 +145,10 @@ extension AddressesDetailsViewController:
             self.present(alert, animated: true)
         }
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "UpdateAddressViewController") as! UpdateAddressViewController
+        vc.address = addressDetailsViewModel.addressResult[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }

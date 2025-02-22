@@ -18,6 +18,18 @@ class CashOnDeliveryViewController: UIViewController {
     
     @IBOutlet weak var placeOrder: UIButton!
     
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    @IBOutlet weak var cityLabel: UILabel!
+    
+    @IBOutlet weak var address1Label: UILabel!
+    
+    @IBOutlet weak var address2Label: UILabel!
+    
+    @IBOutlet weak var countryLabel: UILabel!
+    
+    @IBOutlet weak var phoneLabel: UILabel!
+    
     var customerDetails = CustomerDetails()
     var address = Addresses()
     var cartDetails = CartResponse()
@@ -27,18 +39,35 @@ class CashOnDeliveryViewController: UIViewController {
     
     var newPrice = ""
     
-    var customerAccessToken  = "fc1bea2489ae90f294f2c8795e0dd7ff"
-    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
+    var cartId : String {
+        return UserDefaults.standard.string(forKey: "cartID") ?? ""
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         initUI()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        updateUI()
+    }
+    func updateUI(){
         subTotal.text = "\(newPrice) \(address.countryCode ?? "")"
         shippingFees.text = "30.0 \(address.countryCode ?? "")"
         let floatGrandTotal = (subTotal.text! as NSString).floatValue + 30.0
-        grandTotal.text = "\(floatGrandTotal)"
+        grandTotal.text = "\(floatGrandTotal) \(address.countryCode ?? "")"
+        
+        nameLabel.text = customerDetails.firstName
+        countryLabel.text = address.country
+        address1Label.text = address.address1
+        address2Label.text = address.address2
+        cityLabel.text = address.city
+        phoneLabel.text = address.phone
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {
@@ -58,8 +87,8 @@ class CashOnDeliveryViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
             if let navigationController = self?.navigationController {
                 let viewControllers = navigationController.viewControllers
-                if viewControllers.count >= 6 {
-                    navigationController.popToViewController(viewControllers[viewControllers.count - 6], animated: true)
+                if viewControllers.count >= 5 {
+                    navigationController.popToViewController(viewControllers[viewControllers.count - 5], animated: true)
                 }
             }
         })
@@ -68,6 +97,7 @@ class CashOnDeliveryViewController: UIViewController {
     func initUI(){
         placeOrder.layer.cornerRadius = placeOrder.frame.height / 2
         placeOrder.layer.cornerCurve = .continuous
+        placeOrder.tintColor = UIColor.purple
         placeOrder.clipsToBounds = true
     }
 

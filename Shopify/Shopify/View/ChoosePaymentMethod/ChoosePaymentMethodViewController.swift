@@ -21,8 +21,12 @@ class ChoosePaymentMethodViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var customerAccessToken  = "fc1bea2489ae90f294f2c8795e0dd7ff"
-    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
+    var cartId : String {
+        return UserDefaults.standard.string(forKey: "cartID") ?? ""
+    }
     
     //var price = Price(amount: "1234.50", currencyCode: "EGP")
     var customerDetails = CustomerDetails()
@@ -34,7 +38,6 @@ class ChoosePaymentMethodViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(address.city!)
         initNib()
         initUI()
     }
@@ -107,12 +110,7 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section{
-        case 0:
-            return headersForSections[section]
-        default:
-            return headersForSections[section]
-        }
+        return headersForSections[section]
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -164,7 +162,7 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
         paymentRequest.merchantIdentifier = "merchant.2jd4vk6g4v2prs6z"
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .threeDSecure
-        paymentRequest.countryCode = address.countryCode!
+        paymentRequest.countryCode = address.countryCode ?? "US"
         paymentRequest.currencyCode = "USD"
         
         // Required fields
@@ -230,9 +228,15 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
             print("Payment succeeded")
             var ids = [String]()
             for item in cartDetails.cart! {
+                
                 let variantId = extractVariantID(from: item.merchandise!.id)
                 let intVariantId = variantId?.codingKey.intValue
-                let address = Address(address1: address.address1!, phone: address.phone!, city: address.city!, country: address.country!)
+                guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country else {
+                    print("Address details are missing")
+                    return
+                }
+                let address = Address(address1: address1, phone: phone, city: city, country: country)
+
                 let newPriceDouble = Double(newPrice)
                 orderViewModel.createOrder(first_name: customerDetails.firstName!, last_name: customerDetails.lastName!, email: customerDetails.email!, variant_id: intVariantId! , quantity: item.quantity!, billing_address: address, shipping_address: address, transaction_amount: newPriceDouble!)
                 ids.append(item.id!)
@@ -241,18 +245,18 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
         } else {
             print("Payment failed with status: \(result.status.rawValue)")
         }
-        
         completion(result)
     }
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        controller.dismiss(animated: true, completion: nil)
-        if let navigationController = self.navigationController {
-            let viewControllers = navigationController.viewControllers
-            if viewControllers.count >= 5 {
-                navigationController.popToViewController(viewControllers[viewControllers.count - 5], animated: true)
+        controller.dismiss(animated: true, completion: {
+            if let navigationController = self.navigationController {
+                let viewControllers = navigationController.viewControllers
+                if viewControllers.count >= 4 {
+                    navigationController.popToViewController(viewControllers[viewControllers.count - 4], animated: true)
+                }
             }
-        }
+        })
         print("payment finished")
     }
 }

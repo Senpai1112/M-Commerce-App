@@ -23,7 +23,9 @@ class ShoppingCartViewController: UIViewController {
     private let cartViewModel = CartViewModel()
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    var cartId : String = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUpNRVg5SjkzQk1DTjExNjNLUUNGTVdRWg?key=c4a1a467f54521f9a8e6ccaf6f3a584b"
+    var cartId : String {
+        return UserDefaults.standard.string(forKey: "cartID") ?? ""
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,19 +55,20 @@ class ShoppingCartViewController: UIViewController {
     }
     
     func addBackgroundImage(named imageName: String) {
-        let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
-           imageView.image = UIImage(named: imageName)
-        imageView.contentMode = .scaleAspectFit
-           imageView.tag = 100  // Assign a tag to easily remove later
-        self.tableView.addSubview(imageView)
-        self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
-           backgroundImageView = imageView
-       }
+        if backgroundImageView == nil {
+            let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
+            imageView.image = UIImage(named: imageName)
+            imageView.contentMode = .scaleAspectFit
+            imageView.tag = 100  // Assign a tag to easily remove later
+            self.tableView.addSubview(imageView)
+            self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
+            backgroundImageView = imageView
+        }
+    }
     
     func removeBackgroundImage() {
-        if let imageView = self.tableView.viewWithTag(100) {
-            imageView.removeFromSuperview()
-        }
+        backgroundImageView?.removeFromSuperview()
+        backgroundImageView = nil
     }
     
     func initNib(){

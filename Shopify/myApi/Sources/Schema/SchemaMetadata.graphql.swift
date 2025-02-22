@@ -48,6 +48,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CustomerAccessTokenCreatePayload": return MyApi.Objects.CustomerAccessTokenCreatePayload
     case "CustomerAddressCreatePayload": return MyApi.Objects.CustomerAddressCreatePayload
     case "CustomerAddressDeletePayload": return MyApi.Objects.CustomerAddressDeletePayload
+    case "CustomerAddressUpdatePayload": return MyApi.Objects.CustomerAddressUpdatePayload
     case "CustomerCreatePayload": return MyApi.Objects.CustomerCreatePayload
     case "CustomerDefaultAddressUpdatePayload": return MyApi.Objects.CustomerDefaultAddressUpdatePayload
     case "CustomerUserError": return MyApi.Objects.CustomerUserError

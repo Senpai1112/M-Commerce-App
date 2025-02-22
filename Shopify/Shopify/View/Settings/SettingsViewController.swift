@@ -9,7 +9,9 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    var customerAccessToken : String = "fc1bea2489ae90f294f2c8795e0dd7ff"
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
     var addressDetailsViewModel = AddressDetailsViewModel()
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -28,7 +30,7 @@ class SettingsViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Settings"
         details[0] = "Address"
-        addressDetailsViewModel.bindResultToSettingTableViewController = { () in
+        addressDetailsViewModel.bindResultToSettingTableViewController = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 if self?.addressDetailsViewModel.defaultAddressResult.city == ""
                 {
@@ -82,10 +84,6 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableViewCell", for: indexPath) as! SettingsTableViewCell
         cell.detailsLabel.text = details[indexPath.row]
         cell.titleLabel.text = titles[indexPath.row]
-//        cell.backgroundColor = .systemGray6
-//        cell.layer.borderColor = UIColor.systemBackground.cgColor
-//        cell.layer.borderWidth = 10
-//        cell.clipsToBounds = true
         return cell
     }
     
