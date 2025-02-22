@@ -233,12 +233,27 @@ func drawAdsSection() -> NSCollectionLayoutSection {
     }
     
     @objc func favTapped() {
-        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
-        let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
-        
-        navigationController?.pushViewController(favouritesVC, animated: true)
-        
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
+                navigationController?.pushViewController(favouritesVC, animated: true)
+            } else {
+                showLoginAlert()
+            }
     }
+    func showLoginAlert() {
+            let alert = UIAlertController(title: "Alert", message: "You must log in to access this page.", preferredStyle: .alert)
+            let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+                self.navigationController?.pushViewController(loginVC, animated: true)        }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(loginAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
     
     func showSearchBar() {
         let searchBar = UISearchBar()
