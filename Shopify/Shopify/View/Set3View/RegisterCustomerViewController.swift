@@ -9,7 +9,7 @@ import UIKit
 import FirebaseAuth
 
 class CustomerViewController: UIViewController {
-    
+///
     private let viewModel = CustomerViewModel()
     
     override func viewDidLoad() {
