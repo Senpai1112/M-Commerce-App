@@ -13,6 +13,7 @@ class SettingsViewController: UIViewController {
         return UserDefaults.standard.string(forKey: "accessToken") ?? ""
     }
     var addressDetailsViewModel = AddressDetailsViewModel()
+    var deleteCustomerViewModel = DeleteCustomerViewModel()
     var currencyViewModel = CurrencyViewModel()
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -63,7 +64,27 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func logoutButton(_ sender: UIButton) {
+        
+        deleteCustomerViewModel.deleteCustomerInViewController = {
+            DispatchQueue.main.async{[weak self] in
+                if let message = self?.deleteCustomerViewModel.deleteCustomerResult.errors?.message , message.isEmpty {
+                    let alert = UIAlertController(title: "Logged Out Successfully", message: "", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in 
+                        UserDefaults.standard.set("", forKey: "customerAccessToken")
+                        UserDefaults.standard.set("",forKey: "cartID")
+                        self?.navigationController?.popViewController(animated: true)
+                    }))
+                    self?.present(alert, animated: true)
+                }
+                else{
+                    print("Couldn't Delete the Customer form API")
+                }
+            }
+        }
+        print(UserDefaults.standard.string(forKey: "accessToken") ?? "NO ACCESS TOKEN")
+        deleteCustomerViewModel.deleteCustomerFromModel(accessToken: UserDefaults.standard.string(forKey: "accessToken"))
     }
+    
     /*
      // MARK: - Navigation
      
