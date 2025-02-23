@@ -55,8 +55,7 @@ class ApolloProductsNetwokService {
     }
     
      func fetchCustomerOrders(token : String,completion: @escaping (Result<GraphQLResult<CustomerOrdersQuery.Data>, Error>) -> Void) {
-        let ordersQuery = CustomerOrdersQuery(token: token)
-        ApolloAddressesNetwokService.shared.apollo.fetch(query: ordersQuery) { result in
+        ApolloAddressesNetwokService.shared.apollo.fetch(query: CustomerOrdersQuery(token: token),cachePolicy: .fetchIgnoringCacheData) { result in
             switch result {
             case .success(let graphQLResult):
                 completion(.success(graphQLResult))
@@ -65,4 +64,5 @@ class ApolloProductsNetwokService {
             }
         }
     }
+   
 }
