@@ -29,7 +29,7 @@ class NewCartViewModel {
                     // Extract errors and notify
                     let errorMessages = errors.map {
                         let errorCode = $0.code?.rawValue ?? "Unknown Error"
-                        return "\(errorCode): \($0.message ?? "No message provided.")"
+                        return "\(errorCode): \($0.message)"
                     }
                     
                     let errorMessage = errorMessages.joined(separator: "\n")

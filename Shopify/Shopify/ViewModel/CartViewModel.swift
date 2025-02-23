@@ -25,7 +25,9 @@ class CartViewModel{
         
         func mapCost(amount: String? , currencyCode : String?) -> Cost? {
             guard let amount = amount else { return nil }
-            return Cost(amount: amount, currencyCode: currencyCode)
+            let doubleCost = (Double(amount) ?? 0.0) * UserDefaults.standard.double(forKey: "currencyValue")
+            let formattedPrice = (doubleCost * 100).rounded() / 100
+            return Cost(amount: "\(formattedPrice)", currencyCode: UserDefaults.standard.string(forKey: "currencyCode"))
         }
         
         let totalCost: TotalCost? = {

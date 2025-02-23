@@ -37,7 +37,7 @@ class LoginCustomerViewController: UIViewController {
                 UserDefaults.standard.set("SUMMER30", forKey: "SUMMER30")
                 UserDefaults.standard.set("WINTER30", forKey: "WINTER30")
                 UserDefaults.standard.set("EGP", forKey: "currencyCode")
-                UserDefaults.standard.set(1 , forKey: "currencyValue")
+                UserDefaults.standard.set(1.0 , forKey: "currencyValue")
 
                 if let accessToken = accessToken.accessToken {
                                     self.newCartViewModel.createCart(customerAccessToken: accessToken)
