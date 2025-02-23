@@ -11,6 +11,8 @@ pod 'Kingfisher'
 pod 'Braintree'
 pod 'Braintree/PayPalNativeCheckout'
 pod 'lottie-ios'
+pod 'FirebaseAuth'
+pod 'FirebaseFirestore'
 
   target 'ShopifyTests' do
     inherit! :search_paths
