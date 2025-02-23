@@ -22,6 +22,10 @@ class CartSummaryViewController: UIViewController {
     @IBOutlet weak var totalPriceOfProducts: UILabel!
     @IBOutlet weak var currencyCode: UILabel!
     
+    @IBOutlet weak var discountCurrencyCode: UILabel!
+    @IBOutlet weak var grandTotalCurrencyCode: UILabel!
+    @IBOutlet weak var subTotalPrice: UILabel!
+    
     private let cartViewModel = CartViewModel()
     private var cancellable: AnyCancellable?
 
@@ -56,6 +60,9 @@ class CartSummaryViewController: UIViewController {
                 self.totalPriceOfProducts.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0")"
                 self.newPrice = self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0.0"
                 self.currencyCode.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.currencyCode ?? "EGP")"
+                self.grandTotalCurrencyCode.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.currencyCode ?? "EGP")"
+                self.discountCurrencyCode.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.currencyCode ?? "EGP")"
+                self.subTotalPrice.text = "\(self.cartViewModel.localCartResult.totalCost?.subtotalAmount?.amount ?? "0")"
                 self.tableView.reloadData()
             }
         }

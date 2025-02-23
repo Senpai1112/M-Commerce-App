@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		0F0631F77299F8357D4ACA01 /* Pods_Shopify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F0E92932A4E1DC1DA7C5F6 /* Pods_Shopify.framework */; };
-		17B132332D6B021900B173E7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 17B132322D6B021900B173E7 /* FirebaseAnalytics */; };
-		17B132352D6B021900B173E7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 17B132342D6B021900B173E7 /* FirebaseAuth */; };
-		17B132372D6B021900B173E7 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 17B132362D6B021900B173E7 /* FirebaseCore */; };
 		54E2DDE02D5ED2E700F1D4B2 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 54E2DDDF2D5ED2E700F1D4B2 /* Apollo */; };
 		54E2DE172D5ED4DF00F1D4B2 /* MyApi in Frameworks */ = {isa = PBXBuildFile; productRef = 54E2DE162D5ED4DF00F1D4B2 /* MyApi */; };
 		9982B3B2CDA5AA6F2F599AA1 /* Pods_Shopify_ShopifyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4445E871E66000ABB423FBA5 /* Pods_Shopify_ShopifyUITests.framework */; };
 		F01AFCF9B5670A8CA23FC619 /* Pods_ShopifyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F7A1E416A91F55BF4C3B94 /* Pods_ShopifyTests.framework */; };
+		F58A94952D6B338700B136DC /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F58A94942D6B338700B136DC /* FirebaseAnalytics */; };
+		F58A94972D6B338700B136DC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F58A94962D6B338700B136DC /* FirebaseAuth */; };
+		F58A94992D6B338700B136DC /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = F58A94982D6B338700B136DC /* FirebaseCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,10 +86,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				54E2DE172D5ED4DF00F1D4B2 /* MyApi in Frameworks */,
-				17B132352D6B021900B173E7 /* FirebaseAuth in Frameworks */,
+				F58A94972D6B338700B136DC /* FirebaseAuth in Frameworks */,
 				0F0631F77299F8357D4ACA01 /* Pods_Shopify.framework in Frameworks */,
-				17B132332D6B021900B173E7 /* FirebaseAnalytics in Frameworks */,
-				17B132372D6B021900B173E7 /* FirebaseCore in Frameworks */,
+				F58A94952D6B338700B136DC /* FirebaseAnalytics in Frameworks */,
+				F58A94992D6B338700B136DC /* FirebaseCore in Frameworks */,
 				54E2DDE02D5ED2E700F1D4B2 /* Apollo in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,7 +263,7 @@
 			packageReferences = (
 				54E2DDDE2D5ED2E700F1D4B2 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				54E2DE152D5ED48300F1D4B2 /* XCLocalSwiftPackageReference "myApi" */,
-				17B132312D6B021900B173E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				F58A94932D6B338700B136DC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F5D4DEDE2D58ECC70038A233 /* Products */;
@@ -738,14 +738,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		17B132312D6B021900B173E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.8.1;
-			};
-		};
 		54E2DDDE2D5ED2E700F1D4B2 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apollographql/apollo-ios";
@@ -754,24 +746,17 @@
 				minimumVersion = 1.17.0;
 			};
 		};
+		F58A94932D6B338700B136DC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		17B132322D6B021900B173E7 /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 17B132312D6B021900B173E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		17B132342D6B021900B173E7 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 17B132312D6B021900B173E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		17B132362D6B021900B173E7 /* FirebaseCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 17B132312D6B021900B173E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCore;
-		};
 		54E2DDDF2D5ED2E700F1D4B2 /* Apollo */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 54E2DDDE2D5ED2E700F1D4B2 /* XCRemoteSwiftPackageReference "apollo-ios" */;
@@ -781,6 +766,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 54E2DE152D5ED48300F1D4B2 /* XCLocalSwiftPackageReference "myApi" */;
 			productName = MyApi;
+		};
+		F58A94942D6B338700B136DC /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F58A94932D6B338700B136DC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		F58A94962D6B338700B136DC /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F58A94932D6B338700B136DC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		F58A94982D6B338700B136DC /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F58A94932D6B338700B136DC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

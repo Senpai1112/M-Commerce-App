@@ -189,7 +189,20 @@ extension ShoppingCartViewController: UITableViewDelegate , UITableViewDataSourc
         }
         totalPriceOfProducts.text = String(format: "%.2f", overallTotal)
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+        guard let detailsVC = storyBord.instantiateViewController(withIdentifier: "detailsVC") as? ProductDetailsViewController else {
+            return
+        }
+        detailsVC.id = cartViewModel.localCartResult.cart?[indexPath.row].merchandise?.productId
+        print("Selected Product ID: \(detailsVC.id ?? "No ID")")
+        //print("Id:\(cartViewModel.localCartResult.cart?[indexPath.row].id ?? "")")
+        
+        
+        navigationController?.pushViewController(detailsVC, animated: true)
+    }
 }
+
 
 
 

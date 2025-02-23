@@ -44,7 +44,7 @@ class CartViewModel{
             cartItem.id = line.node.id
             
             if let productVariant = line.node.merchandise.asProductVariant {
-                var merch = Merchendise(id: productVariant.id, productTitle: productVariant.product.title)
+                var merch = Merchendise(id: productVariant.id, productTitle: productVariant.product.title , productId: productVariant.product.id)
                 merch.availableQuantity = productVariant.quantityAvailable != nil ? productVariant.quantityAvailable! : 0
                 merch.title = productVariant.title
                 merch.image = productVariant.image?.url

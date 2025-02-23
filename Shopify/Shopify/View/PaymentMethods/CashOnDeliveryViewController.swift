@@ -66,7 +66,7 @@ class CashOnDeliveryViewController: UIViewController {
         subTotal.text = "\(newPrice)"
         let doubleShippingFees = 30.0 * UserDefaults.standard.double(forKey: "currencyValue")
         shippingFees.text = "\((doubleShippingFees * 100).rounded() / 100)"
-
+        
         let doubleGrandTotal = (subTotal.text! as NSString).doubleValue + doubleShippingFees
         
         grandTotal.text = "\((doubleGrandTotal * 100).rounded() / 100)"
@@ -107,15 +107,34 @@ class CashOnDeliveryViewController: UIViewController {
         orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
         cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
         UserDefaults.standard.set("", forKey: selectedDiscountCopon)
-
+        
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
-            if let navigationController = self?.navigationController {
-                let viewControllers = navigationController.viewControllers
-                if viewControllers.count >= 5 {
-                    navigationController.popToViewController(viewControllers[viewControllers.count - 5], animated: true)
+            
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                          let sceneDelegate = windowScene.delegate as? SceneDelegate,
+                          let tabBarController = sceneDelegate.window?.rootViewController as? UITabBarController else {
+                        return
+                    }
+                    
+                    // Switch to Tab 0
+                    tabBarController.selectedIndex = 0
+                    
+                    // Pop to the root view controller of the selected tab
+                    if let navigationController = tabBarController.selectedViewController as? UINavigationController {
+                        navigationController.popToRootViewController(animated: true)
+                    }
+            /*if let navigationController = self?.navigationController {
+                /*let viewControllers = navigationController.viewControllers
+                if viewControllers.count >= 6 {
+                    navigationController.popToViewController(viewControllers[viewControllers.count - 6], animated: true)
+                }*/
+                if let tabBarController = self?.view.window?.rootViewController as? UITabBarController {
+                    tabBarController.selectedIndex = 0 // Change to the tab index you want
+                    navigationController.popToRootViewController(animated: true)
                 }
-            }
+            }*/
+            
         })
         self.present(alert, animated: true)
     }
