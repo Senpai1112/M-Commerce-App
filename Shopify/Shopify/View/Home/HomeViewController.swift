@@ -12,7 +12,7 @@ import MyApi
 
 class HomeViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     @IBOutlet weak var homeCollection: UICollectionView!
-    
+    let discountCoupon = ["SUMMER30" , "WINTER30"]
     var viewModel: BrandsViewModel!
     var filteredBrands: [BrandModel] = []
 
@@ -94,7 +94,7 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         switch section {
         case 0:
-            return 5
+        return 2
         case 1:
             return viewModel.filteredCollections.count
         default:
@@ -107,8 +107,9 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         case 0:
 
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AdsCell", for: indexPath) as! AdsCell
-            cell.AdImage.image = UIImage(named: "Ad")
-            return cell
+                    let adImages = [ "summer" , "winter"]
+                    cell.AdImage.image = UIImage(named: adImages[indexPath.row])
+                    return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandCell", for: indexPath) as! BrandCell
             let brand = viewModel.filteredCollections[indexPath.row]
@@ -125,6 +126,11 @@ cell.brandTitle.text = brand.title
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch (indexPath.section) {
+        case 0 :
+            UIPasteboard.general.string = discountCoupon[indexPath.row]
+            let alert = UIAlertController(title: "Discount coupon has been copied to clipboard!", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
         case 1:
             let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
             let productVC = storyBord.instantiateViewController(withIdentifier: "ProductVC") as! ProductsViewController
@@ -146,7 +152,7 @@ func drawAdsSection() -> NSCollectionLayoutSection {
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
             let groupSize = NSCollectionLayoutSize(
-    widthDimension: .fractionalWidth(0.8),heightDimension: .absolute(170))
+    widthDimension: .fractionalWidth(0.85),heightDimension: .absolute(180))
         
             let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,  subitems: [item])
