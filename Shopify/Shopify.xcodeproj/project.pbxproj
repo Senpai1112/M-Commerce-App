@@ -257,6 +257,7 @@
 			packageReferences = (
 				54E2DDDE2D5ED2E700F1D4B2 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				54E2DE152D5ED48300F1D4B2 /* XCLocalSwiftPackageReference "myApi" */,
+				1736E7872D6A6CEA00FF3BF6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F5D4DEDE2D58ECC70038A233 /* Products */;
@@ -731,6 +732,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1736E7872D6A6CEA00FF3BF6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
 		54E2DDDE2D5ED2E700F1D4B2 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apollographql/apollo-ios";
