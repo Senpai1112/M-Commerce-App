@@ -115,7 +115,10 @@ class CustomerViewController: UIViewController {
                 let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
                 if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
                     loginVC.customerId = customer.id ?? ""
-                    self.navigationController?.pushViewController(loginVC, animated: true)
+                    loginVC.customerName = "\(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")"
+                    loginVC.customerEmail = "\(customer.email ?? "N/A")"
+                  //  self.navigationController?.pushViewController(loginVC, animated: true)
+                    self.showLoginAlert()
                 }
             }
         }
@@ -136,6 +139,19 @@ class CustomerViewController: UIViewController {
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }
+    func showLoginAlert() {
+            let alert = UIAlertController(title: "Alert", message: "Email Verified Thanks! Please Log In", preferredStyle: .alert)
+            let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+                self.navigationController?.pushViewController(loginVC, animated: true)        }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(loginAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
     
 //    private func setupViewModelObservers() {
 //        viewModel.onCustomerCreated = { customer in

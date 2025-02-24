@@ -9,6 +9,8 @@ import UIKit
 
 class LoginCustomerViewController: UIViewController {
     var customerId : String = ""
+    var customerEmail : String = ""
+    var customerName : String = ""
     private let authViewModel = AuthViewModel()
     var newCartViewModel = NewCartViewModel()
 
@@ -36,6 +38,8 @@ class LoginCustomerViewController: UIViewController {
                 UserDefaults.standard.set(self.customerId, forKey: "customerID")
                 UserDefaults.standard.set("SUMMER30", forKey: "SUMMER30")
                 UserDefaults.standard.set("WINTER30", forKey: "WINTER30")
+                UserDefaults.standard.set(self.customerName, forKey: "customerName")
+                UserDefaults.standard.set(self.customerEmail, forKey: "customerEmail")
 
                 if let accessToken = accessToken.accessToken {
                                     self.newCartViewModel.createCart(customerAccessToken: accessToken)
