@@ -9,25 +9,34 @@ import UIKit
 
 class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var welcomeLabel: UILabel!
     @IBOutlet weak var moreOrders: UIButton!
     @IBOutlet weak var ordersTable: UITableView!
-
+    @IBOutlet weak var wishListTableView: UITableView!
+    var wishList = [FavoriteProduct]()
+    
     var viewModel: OrdersViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         ordersTable.dataSource = self
         ordersTable.delegate = self
+        
+        wishListTableView.dataSource = self
+        wishListTableView.delegate = self
         initNib()
        
     }
     ///setupNavigationBarIcons
     override func viewWillAppear(_ animated: Bool) {
        self.tabBarController?.title = "Me"
+        welcomeLabel.text = "Welcome Mai \(UserDefaults.standard.string(forKey: "customerName") ?? "")"
+        wishList = CoreDataManager.fetchFromCoreData()
         viewModel = OrdersViewModel()
         viewModel.bindOrdersToViewController = {
             DispatchQueue.main.async {
                 self.ordersTable.reloadData()
+                self.wishListTableView.reloadData()
             }}
 
         viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken") ?? "" )
@@ -45,7 +54,8 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func initNib(){
         let nib = UINib(nibName: "OrderCell", bundle: nil)
         self.ordersTable.register(nib, forCellReuseIdentifier: "OrderCell")
-            
+        let nib2 = UINib(nibName: "FavouriteCell", bundle: nil)
+        self.wishListTableView.register(nib2, forCellReuseIdentifier: "FavouriteCell")
         }
    
     func setupNavigationBarIcons() {
@@ -119,7 +129,11 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     /////count of orders
     var displayedOrders = 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(viewModel?.finalResult.count ?? 0, displayedOrders)
+        if tableView == self.ordersTable {
+            return min(viewModel?.finalResult.count ?? 0, displayedOrders)
+        }else {
+            return min (4 , wishList.count)
+        }
     }
     @IBAction func moreOrdersAction(_ sender: Any) {
         displayedOrders = viewModel.finalResult.count
@@ -127,25 +141,56 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as! OrderCell
-        let order = viewModel.finalResult[indexPath.row]
-        cell.orderDateLabel.text = "Created At: \(order.processedAt ?? "")"
-        cell.orderPriceLabel.text = "Price: \(order.price ?? 0) \(order.currencyCode ?? "")"
+        if tableView == self.ordersTable {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as! OrderCell
+            let order = viewModel.finalResult[indexPath.row]
+            cell.orderDateLabel.text = "Created At: \(order.processedAt ?? "")"
+            cell.orderPriceLabel.text = "Price: \(order.price ?? 0) \(order.currencyCode ?? "")"
 
-        return cell
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteCell", for: indexPath) as! FavouriteCell
+            let product = wishList[indexPath.row]
+            cell.favTitle.text = product.productName
+            if let price = product.productPrice {
+                cell.favPrice.text = "\(price) "
+            }
+            if let imageURL = product.productImage, let url = URL(string: imageURL) {
+                cell.favImage.kf.setImage(with: url, placeholder: UIImage(named: "1"))
+            }
+
+            return cell
+            
+        }
     }
     
    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60   }
+        if tableView == self.ordersTable {
+            return 60
+        }else{
+            return 90
+            }
+    }
    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         let order = viewModel.finalResult[indexPath.row]
-        let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
+        if tableView == self.ordersTable {
+            let order = viewModel.finalResult[indexPath.row]
+           let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
 
-         let detailsVC = storyBord.instantiateViewController(withIdentifier: "orderInfoVC") as! OrderViewController
-         detailsVC.order = order
-         navigationController?.pushViewController(detailsVC, animated: true)
+            let detailsVC = storyBord.instantiateViewController(withIdentifier: "orderInfoVC") as! OrderViewController
+            detailsVC.order = order
+            navigationController?.pushViewController(detailsVC, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: "Set3", bundle: nil)
+            var detailsVC = storyboard.instantiateViewController(withIdentifier: "detailsVC") as! ProductDetailsViewController
+            
+            detailsVC.id = wishList[indexPath.row].productId
+             
+            
+            self.navigationController?.pushViewController(detailsVC, animated: true)
+        }
+        
      }
  
     func showLoginView() {
@@ -189,7 +234,13 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
           navigationController?.pushViewController(loginVC, animated: true)
       }
 
-func removeLoginView() {
+    @IBAction func showAllFavourites(_ sender: Any) {
+        let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+        let favoriteVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
+        navigationController?.pushViewController(favoriteVC, animated: true)
+        
+    }
+    func removeLoginView() {
           view.viewWithTag(100)?.removeFromSuperview()
           }
 }

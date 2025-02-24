@@ -17,7 +17,7 @@ class FavouriteCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         favImage.contentMode = .scaleAspectFill
-           favImage.clipsToBounds = true
+        favImage.clipsToBounds = true
         favBorder.layer.cornerRadius = 10
         favBorder.layer.shadowColor = UIColor.black.cgColor
         favBorder.layer.shadowOffset = CGSize(width: 0, height: 2)

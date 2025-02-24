@@ -89,17 +89,22 @@ class LoginCustomerViewController: UIViewController {
         
         // Access the value
         if let value = UserDefaults.standard.string(forKey: "accessToken") {
-            print(value)
+            print("accessToken \(value) from user default")
         }
         if let valueId = UserDefaults.standard.string(forKey: "customerID") {
-            print("from user default\(valueId)")
+            print("customerID from user default\(valueId)")
         }
         if let currencyCode = UserDefaults.standard.string(forKey: "currencyCode") {
-            print("from user default\(currencyCode)")
+            print("currencyCode from user default\(currencyCode)")
         }
         let currencyValue = UserDefaults.standard.integer(forKey: "currencyValue")
-            print("from user default\(currencyValue)")
-        
+            print("currencyValue from user default\(currencyValue)")
+        if let customerName = UserDefaults.standard.string(forKey: "customerName") {
+            print("name from user default\(customerName)")
+        }
+        if let customerEmail = UserDefaults.standard.string(forKey: "customerEmail") {
+            print("mail from user default\(customerEmail)")
+        }
     }
     
     @objc private func goToRegister() {
