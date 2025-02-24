@@ -139,7 +139,15 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60   }
    
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         let order = viewModel.finalResult[indexPath.row]
+        let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
+
+         let detailsVC = storyBord.instantiateViewController(withIdentifier: "orderInfoVC") as! OrderViewController
+         detailsVC.order = order
+         navigationController?.pushViewController(detailsVC, animated: true)
+     }
+ 
     func showLoginView() {
             let loginView = UIView()
         loginView.tag = 100
