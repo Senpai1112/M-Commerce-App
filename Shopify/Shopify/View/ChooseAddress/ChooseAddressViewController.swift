@@ -10,8 +10,12 @@ import UIKit
 class ChooseAddressViewController: UIViewController {
     
     private var addressDetailsViewModel = AddressDetailsViewModel()
-    var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
-    
+
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
+    var backgroundImageView: UIImageView?
+
     var selectedIndex: IndexPath?
     @IBOutlet weak var continueToPayment: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -25,12 +29,33 @@ class ChooseAddressViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Choose Address"
-        addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
+        addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { [weak self] in
             DispatchQueue.main.async { [weak self] in
+                if self?.addressDetailsViewModel.addressResult.count == 0{
+                    self?.addBackgroundImage(named: "noLocation")
+                }else{
+                    self?.removeBackgroundImage()
+                }
                 self?.tableView.reloadData()
             }
         }
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
+    }
+    
+    func addBackgroundImage(named imageName: String) {
+        let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
+           imageView.image = UIImage(named: imageName)
+        imageView.contentMode = .scaleAspectFit
+           imageView.tag = 100  // Assign a tag to easily remove later
+        self.tableView.addSubview(imageView)
+        self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
+           backgroundImageView = imageView
+       }
+    
+    func removeBackgroundImage() {
+        if let imageView = self.tableView.viewWithTag(100) {
+            imageView.removeFromSuperview()
+        }
     }
     
     func initNib(){
@@ -43,6 +68,8 @@ class ChooseAddressViewController: UIViewController {
         continueToPayment.layer.cornerRadius = continueToPayment.frame.height / 2
         continueToPayment.layer.cornerCurve = .continuous
         continueToPayment.clipsToBounds = true
+        continueToPayment.tintColor = UIColor.purple
+
     }
 
     @IBAction func continueToPayment(_ sender: UIButton) {
@@ -52,7 +79,7 @@ class ChooseAddressViewController: UIViewController {
             self.present(alert, animated: true)
         }else{
             let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
-            let vc = storyBoard.instantiateViewController(withIdentifier: "ChoosePaymentMethodViewController") as! ChoosePaymentMethodViewController
+            let vc = storyBoard.instantiateViewController(withIdentifier: "CartSummaryViewController") as! CartSummaryViewController
             vc.address = addressDetailsViewModel.addressResult[selectedIndex!.row]
             self.navigationController?.pushViewController(vc, animated: true)
             

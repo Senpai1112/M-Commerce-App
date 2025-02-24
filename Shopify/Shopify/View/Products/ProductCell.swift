@@ -11,9 +11,14 @@ class ProductCell: UICollectionViewCell {
     @IBOutlet weak var productImageView: UIImageView!
     @IBOutlet weak var PriceLabel: UILabel!
 
+    @IBOutlet weak var productTitle: UILabel!
     @IBOutlet weak var currencyCodeLabel: UILabel!
     @IBOutlet weak var ProductBorder: UIView!
     
+    @IBOutlet weak var favButton: UIButton!
+    
+    var addToFavList: (()->())?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         ProductBorder.layer.cornerRadius = 10
@@ -26,7 +31,14 @@ class ProductCell: UICollectionViewCell {
         ProductBorder.layer.borderWidth = 0.5
         PriceLabel.textAlignment = .center
         PriceLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        productTitle.numberOfLines = 2
+        productTitle.lineBreakMode = .byWordWrapping
+        productTitle.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+
                 }
 
+    @IBAction func addToWishList(_ sender: Any) {
+        addToFavList?()
+    }
     
 }

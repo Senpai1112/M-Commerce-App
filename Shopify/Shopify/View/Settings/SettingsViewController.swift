@@ -9,18 +9,44 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
+    var addressDetailsViewModel = AddressDetailsViewModel()
+    var deleteCustomerViewModel = DeleteCustomerViewModel()
+    var currencyViewModel = CurrencyViewModel()
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     let titles = ["Address" , "Currency" , "Contact Us","About Us"]
-    var details = ["address" , "USD" ,"",""]
+    var details = ["address" , UserDefaults.standard.string(forKey: "currencyCode") ,"",""]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initNib()
         initUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Settings"
+        details[0] = "Address"
+        addressDetailsViewModel.bindResultToSettingTableViewController = { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                if self?.addressDetailsViewModel.defaultAddressResult.city == ""
+                {
+                    self?.details[0] = "Address"
+                }else{
+                    self?.details[0] = (self?.addressDetailsViewModel.defaultAddressResult.city)!
+                }
+                self?.tableView.reloadData()
+            }
+        }
+        currencyViewModel.bindResultToViewController = {}
+        tableView.reloadData()
+        addressDetailsViewModel.getDefaultAddressesFromModel(customerAccessToken: customerAccessToken)
+        currencyViewModel.fetchCurrencyFromModel()
     }
     func initNib(){
         tableView.dataSource = self
@@ -33,10 +59,32 @@ class SettingsViewController: UIViewController {
         logoutButton.layer.cornerRadius = logoutButton.frame.height / 2
         logoutButton.layer.cornerCurve = .continuous
         logoutButton.clipsToBounds = true
+        logoutButton.tintColor = UIColor.purple
+
     }
     
     @IBAction func logoutButton(_ sender: UIButton) {
+        
+        deleteCustomerViewModel.deleteCustomerInViewController = {
+            DispatchQueue.main.async{[weak self] in
+                if let message = self?.deleteCustomerViewModel.deleteCustomerResult.deletedAccessToken , message == UserDefaults.standard.string(forKey: "accessToken") {
+                    let alert = UIAlertController(title: "Logged Out Successfully", message: "", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in 
+                        UserDefaults.standard.set("", forKey: "accessToken")
+                        UserDefaults.standard.set("",forKey: "cartID")
+                        self?.navigationController?.popViewController(animated: true)
+                    }))
+                    self?.present(alert, animated: true)
+                }
+                else{
+                    print("Couldn't Delete the Customer form API")
+                }
+            }
+        }
+        print(UserDefaults.standard.string(forKey: "accessToken") ?? "NO ACCESS TOKEN")
+        deleteCustomerViewModel.deleteCustomerFromModel(accessToken: UserDefaults.standard.string(forKey: "accessToken"))
     }
+    
     /*
      // MARK: - Navigation
      
@@ -60,10 +108,6 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableViewCell", for: indexPath) as! SettingsTableViewCell
         cell.detailsLabel.text = details[indexPath.row]
         cell.titleLabel.text = titles[indexPath.row]
-        cell.backgroundColor = .systemGray6
-        cell.layer.borderColor = UIColor.systemBackground.cgColor
-        cell.layer.borderWidth = 10
-        cell.clipsToBounds = true
         return cell
     }
     
@@ -79,7 +123,16 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
             self.navigationController?.pushViewController(viewController, animated: true)
         case 1:
             currencySetter()
+        case 2:
+            let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+            let viewController = storyBoard.instantiateViewController(withIdentifier: "AboutUsViewController") as! AboutUsViewController
+            viewController.isAboutUs = false
+            self.navigationController?.present(viewController, animated: true)
         default:
+            let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+            let viewController = storyBoard.instantiateViewController(withIdentifier: "AboutUsViewController") as! AboutUsViewController
+            viewController.isAboutUs = true
+            self.navigationController?.present(viewController, animated: true)
             break
         }
         
@@ -89,10 +142,21 @@ extension SettingsViewController : UITableViewDataSource ,UITableViewDelegate {
         let alert = UIAlertController(title: "Choose you Currency", message: "", preferredStyle: .alert)
         let egp = UIAlertAction(title: "EGP", style: .default, handler: {  _ in
             self.details[1] = "EGP"
+            UserDefaults.standard.set("EGP", forKey: "currencyCode")
+            UserDefaults.standard.set(1.0, forKey: "currencyValue")
             self.tableView.reloadData()
         })
         let usd = UIAlertAction(title: "USD", style: .default, handler: { _ in
             self.details[1] = "USD"
+            UserDefaults.standard.set("USD", forKey: "currencyCode")
+            guard let currencyValue = self.currencyViewModel.currencyResult.data else {return}
+            for currency in currencyValue{
+                if currency.key == "USD"{
+                    guard let currencyValue = currency.value.value else { return }
+                    UserDefaults.standard.set(currencyValue, forKey: "currencyValue")
+                    print(currencyValue)
+                }
+            }
             self.tableView.reloadData()
         })
         alert.addAction(egp)

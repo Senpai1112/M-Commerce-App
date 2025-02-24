@@ -52,9 +52,12 @@
                                     <constraint firstAttribute="height" constant="35" id="nEM-SQ-8Cj"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="heart.fill" catalog="system">
-                                    <color key="baseForegroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <buttonConfiguration key="configuration" style="plain" image="heart" catalog="system">
+                                    <color key="baseForegroundColor" systemColor="systemRedColor"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="addToWishList:" destination="sgq-gC-bzc" eventType="touchUpInside" id="UlI-sc-AFb"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oke-Ov-6Ww">
                                 <rect key="frame" x="21" y="212" width="52" height="21"/>
@@ -98,6 +101,7 @@
                 <outlet property="PriceLabel" destination="Oke-Ov-6Ww" id="mGX-sq-HKw"/>
                 <outlet property="ProductBorder" destination="jxB-Gz-wi9" id="myM-Wb-xtO"/>
                 <outlet property="currencyCodeLabel" destination="Gyc-bW-gNt" id="6UH-Sd-osb"/>
+                <outlet property="favButton" destination="tXp-kA-Geq" id="IKC-gH-Rv1"/>
                 <outlet property="productImageView" destination="VPP-yc-acV" id="j5O-A8-2sq"/>
                 <outlet property="titleLabel" destination="Fp6-qO-73f" id="HqX-ie-uem"/>
                 <outlet property="vendorLabel" destination="SLR-7T-DBM" id="lQP-dx-A1y"/>
@@ -106,9 +110,12 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="heart.fill" catalog="system" width="128" height="107"/>
+        <image name="heart" catalog="system" width="128" height="107"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

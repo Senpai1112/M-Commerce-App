@@ -17,6 +17,10 @@ class CategoryCell: UICollectionViewCell {
     @IBOutlet weak var currencyCodeLabel: UILabel!
     @IBOutlet weak var ProductBorder: UIView!
     
+    @IBOutlet weak var favButton: UIButton!
+    
+    var addToFavList: (()->())?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -32,10 +36,14 @@ class CategoryCell: UICollectionViewCell {
         vendorLabel.textAlignment = .center
         PriceLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         currencyCodeLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-
+        titleLabel.numberOfLines = 2
+        titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.font = UIFont.systemFont(ofSize: 10, weight: .medium)
         vendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
 
                 }
     
+    @IBAction func addToWishList(_ sender: UIButton) {
+        addToFavList?()
+    }
 }

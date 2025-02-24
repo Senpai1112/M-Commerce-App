@@ -1,0 +1,10 @@
+query GetCustomerDetails ($token : String!){
+    customer(customerAccessToken: $token) {
+        displayName
+        email
+        firstName
+        id
+        lastName
+        phone
+    }
+}

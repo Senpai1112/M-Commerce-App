@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class CustomerViewController: UIViewController {
-    
+///
     private let viewModel = CustomerViewModel()
     
     override func viewDidLoad() {
@@ -19,8 +20,88 @@ class CustomerViewController: UIViewController {
        // testCreateCustomer()
     }
     
+//    @objc private func registerButtonTapped() {
+//        
+//        testCreateCustomer()
+//        
+//        viewModel.onCustomerCreated = { customer in
+//            DispatchQueue.main.async {
+//                print(" Customer Created Successfully:")
+//                print("   ID: \(customer.id ?? "N/A")")
+//                print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
+//                print("   Email: \(customer.email ?? "N/A")")
+//
+//               //navigate to login
+//                let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
+//                if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
+//                    loginVC.customerId = customer.id ?? ""
+//                    self.navigationController?.pushViewController(loginVC, animated: true)
+//                }
+//                
+//            }
+//        }
+//
+//        viewModel.onError = { errorMessage in
+//            DispatchQueue.main.async {
+//                print(" Error Creating Customer: \(errorMessage)")
+//                self.showAlert(title: "Error", message: "\(errorMessage) \n Please try again.")
+//            }
+//        }
+//     
+//    }
     @objc private func registerButtonTapped() {
+        guard let email = emailTextField.text, !email.isEmpty,
+                 let password = passwordTextField.text, !password.isEmpty else {
+               showAlert(title: "Error", message: "Please enter a valid email and password.")
+               return
+           }
         
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    print("Error registering user: \(error.localizedDescription)")
+                    self.showAlert(title: "Error", message: error.localizedDescription)
+                }
+                return
+            }
+
+            guard let user = Auth.auth().currentUser else { return }
+            user.sendEmailVerification { error in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        print("Error sending verification email: \(error.localizedDescription)")
+                        self.showAlert(title: "Error", message: "Could not send verification email. Please try again.")
+                    }
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Verification Required", message: "A verification email has been sent to \(email). Please verify your email before proceeding.")
+                }
+                
+                self.checkEmailVerification(user: user)
+            }
+        }
+    }
+    func checkEmailVerification(user: User) {
+        let timer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { timer in
+            user.reload { error in
+                if let error = error {
+                    print("Error reloading user: \(error.localizedDescription)")
+                    return
+                }
+
+                if user.isEmailVerified {
+                    timer.invalidate()  // Stop checking
+                    print("Email verified! Proceeding to customer creation.")
+
+                    
+                    self.createCustomer()
+                }
+            }
+        }
+    }
+    func createCustomer() {
         testCreateCustomer()
         
         viewModel.onCustomerCreated = { customer in
@@ -29,10 +110,11 @@ class CustomerViewController: UIViewController {
                 print("   ID: \(customer.id ?? "N/A")")
                 print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
                 print("   Email: \(customer.email ?? "N/A")")
-                
-               //navigate to login
+
+                // Navigate to Login
                 let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
                 if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
+                    loginVC.customerId = customer.id ?? ""
                     self.navigationController?.pushViewController(loginVC, animated: true)
                 }
             }
@@ -40,11 +122,13 @@ class CustomerViewController: UIViewController {
 
         viewModel.onError = { errorMessage in
             DispatchQueue.main.async {
-                print(" Error Creating Customer: \(errorMessage)")
+                print("Error Creating Customer: \(errorMessage)")
                 self.showAlert(title: "Error", message: "\(errorMessage) \n Please try again.")
             }
         }
     }
+
+    
     @objc private func loginButtonTapped(){
         let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
 
@@ -153,8 +237,10 @@ class CustomerViewController: UIViewController {
     
        private func setupUI() {
            view.backgroundColor = .systemGray6
-           self.navigationItem.hidesBackButton = true
-           self.navigationController?.navigationBar.tintColor = .purple
+
+           //self.navigationItem.hidesBackButton = true
+           //self.navigationController?.navigationBar.tintColor = .purple
+
            
            // Add subviews
            self.view.addSubview(headerView)

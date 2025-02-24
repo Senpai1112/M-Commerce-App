@@ -8,8 +8,10 @@
 import UIKit
 
 class LoginCustomerViewController: UIViewController {
-    
+    var customerId : String = ""
     private let authViewModel = AuthViewModel()
+    var newCartViewModel = NewCartViewModel()
+
     
     override func viewDidLoad() {
         
@@ -28,6 +30,29 @@ class LoginCustomerViewController: UIViewController {
                 print("   Access Token: \(accessToken.accessToken ?? "N/A")")
                 
                 //navigate to home and pass access token after merge
+                
+                // Save the value
+                UserDefaults.standard.set(accessToken.accessToken, forKey: "accessToken")
+                UserDefaults.standard.set(self.customerId, forKey: "customerID")
+                UserDefaults.standard.set("SUMMER30", forKey: "SUMMER30")
+                UserDefaults.standard.set("WINTER30", forKey: "WINTER30")
+
+                if let accessToken = accessToken.accessToken {
+                                    self.newCartViewModel.createCart(customerAccessToken: accessToken)
+                                }
+                let tabBarController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "homeTabBar") as! UITabBarController
+                    
+              self.navigationController?.pushViewController(tabBarController, animated: true)
+                    // Present the TabBarController modally
+       //             self.present(tabBarController, animated: true, completion: nil)
+                
+//                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+//                if let homeVC = storyBoard.instantiateViewController(withIdentifier: "homeVC") as? HomeViewController {
+//                    self.navigationController?.pushViewController(homeVC, animated: true)
+     //           }
+                
+
+               
             }
         }
         
@@ -37,6 +62,15 @@ class LoginCustomerViewController: UIViewController {
                 self.showAlert(title: "Login Error", message:" \(errorMessage) email or password incorrect")
             }
         }
+        newCartViewModel.onCartCreated = { cart in
+                    UserDefaults.standard.set(cart.id, forKey: "cartID")
+                    print("Cart ID: \(cart.id) saved successfully!")
+                }
+        newCartViewModel.onError = { errorMessage in
+                    DispatchQueue.main.async {
+                        print( "Cart Creation Error  \(errorMessage)")
+                    }
+                }
     }
     
     
@@ -48,6 +82,20 @@ class LoginCustomerViewController: UIViewController {
         authViewModel.loginCustomer(email: testEmail, password: testPassword)
         
         setupViewModelObservers()
+        
+        // Access the value
+        if let value = UserDefaults.standard.string(forKey: "accessToken") {
+            print(value)
+        }
+        if let valueId = UserDefaults.standard.string(forKey: "customerID") {
+            print("from user default\(valueId)")
+        }
+        if let currencyCode = UserDefaults.standard.string(forKey: "currencyCode") {
+            print("from user default\(currencyCode)")
+        }
+        let currencyValue = UserDefaults.standard.integer(forKey: "currencyValue")
+            print("from user default\(currencyValue)")
+        
     }
     
     @objc private func goToRegister() {
@@ -122,8 +170,9 @@ class LoginCustomerViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .systemGray6
-        self.navigationItem.hidesBackButton = true
-        self.navigationController?.navigationBar.tintColor = .purple
+
+        //self.navigationItem.hidesBackButton = true
+        //self.navigationController?.navigationBar.tintColor = .purple
         // Add subviews
         self.view.addSubview(headerView)
         view.addSubview(backgroundImageView)

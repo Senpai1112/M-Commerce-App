@@ -7,7 +7,7 @@ public class CustomerDefaultAddressQuery: GraphQLQuery {
   public static let operationName: String = "CustomerDefaultAddress"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query CustomerDefaultAddress($token: String!) { customer(customerAccessToken: $token) { __typename defaultAddress { __typename address1 address2 city country phone } } }"#
+      #"query CustomerDefaultAddress($token: String!) { customer(customerAccessToken: $token) { __typename defaultAddress { __typename address1 address2 city country phone id countryCode } } }"#
     ))
 
   public var token: String
@@ -62,6 +62,8 @@ public class CustomerDefaultAddressQuery: GraphQLQuery {
           .field("city", String?.self),
           .field("country", String?.self),
           .field("phone", String?.self),
+          .field("id", MyApi.ID.self),
+          .field("countryCode", String?.self),
         ] }
 
         /// The first line of the address. Typically the street address or PO Box number.
@@ -76,6 +78,13 @@ public class CustomerDefaultAddressQuery: GraphQLQuery {
         ///
         /// Formatted using E.164 standard. For example, _+16135551111_.
         public var phone: String? { __data["phone"] }
+        /// A globally-unique ID.
+        public var id: MyApi.ID { __data["id"] }
+        /// The two-letter code for the country of the address.
+        ///
+        /// For example, US.
+        @available(*, deprecated, message: "Use `countryCodeV2` instead.")
+        public var countryCode: String? { __data["countryCode"] }
       }
     }
   }

@@ -6,11 +6,17 @@
 //
 
 import UIKit
+import Lottie
 
 class AddressesDetailsViewController: UIViewController {
     
     private let addressDetailsViewModel = AddressDetailsViewModel()
-    var customerAccessToken : String = "11bf21615f5e2b40a877bdbeb51f8116"
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    var backgroundImageView: UIImageView?
+
     @IBOutlet weak var addNewAddress: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
@@ -22,14 +28,45 @@ class AddressesDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationItem.title = "Addresses Details"
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { () in
             DispatchQueue.main.async { [weak self] in
+                if self?.addressDetailsViewModel.addressResult.count == 0{
+                    self?.addBackgroundImage(named: "noLocation")
+                }else{
+                    self?.removeBackgroundImage()
+                }
                 self?.tableView.reloadData()
+                self?.activityIndicator.stopAnimating()
             }
         }
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
     }
+    func addBackgroundImage(named imageName: String) {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        self.view.addSubview(imageView)
+
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 250),
+            imageView.heightAnchor.constraint(equalToConstant: 500)
+        ])
+           imageView.image = UIImage(named: imageName)
+        imageView.contentMode = .scaleAspectFit
+           imageView.tag = 100
+        self.tableView.addSubview(imageView)
+        self.tableView.sendSubviewToBack(imageView)
+           backgroundImageView = imageView
+       }
     
+    func removeBackgroundImage() {
+        if let imageView = self.tableView.viewWithTag(100) {
+            imageView.removeFromSuperview()
+        }
+    }
     func initNib(){
         tableView.dataSource = self
         tableView.delegate = self
@@ -40,24 +77,31 @@ class AddressesDetailsViewController: UIViewController {
         addNewAddress.layer.cornerRadius = addNewAddress.frame.height / 2
         addNewAddress.layer.cornerCurve = .continuous
         addNewAddress.clipsToBounds = true
+        addNewAddress.tintColor = UIColor.purple
+
+        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
     }
     
     @IBAction func addNewAddress(_ sender: Any) {
         let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
         let viewController = storyBoard.instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        viewController.customerAccessToken = customerAccessToken
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 extension AddressesDetailsViewController:
@@ -67,23 +111,16 @@ extension AddressesDetailsViewController:
         cell.cityAndAdressDetails.text = addressDetailsViewModel.addressResult[indexPath.row].city
         cell.phoneNumber.text = addressDetailsViewModel.addressResult[indexPath.row].phone
         cell.countryName.text = addressDetailsViewModel.addressResult[indexPath.row].country
-        cell.backgroundColor = .systemGray6
-        cell.layer.borderColor = UIColor.systemBackground.cgColor
-        cell.layer.borderWidth = 10
         cell.clipsToBounds = true
     }
-
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if addressDetailsViewModel.addressResult == nil {
-            return 0
-        }else{
-            return addressDetailsViewModel.addressResult.count
-        }
+        return addressDetailsViewModel.addressResult.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -108,5 +145,10 @@ extension AddressesDetailsViewController:
             self.present(alert, animated: true)
         }
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "UpdateAddressViewController") as! UpdateAddressViewController
+        vc.address = addressDetailsViewModel.addressResult[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }

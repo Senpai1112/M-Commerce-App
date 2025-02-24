@@ -9,17 +9,22 @@
 import Foundation
 
 class BrandsViewModel {
-    
+    var searchText : String = ""
     var bindBrandsToViewController: (() -> ()) = {}
     var finalResult: [BrandModel] = []{
         didSet {
             bindBrandsToViewController()
         }
     }
-  
-
+    func mapCost(amount: String?, currencyCode: String?) -> Double? {
+            guard let amount = amount else { return nil }
+            let doubleCost = (Double(amount) ?? 0.0) * UserDefaults.standard.double(forKey: "currencyValue")
+            let formattedPrice = (doubleCost * 100).rounded() / 100
+            return formattedPrice
+        }
+    
     func getBrandsFromModel() {
-        ApolloProductsNetwokService.shared.fetchCollections { [weak self] result in
+        ApolloProductsNetwokService.fetchCollections { [weak self] result in
             switch result {
             case .success(let data):
                 if let collections = data.data?.collections.edges {
@@ -28,7 +33,10 @@ class BrandsViewModel {
                         let collection = edge.node
                         let products = collection.products.edges.map { productEdge in
                             let product = productEdge.node
-                            return ProductModel(price: Double(product.priceRange.maxVariantPrice.amount), currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue, image: product.featuredImage?.url,title: product.title,vendor: product.vendor)}
+                            return ProductModel(id: product.id, price: self?.mapCost(
+                                amount: product.priceRange.maxVariantPrice.amount,
+                                currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue
+                            ) ?? 0.0, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "USD", image: product.featuredImage?.url,title: product.title,vendor: product.vendor)}
                         
                         return BrandModel(title: collection.title, image: collection.image?.url, products: products)
                     }
@@ -39,12 +47,19 @@ class BrandsViewModel {
         }
         
         
-
+        
     }
-    /// to drop invalid data
-        var filteredCollections: [BrandModel] {
-             return   finalResult.dropFirst().dropLast(4)
-            }
-            
-}
 
+    //search filter
+       var filteredCollections: [BrandModel] {
+           if searchText.isEmpty {
+               return finalResult
+           } else {
+               return finalResult.filter { brand in
+                   return (brand.title?.lowercased() ?? "").contains(searchText.lowercased())
+               }
+           }
+       }
+
+
+}

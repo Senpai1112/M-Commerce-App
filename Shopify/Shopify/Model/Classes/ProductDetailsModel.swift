@@ -16,34 +16,33 @@ struct Product {
     let totalInventory: Int
     let images: [String]
     let price: String
-    let currecy : String
-    let adjacentVariants: [Variant]
+    let currency : String
+    let variants: [Variant]
 
     init(from data: ProductDetailsQuery.Data.Product) {
-        self.id = data.id
-        self.title = data.title
-        self.description = data.description
-        self.availableForSale = data.availableForSale
-        self.totalInventory = data.totalInventory ?? 0
-        
-        // Extract images
-        self.images = data.images.edges.compactMap { $0.node.src }
-        
-        // Extract adjacent variants
-        self.adjacentVariants = data.adjacentVariants.compactMap {
-            Variant(price: Price(amount: $0.price.amount, currencyCode: $0.price.currencyCode.rawValue))
+            self.id = data.id
+            self.title = data.title
+            self.description = data.description
+            self.availableForSale = data.availableForSale
+            self.totalInventory = data.totalInventory ?? 0
+            self.images = data.images.edges.compactMap { $0.node.src }
+            
+            self.variants = data.variants.edges.compactMap {
+                Variant(id: $0.node.id, title: $0.node.title, price: Price(amount: $0.node.priceV2.amount, currencyCode: $0.node.priceV2.currencyCode.rawValue))
+            }
+            
+            self.price = variants.first?.price.amount ?? "N/A"
+            self.currency = variants.first?.price.currencyCode ?? "N/A"
         }
-        
-        //  Extract the first price if available, otherwise set "N/A"
-        self.price = adjacentVariants.first?.price.amount ?? "N/A"
-        self.currecy = adjacentVariants.first?.price.currencyCode ?? "N/A"
     }
-}
 
-//  Variant Model
 struct Variant {
-    let price: Price
-}
+        let id: String
+        let title: String
+        let price: Price
+    }
+
+   
 
 // Price Model
 struct Price {

@@ -21,6 +21,7 @@ class BrandCell: UICollectionViewCell {
         
         brandView.layer.borderColor = UIColor.lightGray.cgColor
         brandView.layer.borderWidth = 0.5
+        
                 brandTitle.textAlignment = .center
                 brandTitle.font = UIFont.systemFont(ofSize: 15, weight: .medium)
                 }

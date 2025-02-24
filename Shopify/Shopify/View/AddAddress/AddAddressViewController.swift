@@ -9,10 +9,13 @@ import UIKit
 import Lottie
 
 class AddAddressViewController: UIViewController {
-    var animationView : LottieAnimationView!
+    private var animationView : LottieAnimationView!
     private var addAddressViewModel = AddAddressViewModel()
-
-    var customerAccessToken : String?
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    
+    var customerAccessToken: String {
+        return UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    }
     
     @IBOutlet weak var addAddressButton: UIButton!
     @IBOutlet weak var viewForMapAnimation: UIView!
@@ -33,6 +36,11 @@ class AddAddressViewController: UIViewController {
         initUI()
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "ADD Addresses"
+    }
     func setupAnimationView(){
         animationView = .init(name: "Location")
         animationView.frame = viewForMapAnimation.frame
@@ -48,13 +56,18 @@ class AddAddressViewController: UIViewController {
         addAddressButton.layer.cornerRadius = addAddressButton.frame.height / 2
         addAddressButton.layer.cornerCurve = .continuous
         addAddressButton.clipsToBounds = true
-        
-        countryName.borderStyle = .line
-        phoneNumber.borderStyle = .line
-        cityName.borderStyle = .line
-        streetName.borderStyle = .line
-        apartmentNumber.borderStyle = .line
+        addAddressButton.tintColor = UIColor.purple
 
+        
+        countryName.borderStyle = .roundedRect
+        phoneNumber.borderStyle = .roundedRect
+        cityName.borderStyle = .roundedRect
+        streetName.borderStyle = .roundedRect
+        apartmentNumber.borderStyle = .roundedRect
+        
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
     }
     
     @IBAction func addAddressButton(_ sender: UIButton) {
@@ -67,6 +80,7 @@ class AddAddressViewController: UIViewController {
             let address : Addresses = Addresses(country: countryName.text!, city: cityName.text!, address1 : streetName.text!, address2 : apartmentNumber.text!, phone: phoneNumber.text!)
             
             addAddressViewModel.bindErrorToAddAddressViewController = { [weak self] in
+                self?.activityIndicator.stopAnimating()
                 if  let error = self?.addAddressViewModel.addedAddressError.message{
                     let alert = UIAlertController(title: "Error adding address", message: "\(error)", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })
@@ -74,21 +88,27 @@ class AddAddressViewController: UIViewController {
                 }
             }
             addAddressViewModel.bindResultToAddAddressViewController = { [weak self] in
-                print("data added successfully")
-                self?.navigationController?.popViewController(animated: true)
+                self?.activityIndicator.stopAnimating()
+                let alert = UIAlertController(title: "Address added succssfuly", message: "", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    self?.navigationController?.popViewController(animated: true)
+                })
+                self!.present(alert, animated: true)
             }
             addAddressViewModel.createAddressInModel(customerAccessToken: customerAccessToken, address: address)
+            view.addSubview(activityIndicator)
+            activityIndicator.startAnimating()
         }
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

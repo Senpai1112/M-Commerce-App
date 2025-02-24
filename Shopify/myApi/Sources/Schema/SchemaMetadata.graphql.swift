@@ -22,9 +22,18 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     switch typename {
     case "AppliedGiftCard": return MyApi.Objects.AppliedGiftCard
     case "Article": return MyApi.Objects.Article
+    case "BaseCartLineConnection": return MyApi.Objects.BaseCartLineConnection
+    case "BaseCartLineEdge": return MyApi.Objects.BaseCartLineEdge
     case "Blog": return MyApi.Objects.Blog
     case "Cart": return MyApi.Objects.Cart
+    case "CartBuyerIdentity": return MyApi.Objects.CartBuyerIdentity
+    case "CartCost": return MyApi.Objects.CartCost
+    case "CartCreatePayload": return MyApi.Objects.CartCreatePayload
     case "CartLine": return MyApi.Objects.CartLine
+    case "CartLineCost": return MyApi.Objects.CartLineCost
+    case "CartLinesAddPayload": return MyApi.Objects.CartLinesAddPayload
+    case "CartLinesRemovePayload": return MyApi.Objects.CartLinesRemovePayload
+    case "CartLinesUpdatePayload": return MyApi.Objects.CartLinesUpdatePayload
     case "CartUserError": return MyApi.Objects.CartUserError
     case "Collection": return MyApi.Objects.Collection
     case "CollectionConnection": return MyApi.Objects.CollectionConnection
@@ -37,8 +46,10 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Customer": return MyApi.Objects.Customer
     case "CustomerAccessToken": return MyApi.Objects.CustomerAccessToken
     case "CustomerAccessTokenCreatePayload": return MyApi.Objects.CustomerAccessTokenCreatePayload
+    case "CustomerAccessTokenDeletePayload": return MyApi.Objects.CustomerAccessTokenDeletePayload
     case "CustomerAddressCreatePayload": return MyApi.Objects.CustomerAddressCreatePayload
     case "CustomerAddressDeletePayload": return MyApi.Objects.CustomerAddressDeletePayload
+    case "CustomerAddressUpdatePayload": return MyApi.Objects.CustomerAddressUpdatePayload
     case "CustomerCreatePayload": return MyApi.Objects.CustomerCreatePayload
     case "CustomerDefaultAddressUpdatePayload": return MyApi.Objects.CustomerDefaultAddressUpdatePayload
     case "CustomerUserError": return MyApi.Objects.CustomerUserError
@@ -64,6 +75,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "MoneyV2": return MyApi.Objects.MoneyV2
     case "Mutation": return MyApi.Objects.Mutation
     case "Order": return MyApi.Objects.Order
+    case "OrderConnection": return MyApi.Objects.OrderConnection
+    case "OrderEdge": return MyApi.Objects.OrderEdge
     case "Page": return MyApi.Objects.Page
     case "Product": return MyApi.Objects.Product
     case "ProductConnection": return MyApi.Objects.ProductConnection
@@ -72,6 +85,10 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ProductOptionValue": return MyApi.Objects.ProductOptionValue
     case "ProductPriceRange": return MyApi.Objects.ProductPriceRange
     case "ProductVariant": return MyApi.Objects.ProductVariant
+    case "ProductVariantComponent": return MyApi.Objects.ProductVariantComponent
+    case "ProductVariantComponentConnection": return MyApi.Objects.ProductVariantComponentConnection
+    case "ProductVariantConnection": return MyApi.Objects.ProductVariantConnection
+    case "ProductVariantEdge": return MyApi.Objects.ProductVariantEdge
     case "QueryRoot": return MyApi.Objects.QueryRoot
     case "SearchQuerySuggestion": return MyApi.Objects.SearchQuerySuggestion
     case "SellingPlan": return MyApi.Objects.SellingPlan
