@@ -19,6 +19,11 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         ordersTable.dataSource = self
         ordersTable.delegate = self
         initNib()
+       
+    }
+    ///setupNavigationBarIcons
+    override func viewWillAppear(_ animated: Bool) {
+       self.tabBarController?.title = "Me"
         viewModel = OrdersViewModel()
         viewModel.bindOrdersToViewController = {
             DispatchQueue.main.async {
@@ -27,10 +32,6 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
 
         viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken") ?? "" )
 
-    }
-    ///setupNavigationBarIcons
-    override func viewWillAppear(_ animated: Bool) {
-       self.tabBarController?.title = "Me"
         setupNavigationBarIcons()
         if let token = UserDefaults.standard.string(forKey: "accessToken"), !token.isEmpty  {
                     removeLoginView()

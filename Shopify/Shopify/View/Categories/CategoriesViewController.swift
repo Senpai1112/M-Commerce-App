@@ -28,16 +28,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         CategoriesProductcollection.delegate = self
         initNib()
         emptyState ()
-        viewModel = ProductViewModel()
-        viewModel.bindProductsToViewController = {
-            DispatchQueue.main.async {
-                self.CategoriesProductcollection.reloadData()
-                self.updateEmptyState()
-
-            }
-        }
         
-        setQuery()
     }
     func updateEmptyState() {
             if viewModel.finalResult.isEmpty {
@@ -68,8 +59,16 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
 
         setupNavigationBarIcons()
         setupLeftBarButt()
+        viewModel = ProductViewModel()
+        viewModel.bindProductsToViewController = {
+            DispatchQueue.main.async {
+                self.CategoriesProductcollection.reloadData()
+                self.updateEmptyState()
 
-
+            }
+        }
+        
+        setQuery()
     }
     
     func setupNavigationBarIcons() {

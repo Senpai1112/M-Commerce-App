@@ -16,7 +16,12 @@ class BrandsViewModel {
             bindBrandsToViewController()
         }
     }
-    
+    func mapCost(amount: String?, currencyCode: String?) -> Double? {
+            guard let amount = amount else { return nil }
+            let doubleCost = (Double(amount) ?? 0.0) * UserDefaults.standard.double(forKey: "currencyValue")
+            let formattedPrice = (doubleCost * 100).rounded() / 100
+            return formattedPrice
+        }
     
     func getBrandsFromModel() {
         ApolloProductsNetwokService.shared.fetchCollections { [weak self] result in
@@ -28,7 +33,10 @@ class BrandsViewModel {
                         let collection = edge.node
                         let products = collection.products.edges.map { productEdge in
                             let product = productEdge.node
-                            return ProductModel(id: product.id, price: Double(product.priceRange.maxVariantPrice.amount), currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue, image: product.featuredImage?.url,title: product.title,vendor: product.vendor)}
+                            return ProductModel(id: product.id, price: self?.mapCost(
+                                amount: product.priceRange.maxVariantPrice.amount,
+                                currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue
+                            ) ?? 0.0, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "USD", image: product.featuredImage?.url,title: product.title,vendor: product.vendor)}
                         
                         return BrandModel(title: collection.title, image: collection.image?.url, products: products)
                     }
