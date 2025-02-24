@@ -686,6 +686,10 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     @objc func navigateToReviews() {
         // Navigate to the reviews screen
         print("Navigating to reviews...")
+        let storyboard = UIStoryboard(name: "Set3", bundle: nil)
+        if let reviewsViewController = storyboard.instantiateViewController(withIdentifier: "reviewsVC") as? ReviewsTableViewController {
+            self.navigationController?.pushViewController(reviewsViewController, animated: true)
+        }
     }
 }
 //    /*
