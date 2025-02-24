@@ -10,7 +10,7 @@ import MyApi
 
 class ApolloProductsNetwokService {
     
-    func fetchCollections(completion: @escaping (Result<GraphQLResult<GetAllCollectionsQuery.Data>, Error>) -> Void) {
+    static func fetchCollections(completion: @escaping (Result<GraphQLResult<GetAllCollectionsQuery.Data>, Error>) -> Void) {
         ApolloNetwokService.shared.apollo.fetch(query: GetAllCollectionsQuery()) { result in
             switch result {
             case .success(let graphQLResult):
@@ -21,7 +21,7 @@ class ApolloProductsNetwokService {
         }
     }
     
-    func fetchProducts(query: String, completion: @escaping (Result<GraphQLResult<ProductsQuery.Data>, Error>) -> Void) {
+    static func fetchProducts(query: String, completion: @escaping (Result<GraphQLResult<ProductsQuery.Data>, Error>) -> Void) {
         let productsQuery = ProductsQuery(query: query)
         ApolloNetwokService.shared.apollo.fetch(query: productsQuery) { result in
             switch result {
@@ -33,7 +33,7 @@ class ApolloProductsNetwokService {
         }
     }
     
-     func fetchCustomerOrders(token : String,completion: @escaping (Result<GraphQLResult<CustomerOrdersQuery.Data>, Error>) -> Void) {
+     static func fetchCustomerOrders(token : String,completion: @escaping (Result<GraphQLResult<CustomerOrdersQuery.Data>, Error>) -> Void) {
          ApolloNetwokService.shared.apollo.fetch(query: CustomerOrdersQuery(token: token),cachePolicy: .fetchIgnoringCacheData) { result in
             switch result {
             case .success(let graphQLResult):

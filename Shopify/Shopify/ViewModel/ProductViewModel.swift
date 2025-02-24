@@ -24,7 +24,7 @@ class ProductViewModel{
         }
             
     func getProductsFromModel(query: String) {
-        ApolloProductsNetwokService.shared.fetchProducts(query: query) { [weak self] result in
+        ApolloProductsNetwokService.fetchProducts(query: query) { [weak self] result in
             switch result {
             case .success(let data):
                 if let products = data.data?.products.edges {

@@ -23,7 +23,7 @@ class OrdersViewModel {
         }
     
     func getOrdersFromModel(token: String) {
-        ApolloProductsNetwokService.shared.fetchCustomerOrders(token: token) { [weak self] result in
+        ApolloProductsNetwokService.fetchCustomerOrders(token: token) { [weak self] result in
             switch result {
             case .success(let data):
                 if let ordersEdges = data.data?.customer?.orders.edges {
