@@ -28,7 +28,21 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
    
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.title = "Home"
+        let titleLabel = UILabel()
+            titleLabel.text = "Cartique"
+            titleLabel.textColor = .white
+            titleLabel.font = .boldSystemFont(ofSize: 25)
+            
+            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
+                titleLabel.font = customFont
+            }
+            
+            titleLabel.layer.shadowColor = UIColor.black.cgColor
+            titleLabel.layer.shadowOffset = CGSize(width: 1, height: 2)
+            titleLabel.layer.shadowOpacity = 0.4
+
+        self.tabBarController?.navigationItem.titleView = titleLabel
+        
         setupNavigationBarIcons()
         setupLeftBarButt()
         viewModel = BrandsViewModel()
@@ -108,8 +122,7 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         case 0:
 
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AdsCell", for: indexPath) as! AdsCell
-                    let adImages = [ "summer" , "winter"]
-                    cell.AdImage.image = UIImage(named: adImages[indexPath.row])
+                    cell.AdImage.image = UIImage(named: "summer")
                     return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandCell", for: indexPath) as! BrandCell
@@ -216,29 +229,38 @@ func drawAdsSection() -> NSCollectionLayoutSection {
     
     ////setupNavigationBarIcons
     func setupNavigationBarIcons() {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        stackView.distribution = .equalSpacing
+            let stackView = UIStackView()
+            stackView.axis = .horizontal
+            stackView.spacing = 10
+            stackView.distribution = .equalSpacing
+            
+           
+            let butt2 = UIButton(type: .system)
+            setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
+            
+            let butt3 = UIButton(type: .system)
+            setUpNavBarBtn(button: butt3, systemName: "cart", selector: #selector(cartTapped))
+            
+            stackView.addArrangedSubview(butt3)
+            stackView.addArrangedSubview(butt2)
+
+            let barButtonItem = UIBarButtonItem(customView: stackView)
+            tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
+        }
         
-        let searchButt = UIButton(type: .system)
-        setUpNavBarBtn(button: searchButt, systemName: "magnifyingglass", selector: #selector(searchTapped))
-        
-        let butt2 = UIButton(type: .system)
-        setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
-        
-        stackView.addArrangedSubview(searchButt)
-        stackView.addArrangedSubview(butt2)
-        
-        let barButtonItem = UIBarButtonItem(customView: stackView)
-        tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
-    }
-    
-    @objc func searchTapped() {
-        showSearchBar()
-        
-    }
-    
+        @objc func searchTapped() {
+            showSearchBar()
+            
+        }
+        @objc func cartTapped() {
+            if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+                let storyBord = UIStoryboard(name: "Set2", bundle: nil)
+                let cartVc = storyBord.instantiateViewController(withIdentifier: "ShoppingCartViewController") as! ShoppingCartViewController
+                navigationController?.pushViewController(cartVc, animated: true)
+            } else {
+                showLoginAlert()
+            }
+        }
     @objc func favTapped() {
         if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
@@ -268,7 +290,7 @@ func drawAdsSection() -> NSCollectionLayoutSection {
             searchBar.delegate = self
             searchBar.searchTextField.backgroundColor = .white
         searchBar.showsCancelButton = true
-        
+        self.tabBarController?.navigationItem.rightBarButtonItem = nil
            self.tabBarController?.navigationItem.leftBarButtonItem = nil
         self.tabBarController?.navigationItem.titleView = searchBar
     }
@@ -281,7 +303,21 @@ func drawAdsSection() -> NSCollectionLayoutSection {
     
     func hideSearchBar() {
         self.tabBarController?.navigationItem.titleView = nil
-        self.tabBarController?.title = "Home"
+        let titleLabel = UILabel()
+            titleLabel.text = "Cartique"
+            titleLabel.textColor = .white
+            titleLabel.font = .boldSystemFont(ofSize: 25)
+            
+            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
+                titleLabel.font = customFont
+            }
+            
+            titleLabel.layer.shadowColor = UIColor.black.cgColor
+            titleLabel.layer.shadowOffset = CGSize(width: 1, height: 2)
+            titleLabel.layer.shadowOpacity = 0.4
+
+        self.tabBarController?.navigationItem.titleView = titleLabel
+        setupNavigationBarIcons()
         setupLeftBarButt()
 
     }
@@ -311,18 +347,11 @@ func drawAdsSection() -> NSCollectionLayoutSection {
     
     
     func setupLeftBarButt() {
-            let storeName = UILabel()
-            storeName.text = "Shopify"
-            storeName.textColor = .white
-            storeName.font = .boldSystemFont(ofSize: 22)
-            
-            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
-                storeName.font = customFont
-            }
-            storeName.layer.shadowColor = UIColor.black.cgColor
-            storeName.layer.shadowOffset = CGSize(width: 1, height: 2)
-            storeName.layer.shadowOpacity = 0.4
-          tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: storeName)
-        }
-       
+        let searchButt = UIButton(type: .system)
+        setUpNavBarBtn(button: searchButt, systemName: "magnifyingglass", selector: #selector(searchTapped))
+        
+        let barButtonItem = UIBarButtonItem(customView: searchButt)
+        self.tabBarController?.navigationItem.leftBarButtonItem = barButtonItem
+    }
+
 }
