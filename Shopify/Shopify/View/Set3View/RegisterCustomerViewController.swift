@@ -236,14 +236,14 @@ class CustomerViewController: UIViewController {
        
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Login", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.purple
-        button.layer.cornerRadius = 10
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowRadius = 5
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.setTitle("Already have account? Click to Login", for: .normal)
+//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+//        button.setTitleColor(.white, for: .normal)
+//        button.backgroundColor = UIColor.purple
+//        button.layer.cornerRadius = 10
+//        button.layer.shadowOpacity = 0.3
+//        button.layer.shadowRadius = 5
+//        button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         return button
     }()
