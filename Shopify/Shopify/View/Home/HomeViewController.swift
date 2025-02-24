@@ -22,6 +22,13 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         homeCollection.delegate = self
         initNib()
         compositionalLayout()
+     
+    }
+   
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.title = "Home"
+        setupNavigationBarIcons()
+        setupLeftBarButt()
         viewModel = BrandsViewModel()
         viewModel.bindBrandsToViewController = {
             DispatchQueue.main.async {
@@ -29,14 +36,6 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.homeCollection.reloadData()
             }}
             viewModel.getBrandsFromModel()
-    }
-   
-    override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.title = "Home"
-        setupNavigationBarIcons()
-        setupLeftBarButt()
-
-
 
     }
     func compositionalLayout() {

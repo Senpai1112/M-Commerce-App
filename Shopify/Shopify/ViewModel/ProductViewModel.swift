@@ -16,7 +16,12 @@ class ProductViewModel{
             }
         }
       
-
+    func mapCost(amount: String?, currencyCode: String?) -> Double? {
+            guard let amount = amount else { return nil }
+            let doubleCost = (Double(amount) ?? 0.0) * UserDefaults.standard.double(forKey: "currencyValue")
+            let formattedPrice = (doubleCost * 100).rounded() / 100
+            return formattedPrice
+        }
             
     func getProductsFromModel(query: String) {
         ApolloProductsNetwokService.shared.fetchProducts(query: query) { [weak self] result in
@@ -25,7 +30,10 @@ class ProductViewModel{
                 if let products = data.data?.products.edges {
                     self?.finalResult  = products.map { edge in
                         let product = edge.node
-                        return ProductModel(id: product.id, price: Double(product.priceRange.maxVariantPrice.amount), currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue,
+                        return ProductModel(id: product.id, price: self?.mapCost(
+                            amount: product.priceRange.maxVariantPrice.amount,
+                            currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue
+                        ) ?? 0.0, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "USD",
                                             image: product.featuredImage?.url,title: product.title,vendor: product.vendor)
                     }
                     
