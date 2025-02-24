@@ -56,6 +56,7 @@ query FetchCartById($id : ID!) {
                                 url
                             }
                             product {
+                                id
                                 title
                             }
                     }

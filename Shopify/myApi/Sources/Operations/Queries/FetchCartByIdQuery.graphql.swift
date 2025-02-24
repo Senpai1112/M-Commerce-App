@@ -7,7 +7,7 @@ public class FetchCartByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchCartById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchCartById($id: ID!) { cart(id: $id) { __typename checkoutUrl id note totalQuantity updatedAt buyerIdentity { __typename email phone countryCode } cost { __typename subtotalAmountEstimated totalAmountEstimated totalDutyAmountEstimated totalTaxAmountEstimated checkoutChargeAmount { __typename amount currencyCode } subtotalAmount { __typename amount currencyCode } totalAmount { __typename amount currencyCode } totalTaxAmount { __typename amount currencyCode } } lines(first: 100) { __typename edges { __typename node { __typename id merchandise { __typename ... on ProductVariant { id quantityAvailable requiresComponents requiresShipping sku taxable title weight weightUnit components(first: 100) { __typename nodes { __typename quantity } } image { __typename url } product { __typename title } } } quantity cost { __typename amountPerQuantity { __typename amount currencyCode } totalAmount { __typename amount currencyCode } subtotalAmount { __typename amount currencyCode } } } } } } }"#
+      #"query FetchCartById($id: ID!) { cart(id: $id) { __typename checkoutUrl id note totalQuantity updatedAt buyerIdentity { __typename email phone countryCode } cost { __typename subtotalAmountEstimated totalAmountEstimated totalDutyAmountEstimated totalTaxAmountEstimated checkoutChargeAmount { __typename amount currencyCode } subtotalAmount { __typename amount currencyCode } totalAmount { __typename amount currencyCode } totalTaxAmount { __typename amount currencyCode } } lines(first: 100) { __typename edges { __typename node { __typename id merchandise { __typename ... on ProductVariant { id quantityAvailable requiresComponents requiresShipping sku taxable title weight weightUnit components(first: 100) { __typename nodes { __typename quantity } } image { __typename url } product { __typename id title } } } quantity cost { __typename amountPerQuantity { __typename amount currencyCode } totalAmount { __typename amount currencyCode } subtotalAmount { __typename amount currencyCode } } } } } } }"#
     ))
 
   public var id: ID
@@ -401,9 +401,12 @@ public class FetchCartByIdQuery: GraphQLQuery {
                   public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.Product }
                   public static var __selections: [ApolloAPI.Selection] { [
                     .field("__typename", String.self),
+                    .field("id", MyApi.ID.self),
                     .field("title", String.self),
                   ] }
 
+                  /// A globally-unique ID.
+                  public var id: MyApi.ID { __data["id"] }
                   /// The name for the product that displays to customers. The title is used to construct the product's handle.
                   /// For example, if a product is titled "Black Sunglasses", then the handle is `black-sunglasses`.
                   public var title: String { __data["title"] }

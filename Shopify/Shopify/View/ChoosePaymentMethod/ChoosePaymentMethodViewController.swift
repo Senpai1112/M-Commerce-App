@@ -270,7 +270,7 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
                 // Navigate back only if payment was successful
                 if paymentSuccess, let navigationController = self.navigationController {
                     let viewControllers = navigationController.viewControllers
-                    let targetIndex = max(0, viewControllers.count - 5) // Go back 4 times
+                    let targetIndex = max(0, viewControllers.count - 6) // Go back 4 times
                     navigationController.popToViewController(viewControllers[targetIndex], animated: true)
                 }
             }

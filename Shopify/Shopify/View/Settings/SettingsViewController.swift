@@ -67,10 +67,10 @@ class SettingsViewController: UIViewController {
         
         deleteCustomerViewModel.deleteCustomerInViewController = {
             DispatchQueue.main.async{[weak self] in
-                if let message = self?.deleteCustomerViewModel.deleteCustomerResult.errors?.message , message.isEmpty {
+                if let message = self?.deleteCustomerViewModel.deleteCustomerResult.deletedAccessToken , message == UserDefaults.standard.string(forKey: "accessToken") {
                     let alert = UIAlertController(title: "Logged Out Successfully", message: "", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in 
-                        UserDefaults.standard.set("", forKey: "customerAccessToken")
+                        UserDefaults.standard.set("", forKey: "accessToken")
                         UserDefaults.standard.set("",forKey: "cartID")
                         self?.navigationController?.popViewController(animated: true)
                     }))
