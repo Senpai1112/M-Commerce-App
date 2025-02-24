@@ -164,14 +164,14 @@ class LoginCustomerViewController: UIViewController {
     
     private let registerButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Register", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.purple
-        button.layer.cornerRadius = 10
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowRadius = 5
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.setTitle("Don't have an account? Click to Register", for: .normal)
+//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+//        button.setTitleColor(.white, for: .normal)
+//        button.backgroundColor = UIColor.purple
+//        button.layer.cornerRadius = 10
+//        button.layer.shadowOpacity = 0.3
+//        button.layer.shadowRadius = 5
+//        button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.addTarget(self, action: #selector(goToRegister), for: .touchUpInside)
         return button
     }()
