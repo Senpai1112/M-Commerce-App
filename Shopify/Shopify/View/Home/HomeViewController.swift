@@ -18,6 +18,8 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        UserDefaults.standard.set("EGP", forKey: "currencyCode")
+        UserDefaults.standard.set(1.0 , forKey: "currencyValue")
         homeCollection.dataSource = self
         homeCollection.delegate = self
         initNib()
