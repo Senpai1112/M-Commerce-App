@@ -7,7 +7,7 @@ public class CustomerOrdersQuery: GraphQLQuery {
   public static let operationName: String = "CustomerOrdersQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query CustomerOrdersQuery($token: String!) { customer(customerAccessToken: $token) { __typename orders(first: 50) { __typename totalCount edges { __typename node { __typename originalTotalPrice { __typename amount currencyCode } id shippingAddress { __typename address1 country firstName } lineItems(first: 50) { __typename edges { __typename cursor node { __typename originalTotalPrice { __typename amount currencyCode } quantity title variant { __typename id title image { __typename src } } } } } processedAt email } } } } }"#
+      #"query CustomerOrdersQuery($token: String!) { customer(customerAccessToken: $token) { __typename orders(first: 50) { __typename totalCount edges { __typename node { __typename originalTotalPrice { __typename amount currencyCode } id shippingAddress { __typename address1 country firstName phone } lineItems(first: 50) { __typename edges { __typename cursor node { __typename originalTotalPrice { __typename amount currencyCode } quantity title variant { __typename id title image { __typename src } } } } } processedAt email } } } } }"#
     ))
 
   public var token: String
@@ -148,6 +148,7 @@ public class CustomerOrdersQuery: GraphQLQuery {
                 .field("address1", String?.self),
                 .field("country", String?.self),
                 .field("firstName", String?.self),
+                .field("phone", String?.self),
               ] }
 
               /// The first line of the address. Typically the street address or PO Box number.
@@ -156,6 +157,10 @@ public class CustomerOrdersQuery: GraphQLQuery {
               public var country: String? { __data["country"] }
               /// The first name of the customer.
               public var firstName: String? { __data["firstName"] }
+              /// A unique phone number for the customer.
+              ///
+              /// Formatted using E.164 standard. For example, _+16135551111_.
+              public var phone: String? { __data["phone"] }
             }
 
             /// Customer.Orders.Edge.Node.LineItems

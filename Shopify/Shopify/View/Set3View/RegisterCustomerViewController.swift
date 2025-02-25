@@ -133,7 +133,7 @@ class CustomerViewController: UIViewController {
         }
     }
     func showLoginAlert() {
-            let alert = UIAlertController(title: "Alert", message: "Email Verified Thanks! Please Log In", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Login Required", message: "Email Verified Thanks! Please Log In", preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
