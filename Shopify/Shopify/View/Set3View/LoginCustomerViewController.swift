@@ -11,6 +11,7 @@ class LoginCustomerViewController: UIViewController {
     private let authViewModel = AuthViewModel()
     var newCartViewModel = NewCartViewModel()
     var customerDetailsViewModel = CustomerDetailsViewModel()
+    var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         
@@ -18,13 +19,20 @@ class LoginCustomerViewController: UIViewController {
         
         print("Loading from LoginViewController")
         setupUI()
+        setupActivityIndicator()
 //        setupViewModelObservers()
 //        loginButtonTapped()
     }
-    
+    func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
     private func setupViewModelObservers() {
         authViewModel.onLoginSuccess = { accessToken in
             DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
                 print(" Customer Logged in Successfully!")
                 print("   Access Token: \(accessToken.accessToken ?? "N/A")")
                 
@@ -42,17 +50,7 @@ class LoginCustomerViewController: UIViewController {
                 let tabBarController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "homeTabBar") as! UITabBarController
                     
               self.navigationController?.pushViewController(tabBarController, animated: true)
-                    // Present the TabBarController modally
-       //             self.present(tabBarController, animated: true, completion: nil)
-                
-//                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-//                if let homeVC = storyBoard.instantiateViewController(withIdentifier: "homeVC") as? HomeViewController {
-//                    self.navigationController?.pushViewController(homeVC, animated: true)
-     //           }
-                
-
-               
-            }
+                           }
         }
         
         authViewModel.onError = { errorMessage in
@@ -87,7 +85,7 @@ class LoginCustomerViewController: UIViewController {
     @objc private func loginButtonTapped() {
         let testEmail = emailTextField.text ?? ""
         let testPassword = passwordTextField.text ?? ""
-        
+        activityIndicator.startAnimating()
         print(" Testing Customer Login...")
         authViewModel.loginCustomer(email: testEmail, password: testPassword)
         
@@ -170,14 +168,14 @@ class LoginCustomerViewController: UIViewController {
     
     private let registerButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Don't have an account? Click to Register", for: .normal)
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-//        button.setTitleColor(.white, for: .normal)
-//        button.backgroundColor = UIColor.purple
-//        button.layer.cornerRadius = 10
-//        button.layer.shadowOpacity = 0.3
-//        button.layer.shadowRadius = 5
-//        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+       // button.setTitle("Don't have an account? Click to Register", for: .normal)
+        let normalText = "Don't have an account? Click to Register"
+                
+        let attributedString = NSMutableAttributedString(string: normalText)
+                
+        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 22)) // "Click"
+                
+        button.setAttributedTitle(attributedString, for: .normal)
         button.addTarget(self, action: #selector(goToRegister), for: .touchUpInside)
         return button
     }()
