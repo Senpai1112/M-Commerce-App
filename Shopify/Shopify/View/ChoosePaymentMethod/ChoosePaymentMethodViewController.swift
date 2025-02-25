@@ -15,6 +15,8 @@ class ChoosePaymentMethodViewController: UIViewController {
     
     let orderViewModel = OrderViewModel()
     
+    let sendEmailViewModel = SendEmailViewModel()
+    
     var newPrice = ""
     
     var selectedDiscountCopon = ""
@@ -257,6 +259,17 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
             }
             orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
             cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
+            orderViewModel.bindLoadingToCashOnDelivery = {[weak self] in
+                if self?.orderViewModel.isLoading == true{
+                    print("Still loading")
+                }else{
+                    self?.sendEmailViewModel.sendMailForCustomer(customerAccessToken: self?.customerAccessToken ?? "", customerDetails: self?.customerDetails ?? CustomerDetails(), address: self?.address ?? Addresses() , newPrice: self?.newPrice ?? "0.0")
+                }
+            }
+            
+            sendEmailViewModel.bindMailResult = {[weak self] in
+                print(self?.sendEmailViewModel.mailResult ?? "nothing here")
+            }
             UserDefaults.standard.set("", forKey: selectedDiscountCopon)
         } else {
             print("Payment failed with status: \(result.status.rawValue)")
