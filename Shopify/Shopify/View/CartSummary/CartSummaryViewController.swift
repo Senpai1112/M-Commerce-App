@@ -100,8 +100,8 @@ class CartSummaryViewController: UIViewController {
         }
     func performDiscount(){
         let doublePrice = Double(totalPriceOfProducts.text ?? "0.0")
-        let discountPrice = doublePrice! * 70 / 100
-        let discountAmount = doublePrice! * 30 / 100
+        let discountPrice = doublePrice! * 50 / 100
+        let discountAmount = doublePrice! * 50 / 100
         discount.text = "\((discountAmount * 100).rounded() / 100)"
         totalPriceOfProducts.text = "\((discountPrice * 100).rounded() / 100)"
         newPrice = "\((discountPrice * 100).rounded() / 100)"
