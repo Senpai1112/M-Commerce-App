@@ -109,7 +109,7 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         switch section {
         case 0:
-        return 2
+        return 1
         case 1:
             return viewModel.filteredCollections.count
         default:
@@ -158,41 +158,26 @@ cell.brandTitle.text = brand.title
     
    
 ////drawing
-func drawAdsSection() -> NSCollectionLayoutSection {
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0))
+    func drawAdsSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.85),
+            heightDimension: .absolute(180)
+        )
         
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
-    widthDimension: .fractionalWidth(0.85),heightDimension: .absolute(180))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
-            let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,  subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPagingCentered
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0)
 
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .continuous
-            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0)
-            
-            ////
-            section.visibleItemsInvalidationHandler = { (items, offset, environment) in
-                   let containerWidth = environment.container.contentSize.width
-
-                   items.forEach { item in
-                       let distanceFromCenter = abs(item.frame.midX - offset.x - containerWidth / 2)
-            
-                       let minScale: CGFloat = 0.8
-                       let maxScale: CGFloat = 1.0
-            
-            let scale = max(maxScale - (distanceFromCenter / containerWidth), minScale)
-                       
-                       item.transform = CGAffineTransform(scaleX: scale, y: scale)
-                   }
-               }
-    return section
-
-        }
+        return section
+    }
 
         func drawBrandSection() -> NSCollectionLayoutSection {
             let itemSize = NSCollectionLayoutSize(

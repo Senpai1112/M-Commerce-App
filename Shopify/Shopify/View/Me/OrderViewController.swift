@@ -12,35 +12,52 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     var order: Orders!
 
+    @IBOutlet weak var email: UILabel!
     @IBOutlet weak var orderPriceLabel: UILabel!
     @IBOutlet weak var orderDateLabel: UILabel!
     @IBOutlet weak var itemsTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        itemsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "orderInfoCell")
-        
+        self.title = "Order Details"
+        initNib()
         itemsTableView.delegate = self
         itemsTableView.dataSource = self
-
-        orderPriceLabel.text = "Price: \(order.price ?? 0) \(order.currencyCode ?? "")"
-        orderDateLabel.text = "Created At: \(order.processedAt ?? "")"
+        email.text = order.email
+        orderPriceLabel.text = " \(order.price ?? 0) \(order.currencyCode ?? "")"
+        orderDateLabel.text = " \(order.processedAt ?? "")"
+        
     }
 
+    
+    
+    func initNib(){
+        let nib = UINib(nibName: "OrderInfoCell", bundle: nil)
+        self.itemsTableView.register(nib, forCellReuseIdentifier: "OrderInfoCell")
+       
+            
+        }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return order.lineItems.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "orderInfoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderInfoCell", for: indexPath) as! OrderInfoCell
+        
         let item = order.lineItems[indexPath.row]
-
-        cell.textLabel?.text = item.title ?? ""
+        cell.quantityLable.text = "quantity : \(item.quantity ?? 0)"
+        cell.orderTitle.text = item.title ?? ""
+        cell.orderPrice.text = "\(item.price ?? 0.0) EGP"
+        cell.subTitle.text = item.variant
         if let imgURL = URL(string: item.image ?? "") {
-            cell.imageView?.kf.setImage(with: imgURL, placeholder: UIImage(named: "1"))
+            cell.OrderImage.kf.setImage(with: imgURL, placeholder: UIImage(named: "1"))
             
         }
+        
         return cell
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
+    }
+    
 }

@@ -7,7 +7,7 @@ public class CustomerOrdersQuery: GraphQLQuery {
   public static let operationName: String = "CustomerOrdersQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query CustomerOrdersQuery($token: String!) { customer(customerAccessToken: $token) { __typename orders(first: 50) { __typename totalCount edges { __typename node { __typename originalTotalPrice { __typename amount currencyCode } id shippingAddress { __typename address1 country firstName } lineItems(first: 50) { __typename edges { __typename cursor node { __typename quantity title variant { __typename id title image { __typename src } } } } } processedAt email } } } } }"#
+      #"query CustomerOrdersQuery($token: String!) { customer(customerAccessToken: $token) { __typename orders(first: 50) { __typename totalCount edges { __typename node { __typename originalTotalPrice { __typename amount currencyCode } id shippingAddress { __typename address1 country firstName } lineItems(first: 50) { __typename edges { __typename cursor node { __typename originalTotalPrice { __typename amount currencyCode } quantity title variant { __typename id title image { __typename src } } } } } processedAt email } } } } }"#
     ))
 
   public var token: String
@@ -203,17 +203,40 @@ public class CustomerOrdersQuery: GraphQLQuery {
                   public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.OrderLineItem }
                   public static var __selections: [ApolloAPI.Selection] { [
                     .field("__typename", String.self),
+                    .field("originalTotalPrice", OriginalTotalPrice.self),
                     .field("quantity", Int.self),
                     .field("title", String.self),
                     .field("variant", Variant?.self),
                   ] }
 
+                  /// The total price of the line item, not including any discounts. The total price is calculated using the original unit price multiplied by the quantity, and it's displayed in the presentment currency.
+                  public var originalTotalPrice: OriginalTotalPrice { __data["originalTotalPrice"] }
                   /// The number of products variants associated to the line item.
                   public var quantity: Int { __data["quantity"] }
                   /// The title of the product combined with title of the variant.
                   public var title: String { __data["title"] }
                   /// The product variant object associated to the line item.
                   public var variant: Variant? { __data["variant"] }
+
+                  /// Customer.Orders.Edge.Node.LineItems.Edge.Node.OriginalTotalPrice
+                  ///
+                  /// Parent Type: `MoneyV2`
+                  public struct OriginalTotalPrice: MyApi.SelectionSet {
+                    public let __data: DataDict
+                    public init(_dataDict: DataDict) { __data = _dataDict }
+
+                    public static var __parentType: any ApolloAPI.ParentType { MyApi.Objects.MoneyV2 }
+                    public static var __selections: [ApolloAPI.Selection] { [
+                      .field("__typename", String.self),
+                      .field("amount", MyApi.Decimal.self),
+                      .field("currencyCode", GraphQLEnum<MyApi.CurrencyCode>.self),
+                    ] }
+
+                    /// Decimal money amount.
+                    public var amount: MyApi.Decimal { __data["amount"] }
+                    /// Currency of the money.
+                    public var currencyCode: GraphQLEnum<MyApi.CurrencyCode> { __data["currencyCode"] }
+                  }
 
                   /// Customer.Orders.Edge.Node.LineItems.Edge.Node.Variant
                   ///

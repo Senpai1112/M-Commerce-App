@@ -102,7 +102,7 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
         let product = wishList[indexPath.row]
         cell.favTitle.text = product.productName
         if let price = product.productPrice {
-            cell.favPrice.text = "\(price) "
+            cell.favPrice.text = "\(price) EGP"
         }
         if let imageURL = product.productImage, let url = URL(string: imageURL) {
             cell.favImage.kf.setImage(with: url, placeholder: UIImage(named: "1"))

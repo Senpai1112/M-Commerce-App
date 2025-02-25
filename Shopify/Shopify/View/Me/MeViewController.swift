@@ -29,8 +29,8 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     ///setupNavigationBarIcons
     override func viewWillAppear(_ animated: Bool) {
-       self.tabBarController?.title = "Me"
-        welcomeLabel.text = "Welcome Mai \(UserDefaults.standard.string(forKey: "customerName") ?? "")"
+        setupLeftBarButt()
+        welcomeLabel.text = "Welcome, Mai \(UserDefaults.standard.string(forKey: "customerName") ?? "")"
         wishList = CoreDataManager.fetchFromCoreData()
         viewModel = OrdersViewModel()
         viewModel.bindOrdersToViewController = {
@@ -153,7 +153,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
             let product = wishList[indexPath.row]
             cell.favTitle.text = product.productName
             if let price = product.productPrice {
-                cell.favPrice.text = "\(price) "
+                cell.favPrice.text = "\(price) EGP"
             }
             if let imageURL = product.productImage, let url = URL(string: imageURL) {
                 cell.favImage.kf.setImage(with: url, placeholder: UIImage(named: "1"))
@@ -243,4 +243,11 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func removeLoginView() {
           view.viewWithTag(100)?.removeFromSuperview()
           }
+
+        func setupLeftBarButt() {
+            let titleLabel = UILabel()
+                titleLabel.text = " "
+                let barButtonItem = UIBarButtonItem(customView: titleLabel)
+                self.tabBarController?.navigationItem.leftBarButtonItem = barButtonItem
+        }
 }

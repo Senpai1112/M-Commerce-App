@@ -19,6 +19,10 @@ query CustomerOrdersQuery ($token : String!){
                         edges {
                             cursor
                             node {
+                              originalTotalPrice {
+                        amount
+                        currencyCode
+                    }
                                 quantity
                                 title
                                 variant {

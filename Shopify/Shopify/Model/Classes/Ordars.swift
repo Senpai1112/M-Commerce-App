@@ -16,12 +16,14 @@ struct Orders {
     let lineItems: [OrderItem]
     let price: Double?
     let currencyCode : String?
-    
     let processedAt : String?
+    let email : String?
 }
 struct OrderItem {
     let title: String?
     let quantity: Int?
     let variant: String?
     let image: String?
+    let price: Double?
+    let currencyCode : String?
 }
