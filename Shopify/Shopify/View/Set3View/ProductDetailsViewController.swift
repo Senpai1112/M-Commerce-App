@@ -15,7 +15,8 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     var addToCartViewModel = AddToCartViewModel()
     var id: String?
     var product: Product?
-    
+    var activityIndicator: UIActivityIndicatorView!
+
     // URLs for the images in the carousel
     lazy var urls: [Foundation.URL] = []
     
@@ -106,7 +107,7 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
         super.viewDidLoad()
         self.navigationItem.title = "Details"
         print("Product ID: \(id ?? "No ID")")
-        
+        setupActivityIndicator()
         if let cartID = UserDefaults.standard.string(forKey: "cartID") {
             print("Retrieved Cart ID: \(cartID)")
         }
@@ -140,7 +141,7 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        activityIndicator.startAnimating()
         checkIfFavorite()
     }
     
@@ -256,6 +257,7 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     
     private func setupViewModelObservers() {
         viewModel.onProductFetched = { [weak self] product in
+            self?.activityIndicator.stopAnimating()
             self?.updateUI(with: product)
         }
         
@@ -269,7 +271,14 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
             let formattedPrice = (doubleCost * 100).rounded() / 100
             return formattedPrice
         }
+    func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
     private func updateUI(with product: Product) {
+        
         self.product = product
         titleLabel.text = product.title
        // priceLabel.text = "\(product.price) \(product.currecy)"

@@ -11,6 +11,7 @@ class LoginCustomerViewController: UIViewController {
     private let authViewModel = AuthViewModel()
     var newCartViewModel = NewCartViewModel()
     var customerDetailsViewModel = CustomerDetailsViewModel()
+    var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         
@@ -18,13 +19,20 @@ class LoginCustomerViewController: UIViewController {
         
         print("Loading from LoginViewController")
         setupUI()
+        setupActivityIndicator()
 //        setupViewModelObservers()
 //        loginButtonTapped()
     }
-    
+    func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
     private func setupViewModelObservers() {
         authViewModel.onLoginSuccess = { accessToken in
             DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
                 print(" Customer Logged in Successfully!")
                 print("   Access Token: \(accessToken.accessToken ?? "N/A")")
                 
@@ -87,7 +95,7 @@ class LoginCustomerViewController: UIViewController {
     @objc private func loginButtonTapped() {
         let testEmail = emailTextField.text ?? ""
         let testPassword = passwordTextField.text ?? ""
-        
+        activityIndicator.startAnimating()
         print(" Testing Customer Login...")
         authViewModel.loginCustomer(email: testEmail, password: testPassword)
         
