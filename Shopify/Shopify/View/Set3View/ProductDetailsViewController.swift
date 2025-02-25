@@ -499,6 +499,7 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
             self.navigationController?.pushViewController(reviewsViewController, animated: true)
         }
     }
+    
 }
 //    /*
 //    // MARK: - Navigation
