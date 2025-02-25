@@ -7,7 +7,7 @@
 import UIKit
 import MyApi
 
-class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIPickerViewDataSource ,UIScrollViewDelegate{
+class ProductDetailsViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource  {
     
     // MARK: - Properties
     var viewModel = ProductDetailsViewModel()
@@ -16,13 +16,13 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     var id: String?
     var product: Product?
     var activityIndicator: UIActivityIndicatorView!
-
+    let variantTableView = UITableView()
     // URLs for the images in the carousel
     lazy var urls: [Foundation.URL] = []
     
     // UI Components
     lazy var carousel = Carousel(frame: .zero, urls: urls)
-    let imageIndicatorStackView = UIStackView()
+//    let imageIndicatorStackView = UIStackView()
     let variantPicker = UIPickerView()
     
     // Description and Rating Section
@@ -132,8 +132,12 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
         setupHierarchy()
         setupComponents()
         setupConstraints()
-        variantPicker.delegate = self
-        variantPicker.dataSource = self
+        variantTableView.delegate = self
+        variantTableView.dataSource = self
+        
+        variantTableView.register(UITableViewCell.self, forCellReuseIdentifier: "variantCell")
+      //  variantPicker.delegate = self
+     //   variantPicker.dataSource = self
         scrollView.delegate = self
         print("Fetching product data...")
         setupViewModelObservers()
@@ -313,8 +317,9 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
                 self.carousel.updateImages(with: urls)
             }
         }
+        variantTableView.reloadData()
         checkIfFavorite()
-        variantPicker.selectRow(0, inComponent: 0, animated: false)
+       // variantPicker.selectRow(0, inComponent: 0, animated: false)
 
     }
     
@@ -323,10 +328,9 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     func setupHierarchy(){
         self.view.addSubview(headerView)
         self.view.addSubview(carousel)
-        self.view.addSubview(imageIndicatorStackView)
         self.view.addSubview(titleLabel)
        // self.view.addSubview(pickerTitleLabel)
-        self.view.addSubview(variantPicker)
+        self.view.addSubview(variantTableView)
         self.view.addSubview(priceLabel)
         self.view.addSubview(ratingAndReviewStackView)
         self.view.addSubview(descriptionStackView)
@@ -347,13 +351,14 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     }
     func setupComponents() {
         carousel.translatesAutoresizingMaskIntoConstraints = false
-        imageIndicatorStackView.translatesAutoresizingMaskIntoConstraints = false
+  //      imageIndicatorStackView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionStackView.translatesAutoresizingMaskIntoConstraints = false
         ratingStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
-        variantPicker.translatesAutoresizingMaskIntoConstraints = false
+      //  variantPicker.translatesAutoresizingMaskIntoConstraints = false
+        variantTableView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ASICS Tiger | GEL-LYTE V '30 YEARS OF GEL' PACK"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.textColor = .black
@@ -417,12 +422,16 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
                
   
                        // Position the variant picker below stars
-               variantPicker.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
-               //variantPicker.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -16),
-               variantPicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-               variantPicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-               variantPicker.heightAnchor.constraint(equalToConstant: 200), // Set a fixed height
-              
+//               variantPicker.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
+//               //variantPicker.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -16),
+//               variantPicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+//               variantPicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+//               variantPicker.heightAnchor.constraint(equalToConstant: 200), // Set a fixed height
+               variantTableView.topAnchor.constraint(equalTo: descriptionStackView.bottomAnchor, constant: 4),
+               variantTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+               variantTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+               variantTableView.heightAnchor.constraint(equalToConstant: 80),
+               variantTableView.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -16),
 
                
                ratingAndReviewStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 4),
@@ -444,7 +453,7 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
                favoriteButton.heightAnchor.constraint(equalToConstant: 50)
            ])
            buttonsStackView.distribution = .fill
-        variantPicker.frame = CGRect(x: 0, y: 400, width: self.view.frame.width, height: 200)
+   //     variantPicker.frame = CGRect(x: 0, y: 400, width: self.view.frame.width, height: 200)
 
        }
 
@@ -467,36 +476,55 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     }
     
     // MARK: - UIPickerView Delegate and DataSource
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        return 1
+//    }
+//    
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        return product?.variants.count ?? 0
+//    }
+//    
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        return product?.variants[row].title
+//    }
+//    
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        if let selectedVariant = product?.variants[row] {
+//            print("Price: \(selectedVariant.price.amount) \(selectedVariant.price.currencyCode) \(selectedVariant.id) \(selectedVariant.title)")
+//             lines = [CartLineInput(quantity: 1, merchandiseId: selectedVariant.id)]
+//              
+//        
+//        }
+//    }
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        // Disable scrolling when interacting with the picker
+//        if variantPicker.isFirstResponder {
+//            scrollView.isScrollEnabled = false
+//        }
+//    }
+//
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        // Re-enable scrolling after interacting with the picker
+//        scrollView.isScrollEnabled = true
+//    }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return product?.variants.count ?? 0
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return product?.variants[row].title
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "variantCell", for: indexPath)
+        if let variant = product?.variants[indexPath.row] {
+            cell.textLabel?.text = variant.title
+        }
+        return cell
     }
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if let selectedVariant = product?.variants[row] {
-            print("Price: \(selectedVariant.price.amount) \(selectedVariant.price.currencyCode) \(selectedVariant.id) \(selectedVariant.title)")
-             lines = [CartLineInput(quantity: 1, merchandiseId: selectedVariant.id)]
-              
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let selectedVariant = product?.variants[indexPath.row] {
+            print("Selected Variant: \(selectedVariant.title), Price: \(selectedVariant.price.amount) \(selectedVariant.price.currencyCode)")
+            lines = [CartLineInput(quantity: 1, merchandiseId: selectedVariant.id)]
         }
-    }
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        // Disable scrolling when interacting with the picker
-        if variantPicker.isFirstResponder {
-            scrollView.isScrollEnabled = false
-        }
-    }
-
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        // Re-enable scrolling after interacting with the picker
-        scrollView.isScrollEnabled = true
     }
     
     // MARK: - Navigate to Reviews
