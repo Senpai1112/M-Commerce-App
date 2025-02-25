@@ -102,7 +102,8 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
         let product = wishList[indexPath.row]
         cell.favTitle.text = product.productName
         if let price = product.productPrice {
-            cell.favPrice.text = "\(price) EGP"
+//            cell.favPrice.text = "\(price) EGP"
+            cell.favPrice.text = " \(mapCost(amount: price, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "EGP") ?? 0.0) \(UserDefaults.standard.string(forKey: "currencyCode") ?? "")"
         }
         if let imageURL = product.productImage, let url = URL(string: imageURL) {
             cell.favImage.kf.setImage(with: url, placeholder: UIImage(named: "1"))
@@ -166,6 +167,12 @@ class FavouritesViewController: UIViewController,UITableViewDelegate,UITableView
         }
     }
 
+    func mapCost(amount: String?, currencyCode: String?) -> Double? {
+            guard let amount = amount else { return nil }
+            let doubleCost = (Double(amount) ?? 0.0) * UserDefaults.standard.double(forKey: "currencyValue")
+            let formattedPrice = (doubleCost * 100).rounded() / 100
+            return formattedPrice
+        }
     /*
     // MARK: - Navigation
 
