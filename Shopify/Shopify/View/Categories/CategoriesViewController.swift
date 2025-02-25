@@ -259,12 +259,26 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
                     CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price ?? 0)", productImage: product.image ?? "", productId: product.id ?? "")
                     UserDefaults.standard.set(true, forKey: "\(product.id ?? "")")
                 } else {
-                    cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                    cell.favButton.tintColor = .white
+                    let alert = UIAlertController(title: "Delete", message: "Are you sure about deletion?", preferredStyle: .alert)
                     
-                    // Delete from Core Data and update UserDefaults
-                    CoreDataManager.deleteFromCoreData(productId: product.id ?? "")
-                    UserDefaults.standard.set(false, forKey: "\(product.id ?? "")")
+                    //AddAction
+                    alert.addAction(UIAlertAction(title: "OK", style: .default , handler: { [self] action in
+                        cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                        cell.favButton.tintColor = .white
+                        
+                        // Delete from Core Data and update UserDefaults
+                        CoreDataManager.deleteFromCoreData(productId: product.id ?? "")
+                        UserDefaults.standard.set(false, forKey: "\(product.id ?? "")")
+                    }))
+                    
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel , handler: { action in
+                    }))
+                    
+
+                    //showAlert
+                    self.present(alert, animated: true) {
+                    }
+                    
                 }
             }
         } else {

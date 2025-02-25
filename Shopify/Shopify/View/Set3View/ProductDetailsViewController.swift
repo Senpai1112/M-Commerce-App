@@ -7,7 +7,7 @@
 import UIKit
 import MyApi
 
-class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPickerViewDelegate, UIPickerViewDataSource ,UIScrollViewDelegate{
+class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIPickerViewDataSource ,UIScrollViewDelegate{
     
     // MARK: - Properties
     var viewModel = ProductDetailsViewModel()
@@ -22,7 +22,6 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     // UI Components
     lazy var carousel = Carousel(frame: .zero, urls: urls)
     let imageIndicatorStackView = UIStackView()
-    var indicatorViews: [UIView] = []
     let variantPicker = UIPickerView()
     
     // Description and Rating Section
@@ -115,8 +114,6 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         setupHierarchy()
         setupComponents()
         setupConstraints()
-        setupIndicator()
-        carousel.delegate = self
         variantPicker.delegate = self
         variantPicker.dataSource = self
         scrollView.delegate = self
@@ -185,9 +182,23 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
                 CoreDataManager.saveProductToCoreData(productName: product.title, productPrice: product.price, productImage: product.images.first ?? "", productId: product.id)
                 UserDefaults.standard.set(true, forKey: "\((id) ?? "")")
             } else {
-                favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
-                CoreDataManager.deleteFromCoreData(productId: product.id)
-                UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+                let alert = UIAlertController(title: "Delete", message: "Are you sure about deletion?", preferredStyle: .alert)
+                
+                //AddAction
+                alert.addAction(UIAlertAction(title: "OK", style: .default , handler: { [self] action in
+                    favoriteButton.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                    CoreDataManager.deleteFromCoreData(productId: product.id)
+                    UserDefaults.standard.set(false, forKey: "\((id) ?? "")")
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel , handler: { action in
+                }))
+                
+
+                //showAlert
+                self.present(alert, animated: true) {
+                }
+                
             }
         } else {
             showLoginAlert()
@@ -207,7 +218,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
             
             present(alert, animated: true, completion: nil)
         }
-    
+
     @objc func addToCartTapped() {
         if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
             let selectedRow = variantPicker.selectedRow(inComponent: 0)
@@ -295,37 +306,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     }
     
     // MARK: - UI Setup
-  /*  func setupHierarchy() {
-        self.view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-
-       // contentView.addSubview(headerView)
-        contentView.addSubview(carousel)
-    //    contentView.addSubview(imageIndicatorStackView)
-        contentView.addSubview(titleLabel)
-      //  contentView.addSubview(variantPicker)
-        contentView.addSubview(priceLabel)
-        contentView.addSubview(descriptionStackView)
-       // self.view.addSubview(ratingStackView)
-        contentView.addSubview(ratingAndReviewStackView)
-        contentView.addSubview(buttonsStackView)
-        
-        pickerStackView.addArrangedSubview(pickerTitleLabel)
-        pickerStackView.addArrangedSubview(variantPicker)
-        contentView.addSubview(pickerStackView)
-        
-        descriptionStackView.addArrangedSubview(staticDescriptionLabel)
-        descriptionStackView.addArrangedSubview(descriptionLabel)
-        
-        ratingStackView.addArrangedSubview(createRatingStars(rating: 4))
-        //ratingStackView.addArrangedSubview(reviewButton)
-        
-        ratingAndReviewStackView.addArrangedSubview(ratingStackView)
-        ratingAndReviewStackView.addArrangedSubview(reviewButton)
-        
-        buttonsStackView.addArrangedSubview(favoriteButton)
-        buttonsStackView.addArrangedSubview(addToCartButton)
-    }*/
+ 
     func setupHierarchy(){
         self.view.addSubview(headerView)
         self.view.addSubview(carousel)
@@ -360,7 +341,6 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         ratingStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
         variantPicker.translatesAutoresizingMaskIntoConstraints = false
-        
         titleLabel.text = "ASICS Tiger | GEL-LYTE V '30 YEARS OF GEL' PACK"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.textColor = .black
@@ -379,17 +359,10 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         addToCartButton.addTarget(self, action: #selector(addToCartTapped), for: .touchUpInside)
         addToCartButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
         
-        //favoriteButton.setImage(UIImage(named: "heart.fill"), for: .normal)
-        //favoriteButton.tintColor = .red
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
         
-        // Button styling to ensure it's circular if needed
         favoriteButton.tintColor = UIColor(white: 0.95, alpha: 1.2)
-        //  favoriteButton.layer.cornerRadius = 25 // Make it circular if needed
-        //   favoriteButton.clipsToBounds = true // Clip any overflow
-        //     favoriteButton.imageView?.contentMode = .scaleToFill
-        //favoriteButton.imageView?.contentMode = .scaleAspectFit // Ensure the image is not stretched
-        
+  
         favoriteButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         descriptionStackView.axis = .vertical
@@ -409,150 +382,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
             ratingAndReviewStackView.spacing = 160
             ratingAndReviewStackView.alignment = .center
     }
-  /*  func setupConstraints() {
-        NSLayoutConstraint.activate([
-            
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor), // Ensure contentView width matches scrollView
-            
-            
-            carousel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            carousel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            carousel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            carousel.heightAnchor.constraint(equalToConstant: 250),
-            
-            titleLabel.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            
-            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            
-            pickerStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16),
-            pickerStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            pickerStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            //pickerStackView.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: 8),
-                   // Constraints for variant picker
-            variantPicker.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.6), // Adjust picker width
-            variantPicker.heightAnchor.constraint(equalToConstant: 200), // Adjust picker height
-                   
-            ratingAndReviewStackView.topAnchor.constraint(equalTo: pickerStackView.bottomAnchor, constant: 8),
-            ratingAndReviewStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            ratingAndReviewStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
-//
-//            variantPicker.topAnchor.constraint(equalTo: ratingAndReviewStackView.bottomAnchor, constant: 16),
-//            variantPicker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//            variantPicker.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-//            variantPicker.heightAnchor.constraint(equalToConstant: 200),
-            
-            descriptionStackView.topAnchor.constraint(equalTo: ratingAndReviewStackView.bottomAnchor, constant: 16),
-            descriptionStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            descriptionStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            
-            buttonsStackView.topAnchor.constraint(equalTo: descriptionStackView.bottomAnchor, constant: 16),
-            buttonsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            buttonsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            buttonsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            buttonsStackView.heightAnchor.constraint(equalToConstant: 50),
-            
-            addToCartButton.widthAnchor.constraint(equalToConstant: 160),
-            addToCartButton.heightAnchor.constraint(equalToConstant: 50),
-            favoriteButton.widthAnchor.constraint(equalToConstant: 60),
-            favoriteButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        buttonsStackView.distribution = .fill
-    }*/
-//    func setupConstraints() {
-//        NSLayoutConstraint.activate([
-//                scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-//                scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//                scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//                scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            ])
-//
-//            // Constraints for contentView
-//            NSLayoutConstraint.activate([
-//                contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-//                contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-//                contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-//                contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-//                contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor), ])
-//
-//        NSLayoutConstraint.activate([
-////            headerView.topAnchor.constraint(equalTo: view.topAnchor),
-////            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-////            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-////            headerView.heightAnchor.constraint(equalToConstant: 80),
-//
-//            carousel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-//            carousel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            carousel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            carousel.heightAnchor.constraint(equalToConstant: 250),
-////
-////            imageIndicatorStackView.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 8),
-////            imageIndicatorStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-////            imageIndicatorStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-////            imageIndicatorStackView.heightAnchor.constraint(equalToConstant: 8),
-////            imageIndicatorStackView.bottomAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 16),
-//
-//            titleLabel.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 16),
-//            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-//
-//            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-//            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//
-//            ratingAndReviewStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
-//                   ratingAndReviewStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//                   ratingAndReviewStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
-//
-//                   // Position the variant picker below the rating and review stack view
-//                   variantPicker.topAnchor.constraint(equalTo: ratingAndReviewStackView.bottomAnchor, constant: 16),
-//                   variantPicker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//                   variantPicker.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-//                   variantPicker.heightAnchor.constraint(equalToConstant: 200),
-////            ratingStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16),
-////            ratingStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-////            ratingStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-////
-//                    // Position the variant picker below stars
-////            variantPicker.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
-////        //  variantPicker.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -16),
-////            variantPicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-////            variantPicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-////            variantPicker.heightAnchor.constraint(equalToConstant: 200), // Set a fixed height
-//////
-////            descriptionStackView.topAnchor.constraint(equalTo: variantPicker.bottomAnchor, constant: 16),
-////            descriptionStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//////            descriptionStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-////            ratingStackView.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 8),
-////            ratingStackView.topAnchor.constraint(equalTo: priceLabel.topAnchor),
-//
-//            descriptionStackView.topAnchor.constraint(equalTo: variantPicker.bottomAnchor, constant: 16),
-//            descriptionStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//            descriptionStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-//
-//            buttonsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-//            buttonsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//            buttonsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-//            buttonsStackView.heightAnchor.constraint(equalToConstant: 50),
-//
-//            addToCartButton.widthAnchor.constraint(equalToConstant: 160),
-//            addToCartButton.heightAnchor.constraint(equalToConstant: 50),
-//            favoriteButton.widthAnchor.constraint(equalToConstant: 60),
-//            favoriteButton.heightAnchor.constraint(equalToConstant: 50)
-//        ])
-//        buttonsStackView.distribution = .fill
-//    }
+ 
     func setupConstraints() {
            NSLayoutConstraint.activate([
                headerView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -564,13 +394,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
                carousel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                carousel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                carousel.heightAnchor.constraint(equalToConstant: 250),
-   //
-   //            imageIndicatorStackView.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 8),
-   //            imageIndicatorStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-   //            imageIndicatorStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-   //            imageIndicatorStackView.heightAnchor.constraint(equalToConstant: 8),
-   //            imageIndicatorStackView.bottomAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 16),
-               
+   
                titleLabel.topAnchor.constraint(equalTo: carousel.bottomAnchor, constant: 4),
                titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -578,10 +402,7 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
                priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
                priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                
-   //            ratingStackView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16),
-   //            ratingStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-   //            ratingStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-   //
+  
                        // Position the variant picker below stars
                variantPicker.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
                //variantPicker.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -16),
@@ -610,31 +431,14 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
                favoriteButton.heightAnchor.constraint(equalToConstant: 50)
            ])
            buttonsStackView.distribution = .fill
+        variantPicker.frame = CGRect(x: 0, y: 400, width: self.view.frame.width, height: 200)
+
        }
-    func setupIndicator() {
-        for _ in urls {
-            let indicatorDot = createIndicatorDot()
-            indicatorViews.append(indicatorDot)
-            imageIndicatorStackView.addArrangedSubview(indicatorDot)
-        }
-        updateIndicator(selectedIndex: 0)
-    }
+
     
-    func createIndicatorDot() -> UIView {
-        let dot = UIView()
-        dot.layer.cornerRadius = 4
-        dot.backgroundColor = .lightGray
-        dot.translatesAutoresizingMaskIntoConstraints = false
-        dot.heightAnchor.constraint(equalToConstant: 8).isActive = true
-        dot.widthAnchor.constraint(equalToConstant: 8).isActive = true
-        return dot
-    }
+
     
-    func updateIndicator(selectedIndex: Int) {
-        for (index, dot) in indicatorViews.enumerated() {
-            dot.backgroundColor = (index == selectedIndex) ? .darkGray : .lightGray
-        }
-    }
+
     
     func createRatingStars(rating: Int) -> UIStackView {
         let ratingStackView = UIStackView()
