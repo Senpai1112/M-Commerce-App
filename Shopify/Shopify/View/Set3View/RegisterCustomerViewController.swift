@@ -127,25 +127,6 @@ class CustomerViewController: UIViewController {
             present(alert, animated: true, completion: nil)
         }
     
-//    private func setupViewModelObservers() {
-//        viewModel.onCustomerCreated = { customer in
-//            DispatchQueue.main.async {
-//                print(" Customer Created Successfully:")
-//                print("   ID: \(customer.id ?? "N/A")")
-//                print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
-//                print("   Email: \(customer.email ?? "N/A")")
-//                
-//               //navigate to login
-//            }
-//        }
-//
-//        viewModel.onError = { errorMessage in
-//            DispatchQueue.main.async {
-//                print(" Error Creating Customer: \(errorMessage)")
-//                self.showAlert(title: "Error", message: "\(errorMessage) \n Please try another email.")
-//            }
-//        }
-//    }
     
     private func testCreateCustomer() {
         let testCustomerId = "123456"  // dummy
@@ -210,14 +191,11 @@ class CustomerViewController: UIViewController {
        
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Already have account? Click to Login", for: .normal)
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-//        button.setTitleColor(.white, for: .normal)
-//        button.backgroundColor = UIColor.purple
-//        button.layer.cornerRadius = 10
-//        button.layer.shadowOpacity = 0.3
-//        button.layer.shadowRadius = 5
-//        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+      //  button.setTitle("Already have account? Click to Login", for: .normal)
+        let normalText = "Already have account? Click to Login"
+        let attributedString = NSMutableAttributedString(string: normalText)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 21)) // "Click"
+        button.setAttributedTitle(attributedString, for: .normal)
         button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         return button
     }()
