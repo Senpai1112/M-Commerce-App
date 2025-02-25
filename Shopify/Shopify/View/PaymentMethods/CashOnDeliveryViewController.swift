@@ -44,6 +44,7 @@ class CashOnDeliveryViewController: UIViewController {
     
     let orderViewModel = OrderViewModel()
     let cartViewModel = CartViewModel()
+    let sendEmailViewModel = SendEmailViewModel()
     
     var newPrice = ""
     
@@ -108,14 +109,25 @@ class CashOnDeliveryViewController: UIViewController {
         }
         orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
         cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
-        SendOrderWithApi.fetchOrderAndSendEmail(shopifyAccessToken: customerAccessToken) { result in
-                switch result {
-                case .success:
-                    print("✅ Email sent successfully")
-                case .failure(let error):
-                    print("❌ Failed to send email: \(error)")
-                }
+        orderViewModel.bindLoadingToCashOnDelivery = {[weak self] in
+            if self?.orderViewModel.isLoading == true{
+                print("Still loading")
+            }else{
+                self?.sendEmailViewModel.sendMailForCustomer(customerAccessToken: self?.customerAccessToken ?? "", customerDetails: self?.customerDetails ?? CustomerDetails(), address: self?.address ?? Addresses() ,newPrice: self?.grandTotal.text ?? "0.0")
             }
+        }
+        
+        sendEmailViewModel.bindMailResult = {[weak self] in
+            print(self?.sendEmailViewModel.mailResult ?? "nothing here")
+        }
+//        SendOrderWithApi.fetchOrderAndSendEmail(shopifyAccessToken: customerAccessToken) { result in
+//                switch result {
+//                case .success:
+//                    print("✅ Email sent successfully")
+//                case .failure(let error):
+//                    print("❌ Failed to send email: \(error)")
+//                }
+//            }
         UserDefaults.standard.set("", forKey: selectedDiscountCopon)
         
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)

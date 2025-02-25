@@ -9,17 +9,16 @@ import Foundation
 import Alamofire
 import MyApi
 import Apollo
-import SwiftSMTP
 
 class SendOrderWithApi{
     
-    static func fetchOrderAndSendEmail(shopifyAccessToken: String,customerDetails : CustomerDetails, address : Address, completion: @escaping (Result<Void, Error>) -> Void) {
+    static func fetchOrderAndSendEmail(shopifyAccessToken: String,completion: @escaping (Result<GraphQLResult<CustomerOrdersQuery.Data>, Error>) -> Void) {
         // 🕒 Adding delay to ensure order is processed before fetching
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             ApolloNetwokService.shared.apollo.fetch(query: CustomerOrdersQuery(token: shopifyAccessToken)) { result in
                 switch result {
                 case .success(let graphQLResult):
-                    guard let order = graphQLResult.data?.customer?.orders.edges.last?.node else {
+                    /*guard let order = graphQLResult.data?.customer?.orders.edges.last?.node else {
                         completion(.failure(NSError(domain: "ShopifyError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Order not found"])))
                         return
                     }
@@ -32,6 +31,9 @@ class SendOrderWithApi{
                                           subject: "Your Order Details",
                                           body: "Hello \(customerName), your order includes: \(items).",
                                           completion: completion)
+                     */
+                    completion(.success(graphQLResult))
+                    print("✅ orders Fetched Successfully")
                 case .failure(let error):
                     print("❌ Failed to fetch order: \(error)")
                     completion(.failure(error))
@@ -40,7 +42,7 @@ class SendOrderWithApi{
         }
     }
     
-    private static func sendEmailViaBrevo(toEmail: String, subject: String, body: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    /*private static func sendEmailViaBrevo(toEmail: String, subject: String, body: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let url = "https://api.brevo.com/v3/emailCampaigns"
         
         let headers: HTTPHeaders = [
@@ -70,30 +72,5 @@ class SendOrderWithApi{
                     completion(.failure(error))
                 }
             }
-    }
-    private static func sendEmailViaBrevoSMTP(toEmail: String, subject: String, body: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        // Configure SMTP server
-        let smtp = SMTP(
-            hostname: "smtp-relay.brevo.com",
-            email:"86a103003@smtp-brevo.com",
-            password: "75AspDYajJgqbNty",
-            port: 587,
-            tlsMode: .ignoreTLS
-        )
-        
-        let sender = Mail.User(name: "Cartique", email: "youssabyasser@gmail.com")
-        let recipient = Mail.User(email: "gilinoy390@envoes.com")
-        
-        let mail = Mail(from: sender, to: [recipient], subject: subject, text: body)
-        
-        smtp.send(mail) { error in
-            if let error = error {
-                print("❌ Email sending failed: \(error.localizedDescription)")
-                completion(.failure(error))
-            } else {
-                print("✅ Email sent successfully")
-                completion(.success(()))
-            }
-        }
-    }
+    }*/
 }
