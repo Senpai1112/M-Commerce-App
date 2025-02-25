@@ -108,14 +108,19 @@ class CashOnDeliveryViewController: UIViewController {
         }
         orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
         cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
-        SendOrderWithApi.fetchOrderAndSendEmail(shopifyAccessToken: customerAccessToken, completion: {
-            _ in
-        })
+        SendOrderWithApi.fetchOrderAndSendEmail(shopifyAccessToken: customerAccessToken) { result in
+                switch result {
+                case .success:
+                    print("✅ Email sent successfully")
+                case .failure(let error):
+                    print("❌ Failed to send email: \(error)")
+                }
+            }
         UserDefaults.standard.set("", forKey: selectedDiscountCopon)
         
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
-            if let navigationController = self?.navigationController {
+            /*if let navigationController = self?.navigationController {
                 let viewControllers = navigationController.viewControllers
                 if viewControllers.count >= 6 {
                     navigationController.popToViewController(viewControllers[viewControllers.count - 6], animated: true)
@@ -125,7 +130,10 @@ class CashOnDeliveryViewController: UIViewController {
                     navigationController.popToRootViewController(animated: true)
                 }
             }
-            
+            */
+            if let navigationController = self?.navigationController {
+                        navigationController.popToRootViewController(animated: true)
+                    }
         })
         self.present(alert, animated: true)
     }

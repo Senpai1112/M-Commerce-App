@@ -15,6 +15,7 @@
 		F58A94952D6B338700B136DC /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F58A94942D6B338700B136DC /* FirebaseAnalytics */; };
 		F58A94972D6B338700B136DC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F58A94962D6B338700B136DC /* FirebaseAuth */; };
 		F58A94992D6B338700B136DC /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = F58A94982D6B338700B136DC /* FirebaseCore */; };
+		F5CD33FE2D6E18C600507953 /* SwiftSMTP in Frameworks */ = {isa = PBXBuildFile; productRef = F5CD33FD2D6E18C600507953 /* SwiftSMTP */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		F515BE352D6DDC16007B3BDF /* Shopify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Shopify.xcodeproj; sourceTree = "<group>"; };
 		F5567AAA2D6C756400B9B586 /* Shopify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Shopify.xcodeproj; sourceTree = "<group>"; };
 		F5582C822D6DD36A00BDF6A0 /* Shopify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Shopify.xcodeproj; sourceTree = "<group>"; };
+		F5CD33752D6E176000507953 /* Shopify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Shopify.xcodeproj; sourceTree = "<group>"; };
 		F5D4DEDD2D58ECC70038A233 /* Shopify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D4DEF62D58ECC90038A233 /* ShopifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D4DF002D58ECC90038A233 /* ShopifyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopifyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +95,7 @@
 				0F0631F77299F8357D4ACA01 /* Pods_Shopify.framework in Frameworks */,
 				F58A94952D6B338700B136DC /* FirebaseAnalytics in Frameworks */,
 				F58A94992D6B338700B136DC /* FirebaseCore in Frameworks */,
+				F5CD33FE2D6E18C600507953 /* SwiftSMTP in Frameworks */,
 				54E2DDE02D5ED2E700F1D4B2 /* Apollo in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,6 +157,13 @@
 			sourceTree = "<group>";
 		};
 		F5582C832D6DD36A00BDF6A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F5CD33762D6E176000507953 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -288,11 +298,16 @@
 				54E2DDDE2D5ED2E700F1D4B2 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				54E2DE152D5ED48300F1D4B2 /* XCLocalSwiftPackageReference "myApi" */,
 				F58A94932D6B338700B136DC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				F5CD33FC2D6E18C600507953 /* XCRemoteSwiftPackageReference "Swift-SMTP" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F5D4DEDE2D58ECC70038A233 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = F5CD33762D6E176000507953 /* Products */;
+					ProjectRef = F5CD33752D6E176000507953 /* Shopify.xcodeproj */;
+				},
 				{
 					ProductGroup = F515BE362D6DDC16007B3BDF /* Products */;
 					ProjectRef = F515BE352D6DDC16007B3BDF /* Shopify.xcodeproj */;
@@ -792,6 +807,14 @@
 				minimumVersion = 11.8.1;
 			};
 		};
+		F5CD33FC2D6E18C600507953 /* XCRemoteSwiftPackageReference "Swift-SMTP" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/IBM-Swift/Swift-SMTP";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -819,6 +842,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F58A94932D6B338700B136DC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
+		};
+		F5CD33FD2D6E18C600507953 /* SwiftSMTP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F5CD33FC2D6E18C600507953 /* XCRemoteSwiftPackageReference "Swift-SMTP" */;
+			productName = SwiftSMTP;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
