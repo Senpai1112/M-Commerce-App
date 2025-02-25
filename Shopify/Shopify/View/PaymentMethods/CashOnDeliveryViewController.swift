@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+
 
 class CashOnDeliveryViewController: UIViewController {
     
@@ -85,7 +87,7 @@ class CashOnDeliveryViewController: UIViewController {
         var lineItems = [LineItem]()
         var ids = [String]()
         guard let items = cartDetails.cart else { return }
-        guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country , let address2 = address.address2 else {
+        guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country else {
             print("Address details are missing")
             return
         }
@@ -110,30 +112,16 @@ class CashOnDeliveryViewController: UIViewController {
         
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
-            
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                          let sceneDelegate = windowScene.delegate as? SceneDelegate,
-                          let tabBarController = sceneDelegate.window?.rootViewController as? UITabBarController else {
-                        return
-                    }
-                    
-                    // Switch to Tab 0
-                    tabBarController.selectedIndex = 0
-                    
-                    // Pop to the root view controller of the selected tab
-                    if let navigationController = tabBarController.selectedViewController as? UINavigationController {
-                        navigationController.popToRootViewController(animated: true)
-                    }
-            /*if let navigationController = self?.navigationController {
-                /*let viewControllers = navigationController.viewControllers
+            if let navigationController = self?.navigationController {
+                let viewControllers = navigationController.viewControllers
                 if viewControllers.count >= 6 {
                     navigationController.popToViewController(viewControllers[viewControllers.count - 6], animated: true)
-                }*/
+                }
                 if let tabBarController = self?.view.window?.rootViewController as? UITabBarController {
                     tabBarController.selectedIndex = 0 // Change to the tab index you want
                     navigationController.popToRootViewController(animated: true)
                 }
-            }*/
+            }
             
         })
         self.present(alert, animated: true)
@@ -158,5 +146,4 @@ class CashOnDeliveryViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
 }

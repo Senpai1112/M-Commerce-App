@@ -10,12 +10,13 @@ import UIKit
 class ChooseAddressViewController: UIViewController {
     
     private var addressDetailsViewModel = AddressDetailsViewModel()
-
+    
     var customerAccessToken: String {
         return UserDefaults.standard.string(forKey: "accessToken") ?? ""
     }
     var backgroundImageView: UIImageView?
-
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    
     var selectedIndex: IndexPath?
     @IBOutlet weak var continueToPayment: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -31,6 +32,7 @@ class ChooseAddressViewController: UIViewController {
         self.navigationItem.title = "Choose Address"
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { [weak self] in
             DispatchQueue.main.async { [weak self] in
+                self?.activityIndicator.stopAnimating()
                 if self?.addressDetailsViewModel.addressResult.count == 0{
                     self?.addBackgroundImage(named: "noLocation")
                 }else{
@@ -44,13 +46,13 @@ class ChooseAddressViewController: UIViewController {
     
     func addBackgroundImage(named imageName: String) {
         let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
-           imageView.image = UIImage(named: imageName)
+        imageView.image = UIImage(named: imageName)
         imageView.contentMode = .scaleAspectFit
-           imageView.tag = 100  // Assign a tag to easily remove later
+        imageView.tag = 100  // Assign a tag to easily remove later
         self.tableView.addSubview(imageView)
         self.tableView.sendSubviewToBack(imageView)  // Ensure it stays at the back
-           backgroundImageView = imageView
-       }
+        backgroundImageView = imageView
+    }
     
     func removeBackgroundImage() {
         if let imageView = self.tableView.viewWithTag(100) {
@@ -69,9 +71,14 @@ class ChooseAddressViewController: UIViewController {
         continueToPayment.layer.cornerCurve = .continuous
         continueToPayment.clipsToBounds = true
         continueToPayment.tintColor = UIColor.purple
-
+        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
     }
-
+    
     @IBAction func continueToPayment(_ sender: UIButton) {
         if selectedIndex == nil{
             let alert = UIAlertController(title: "Please Select an address", message:"", preferredStyle: .alert)
@@ -86,15 +93,15 @@ class ChooseAddressViewController: UIViewController {
         }
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 extension ChooseAddressViewController: UITableViewDelegate, UITableViewDataSource {
@@ -136,7 +143,7 @@ extension ChooseAddressViewController: UITableViewDelegate, UITableViewDataSourc
         cell.clipsToBounds = true
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            selectedIndex = indexPath
-            tableView.reloadData()
+        selectedIndex = indexPath
+        tableView.reloadData()
     }
 }
