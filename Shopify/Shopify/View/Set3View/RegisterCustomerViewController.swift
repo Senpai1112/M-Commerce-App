@@ -115,7 +115,10 @@ class CustomerViewController: UIViewController {
                 let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
                 if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
                     loginVC.customerId = customer.id ?? ""
-                    self.navigationController?.pushViewController(loginVC, animated: true)
+                    loginVC.customerName = "\(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")"
+                    loginVC.customerEmail = "\(customer.email ?? "N/A")"
+                  //  self.navigationController?.pushViewController(loginVC, animated: true)
+                    self.showLoginAlert()
                 }
             }
         }
@@ -136,6 +139,19 @@ class CustomerViewController: UIViewController {
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }
+    func showLoginAlert() {
+            let alert = UIAlertController(title: "Alert", message: "Email Verified Thanks! Please Log In", preferredStyle: .alert)
+            let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+                self.navigationController?.pushViewController(loginVC, animated: true)        }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(loginAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
     
 //    private func setupViewModelObservers() {
 //        viewModel.onCustomerCreated = { customer in
@@ -220,14 +236,14 @@ class CustomerViewController: UIViewController {
        
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Login", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.purple
-        button.layer.cornerRadius = 10
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowRadius = 5
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.setTitle("Already have account? Click to Login", for: .normal)
+//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+//        button.setTitleColor(.white, for: .normal)
+//        button.backgroundColor = UIColor.purple
+//        button.layer.cornerRadius = 10
+//        button.layer.shadowOpacity = 0.3
+//        button.layer.shadowRadius = 5
+//        button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         return button
     }()

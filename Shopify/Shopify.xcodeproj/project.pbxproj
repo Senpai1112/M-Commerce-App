@@ -45,6 +45,7 @@
 		B8162E44EFCBC3379DF9E5C3 /* Pods-Shopify-ShopifyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shopify-ShopifyUITests.debug.xcconfig"; path = "Target Support Files/Pods-Shopify-ShopifyUITests/Pods-Shopify-ShopifyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7F0E92932A4E1DC1DA7C5F6 /* Pods_Shopify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shopify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5567AAA2D6C756400B9B586 /* Shopify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Shopify.xcodeproj; sourceTree = "<group>"; };
+		F5582C822D6DD36A00BDF6A0 /* Shopify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Shopify.xcodeproj; sourceTree = "<group>"; };
 		F5D4DEDD2D58ECC70038A233 /* Shopify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D4DEF62D58ECC90038A233 /* ShopifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D4DF002D58ECC90038A233 /* ShopifyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopifyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +139,13 @@
 			sourceTree = "<group>";
 		};
 		F5567AAB2D6C756400B9B586 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F5582C832D6DD36A00BDF6A0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -277,6 +285,10 @@
 			productRefGroup = F5D4DEDE2D58ECC70038A233 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = F5582C832D6DD36A00BDF6A0 /* Products */;
+					ProjectRef = F5582C822D6DD36A00BDF6A0 /* Shopify.xcodeproj */;
+				},
 				{
 					ProductGroup = F5567AAB2D6C756400B9B586 /* Products */;
 					ProjectRef = F5567AAA2D6C756400B9B586 /* Shopify.xcodeproj */;
