@@ -110,16 +110,9 @@ class CustomerViewController: UIViewController {
                 print("   ID: \(customer.id ?? "N/A")")
                 print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
                 print("   Email: \(customer.email ?? "N/A")")
-
-                // Navigate to Login
-                let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
-                if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
-                    loginVC.customerId = customer.id ?? ""
-                    loginVC.customerName = "\(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")"
-                    loginVC.customerEmail = "\(customer.email ?? "N/A")"
-                  //  self.navigationController?.pushViewController(loginVC, animated: true)
-                    self.showLoginAlert()
-                }
+                
+                self.showLoginAlert()
+                
             }
         }
 

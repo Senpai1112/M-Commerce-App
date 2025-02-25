@@ -110,6 +110,23 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
         if let cartID = UserDefaults.standard.string(forKey: "cartID") {
             print("Retrieved Cart ID: \(cartID)")
         }
+        if let value = UserDefaults.standard.string(forKey: "accessToken") {
+            print("accessToken \(value) from user default")
+        }
+        if let valueId = UserDefaults.standard.string(forKey: "customerID") {
+            print("customerID from user default\(valueId)")
+        }
+        if let currencyCode = UserDefaults.standard.string(forKey: "currencyCode") {
+            print("currencyCode from user default\(currencyCode)")
+        }
+        let currencyValue = UserDefaults.standard.integer(forKey: "currencyValue")
+            print("currencyValue from user default\(currencyValue)")
+        if let customerName = UserDefaults.standard.string(forKey: "customerFirstName") {
+            print("name from user default\(customerName)")
+        }
+        if let customerEmail = UserDefaults.standard.string(forKey: "customerEmail") {
+            print("mail from user default\(customerEmail)")
+        }
         
         setupHierarchy()
         setupComponents()

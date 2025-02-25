@@ -8,12 +8,9 @@
 import UIKit
 
 class LoginCustomerViewController: UIViewController {
-    var customerId : String = ""
-    var customerEmail : String = ""
-    var customerName : String = ""
     private let authViewModel = AuthViewModel()
     var newCartViewModel = NewCartViewModel()
-
+    var customerDetailsViewModel = CustomerDetailsViewModel()
     
     override func viewDidLoad() {
         
@@ -35,14 +32,12 @@ class LoginCustomerViewController: UIViewController {
                 
                 // Save the value
                 UserDefaults.standard.set(accessToken.accessToken, forKey: "accessToken")
-                UserDefaults.standard.set(self.customerId, forKey: "customerID")
                 UserDefaults.standard.set("SUMMER30", forKey: "SUMMER30")
                 UserDefaults.standard.set("WINTER30", forKey: "WINTER30")
-                UserDefaults.standard.set(self.customerName, forKey: "customerName")
-                UserDefaults.standard.set(self.customerEmail, forKey: "customerEmail")
 
                 if let accessToken = accessToken.accessToken {
                                     self.newCartViewModel.createCart(customerAccessToken: accessToken)
+                    self.customerDetailsViewModel.getCustomerDetails(customerAccessToken: accessToken)
                                 }
                 let tabBarController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "homeTabBar") as! UITabBarController
                     
@@ -75,6 +70,17 @@ class LoginCustomerViewController: UIViewController {
                         print( "Cart Creation Error  \(errorMessage)")
                     }
                 }
+        customerDetailsViewModel.bindResultToPaymentMethod = {
+            
+                let customerDetails = self.customerDetailsViewModel.customerDetails
+                print("Customer Details: \(customerDetails)")
+            UserDefaults.standard.set(customerDetails.id, forKey: "customerID")
+            UserDefaults.standard.set(customerDetails.firstName, forKey: "customerFirstName")
+            UserDefaults.standard.set(customerDetails.lastName, forKey: "customerLastName")
+            UserDefaults.standard.set(customerDetails.email, forKey: "customerEmail")
+            
+            
+        }
     }
     
     
