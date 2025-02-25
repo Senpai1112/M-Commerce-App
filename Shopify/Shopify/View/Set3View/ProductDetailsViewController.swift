@@ -140,13 +140,7 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //        let favIsSelected = UserDefaults.standard.bool(forKey: "\((id) ?? "")")
-        //        favoriteButton.isSelected = favIsSelected
-        //        if favIsSelected {
-        //            favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        //        } else {
-        //            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        //        }
+        
         checkIfFavorite()
     }
     
@@ -158,21 +152,7 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
     
     // MARK: - Helper Methods
     func checkIfFavorite() {
-        //        guard let product = product else { return }
-        //
-        //        let favoriteProducts = CoreDataManager.fetchFromCoreData()
-        //
-        //        for favorite in favoriteProducts {
-        //            if favorite.productId == product.id {
-        //                favoriteButton.isSelected = true
-        //                favoriteButton.setImage(UIImage(named: "favoriteRed"), for: .normal)
-        //                return
-        //            }
-        //        }
-        //
-        //        favoriteButton.isSelected = false
-        //        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        guard let product = product else { return }
+              guard let product = product else { return }
         
         let favoriteProducts = CoreDataManager.fetchFromCoreData()
         
@@ -283,13 +263,20 @@ class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIP
             print("Error: \(errorMessage)")
         }
     }
-    
+    func mapCost(amount: String?, currencyCode: String?) -> Double? {
+            guard let amount = amount else { return nil }
+            let doubleCost = (Double(amount) ?? 0.0) * UserDefaults.standard.double(forKey: "currencyValue")
+            let formattedPrice = (doubleCost * 100).rounded() / 100
+            return formattedPrice
+        }
     private func updateUI(with product: Product) {
         self.product = product
         titleLabel.text = product.title
        // priceLabel.text = "\(product.price) \(product.currecy)"
         if let firstVariant = product.variants.first {
                     priceLabel.text = "\(firstVariant.price.amount) \(firstVariant.price.currencyCode)"
+            priceLabel.text = "\(mapCost(amount: firstVariant.price.amount, currencyCode: firstVariant.price.currencyCode) ?? 0.0) \(UserDefaults.standard.string(forKey: "currencyCode") ?? "")"
+
                 }
         descriptionLabel.text = product.description
         
