@@ -8,9 +8,6 @@
 import UIKit
 import SDWebImage
 
-protocol CarouselDelegate: AnyObject {
-    func updateIndicator(selectedIndex: Int)
-}
 
 class Carousel: UIView {
    // private lazy
@@ -21,7 +18,6 @@ class Carousel: UIView {
     
     var urls: [URL] = []
     var selectedIndex: Int = 0
-    weak var delegate: CarouselDelegate?
  //   private var timer: Timer?
     
     public init(frame: CGRect, urls: [URL]) {
@@ -61,31 +57,15 @@ class Carousel: UIView {
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor)
         ])
         
-      //  scheduleTimerIfNeeded()
     }
     func updateImages(with newUrls: [URL]) {
-        self.urls = newUrls // ✅ Update the data source
+        self.urls = newUrls
         DispatchQueue.main.async {
-            self.collectionView.reloadData() // ✅ Ensure UI updates immediately
+            self.collectionView.reloadData() 
         }
     }
 
-    
-//    deinit {
-//        timer?.invalidate()
-//    }
-    
-//    private func scheduleTimerIfNeeded() {
-//        guard urls.count > 1 else { return }
-//        timer?.invalidate()
-//        timer = Timer.scheduledTimer(
-//            withTimeInterval: 3.0,
-//            repeats: true,
-//            block: { [weak self] _ in
-//                self?.selectNext()
-//            }
-//        )
-//    }
+
     
     private func selectNext() {
         selectItem(at: selectedIndex + 1)

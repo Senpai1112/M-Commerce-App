@@ -7,7 +7,7 @@
 import UIKit
 import MyApi
 
-class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPickerViewDelegate, UIPickerViewDataSource ,UIScrollViewDelegate{
+class ProductDetailsViewController: UIViewController , UIPickerViewDelegate, UIPickerViewDataSource ,UIScrollViewDelegate{
     
     // MARK: - Properties
     var viewModel = ProductDetailsViewModel()
@@ -22,7 +22,6 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
     // UI Components
     lazy var carousel = Carousel(frame: .zero, urls: urls)
     let imageIndicatorStackView = UIStackView()
-    var indicatorViews: [UIView] = []
     let variantPicker = UIPickerView()
     
     // Description and Rating Section
@@ -115,8 +114,6 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         setupHierarchy()
         setupComponents()
         setupConstraints()
-        setupIndicator()
-        carousel.delegate = self
         variantPicker.delegate = self
         variantPicker.dataSource = self
         scrollView.delegate = self
@@ -360,7 +357,6 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
         ratingStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
         variantPicker.translatesAutoresizingMaskIntoConstraints = false
-        
         titleLabel.text = "ASICS Tiger | GEL-LYTE V '30 YEARS OF GEL' PACK"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.textColor = .black
@@ -610,31 +606,14 @@ class ProductDetailsViewController: UIViewController, CarouselDelegate , UIPicke
                favoriteButton.heightAnchor.constraint(equalToConstant: 50)
            ])
            buttonsStackView.distribution = .fill
+        variantPicker.frame = CGRect(x: 0, y: 400, width: self.view.frame.width, height: 200)
+
        }
-    func setupIndicator() {
-        for _ in urls {
-            let indicatorDot = createIndicatorDot()
-            indicatorViews.append(indicatorDot)
-            imageIndicatorStackView.addArrangedSubview(indicatorDot)
-        }
-        updateIndicator(selectedIndex: 0)
-    }
+
     
-    func createIndicatorDot() -> UIView {
-        let dot = UIView()
-        dot.layer.cornerRadius = 4
-        dot.backgroundColor = .lightGray
-        dot.translatesAutoresizingMaskIntoConstraints = false
-        dot.heightAnchor.constraint(equalToConstant: 8).isActive = true
-        dot.widthAnchor.constraint(equalToConstant: 8).isActive = true
-        return dot
-    }
+
     
-    func updateIndicator(selectedIndex: Int) {
-        for (index, dot) in indicatorViews.enumerated() {
-            dot.backgroundColor = (index == selectedIndex) ? .darkGray : .lightGray
-        }
-    }
+
     
     func createRatingStars(rating: Int) -> UIStackView {
         let ratingStackView = UIStackView()
