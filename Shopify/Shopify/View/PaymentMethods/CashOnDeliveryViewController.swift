@@ -108,6 +108,9 @@ class CashOnDeliveryViewController: UIViewController {
         }
         orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
         cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
+        SendOrderWithApi.fetchOrderAndSendEmail(shopifyAccessToken: customerAccessToken, completion: {
+            _ in
+        })
         UserDefaults.standard.set("", forKey: selectedDiscountCopon)
         
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
