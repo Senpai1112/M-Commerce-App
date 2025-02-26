@@ -107,8 +107,11 @@ class CashOnDeliveryViewController: UIViewController {
             ids.append(id)
             lineItems.append(LineItem(variant_id: intVariantId, quantity: quantaty))
         }
-        orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
+        orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!, discountCodes: [CoponCodes(code: UserDefaults.standard.string(forKey: "selectedDiscountCopon") ?? "", amount: "50", type: "percentage")])
         cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
+        sendEmailViewModel.bindMailResult = {[weak self] in
+            print(self?.sendEmailViewModel.mailResult ?? "nothing here")
+        }
         orderViewModel.bindLoadingToCashOnDelivery = {[weak self] in
             if self?.orderViewModel.isLoading == true{
                 print("Still loading")
@@ -116,36 +119,15 @@ class CashOnDeliveryViewController: UIViewController {
                 self?.sendEmailViewModel.sendMailForCustomer(customerAccessToken: self?.customerAccessToken ?? "", customerDetails: self?.customerDetails ?? CustomerDetails(), address: self?.address ?? Addresses() ,newPrice: self?.grandTotal.text ?? "0.0")
             }
         }
-        
-        sendEmailViewModel.bindMailResult = {[weak self] in
-            print(self?.sendEmailViewModel.mailResult ?? "nothing here")
-        }
-//        SendOrderWithApi.fetchOrderAndSendEmail(shopifyAccessToken: customerAccessToken) { result in
-//                switch result {
-//                case .success:
-//                    print("✅ Email sent successfully")
-//                case .failure(let error):
-//                    print("❌ Failed to send email: \(error)")
-//                }
-//            }
         UserDefaults.standard.set("", forKey: selectedDiscountCopon)
         
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
-            /*if let navigationController = self?.navigationController {
-                let viewControllers = navigationController.viewControllers
-                if viewControllers.count >= 6 {
-                    navigationController.popToViewController(viewControllers[viewControllers.count - 6], animated: true)
-                }
-                if let tabBarController = self?.view.window?.rootViewController as? UITabBarController {
-                    tabBarController.selectedIndex = 0 // Change to the tab index you want
-                    navigationController.popToRootViewController(animated: true)
-                }
-            }
-            */
             if let navigationController = self?.navigationController {
-                        navigationController.popToRootViewController(animated: true)
-                    }
+                let viewControllers = navigationController.viewControllers
+                let targetIndex = max(0, viewControllers.count - 6) // Go back 4 times
+                navigationController.popToViewController(viewControllers[targetIndex], animated: true)
+            }
         })
         self.present(alert, animated: true)
     }
