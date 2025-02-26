@@ -313,8 +313,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = F5567AAB2D6C756400B9B586 /* Products */;
-					ProjectRef = F5567AAA2D6C756400B9B586 /* Shopify.xcodeproj */;
+					ProductGroup = F5CD33762D6E176000507953 /* Products */;
+					ProjectRef = F5CD33752D6E176000507953 /* Shopify.xcodeproj */;
 				},
 				{
 					ProductGroup = F515BE362D6DDC16007B3BDF /* Products */;
@@ -325,8 +325,8 @@
 					ProjectRef = F5582C822D6DD36A00BDF6A0 /* Shopify.xcodeproj */;
 				},
 				{
-					ProductGroup = F5CD33762D6E176000507953 /* Products */;
-					ProjectRef = F5CD33752D6E176000507953 /* Shopify.xcodeproj */;
+					ProductGroup = F5567AAB2D6C756400B9B586 /* Products */;
+					ProjectRef = F5567AAA2D6C756400B9B586 /* Shopify.xcodeproj */;
 				},
 			);
 			projectRoot = "";
