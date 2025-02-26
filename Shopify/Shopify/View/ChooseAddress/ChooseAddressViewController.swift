@@ -30,6 +30,7 @@ class ChooseAddressViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Choose Address"
+        setupRightButt()
         addressDetailsViewModel.bindResultToAddressDetailsTableViewController = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 self?.activityIndicator.stopAnimating()
@@ -43,6 +44,9 @@ class ChooseAddressViewController: UIViewController {
         }
         addressDetailsViewModel.getAddressesFromModel(customerAccessToken: customerAccessToken)
     }
+    func setupRightButt(){
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "location"), style: .done, target: self, action: #selector(addLocationTapped))
+        }
     
     func addBackgroundImage(named imageName: String) {
         let imageView = UIImageView(frame: CGRect(x:70 , y: 130, width: 250, height: 500))
@@ -92,15 +96,12 @@ class ChooseAddressViewController: UIViewController {
             
         }
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    
+    @objc func addLocationTapped(){
+        let storyBoard = UIStoryboard(name: "Set2", bundle: nil)
+        let viewController = storyBoard.instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
     
 }
 
