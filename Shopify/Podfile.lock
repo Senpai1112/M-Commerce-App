@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.10.2)
   - Braintree (6.28.0):
     - Braintree/Card (= 6.28.0)
     - Braintree/Core (= 6.28.0)
@@ -15,14 +16,15 @@ PODS:
     - Braintree/Core
     - Braintree/PayPal
     - PayPalCheckout (= 1.3.0)
-  - Kingfisher (8.1.3)
+  - Kingfisher (8.2.0)
   - lottie-ios (4.5.1)
   - PayPalCheckout (1.3.0)
-  - SDWebImage (5.20.0):
-    - SDWebImage/Core (= 5.20.0)
-  - SDWebImage/Core (5.20.0)
+  - SDWebImage (5.21.0):
+    - SDWebImage/Core (= 5.21.0)
+  - SDWebImage/Core (5.21.0)
 
 DEPENDENCIES:
+  - Alamofire
   - Braintree
   - Braintree/PayPalNativeCheckout
   - Kingfisher
@@ -31,6 +33,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - Braintree
     - Kingfisher
     - lottie-ios
@@ -38,12 +41,13 @@ SPEC REPOS:
     - SDWebImage
 
 SPEC CHECKSUMS:
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   Braintree: 9232afa45c944e7d66bd760aabcd0344c902b744
-  Kingfisher: f2af9028b16baf9dc6c07c570072bc41cbf009ef
+  Kingfisher: 323e5c4ec7983aaace12af655a7b51a7f88a599d
   lottie-ios: 248b380fa1b97d18e792c37d90da7ab2aa0d6562
   PayPalCheckout: 06cb1e4f5bfdca33b8eb6052d04ac4e4a4ab512c
-  SDWebImage: 73c6079366fea25fa4bb9640d5fb58f0893facd8
+  SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
 
-PODFILE CHECKSUM: 39b7c9619b608a06242b9741bd30dde860f4c86a
+PODFILE CHECKSUM: 26f223d6510676590adbef4206ae7fa72959a571
 
 COCOAPODS: 1.16.2

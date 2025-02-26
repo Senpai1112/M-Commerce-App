@@ -30,10 +30,23 @@ class OrdersViewModel {
                     
                     self?.finalResult = ordersEdges.map { edge in
                         let order = edge.node
+                        let items = order.lineItems.edges.map { itemEdge in
+                            let item = itemEdge.node
+                            return OrderItem(
+                                title: item.title,
+                                quantity: item.quantity,
+                                variant: item.variant?.title,
+                                image: item.variant?.image?.src,
+                                price: self?.mapCost(amount: item.originalTotalPrice.amount, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "") ?? 0.0,
+                                currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? ""
+                            )
+
+                        }
                         return Orders(
-                            price: self?.mapCost(amount: order.originalTotalPrice.amount, currencyCode: order.originalTotalPrice.currencyCode.rawValue) ?? 0.0,
-                            currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "USD",
-                            processedAt: order.processedAt
+                            id: order.id,
+                            lineItems: items, price: self?.mapCost(amount: order.originalTotalPrice.amount, currencyCode:  UserDefaults.standard.string(forKey: "currencyCode") ?? "") ?? 0.0,
+                            currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "",
+                            processedAt: order.processedAt, email: order.email, address: order.shippingAddress?.address1, phone: order.shippingAddress?.phone
                         )
                     }
                 }
@@ -46,3 +59,5 @@ class OrdersViewModel {
         
     }
 }
+
+   

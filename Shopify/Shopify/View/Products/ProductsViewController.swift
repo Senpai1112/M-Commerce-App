@@ -50,6 +50,9 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         let emptyStateNib = UINib(nibName: "EmptyStateView", bundle: nil)
               emptyStateView = emptyStateNib.instantiate(withOwner: nil, options: nil).first as? UIView
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
     
     func updateEmptyState() {
             if filteredProducts.isEmpty {
@@ -221,12 +224,26 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
                     CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price ?? 0)", productImage: product.image ?? "", productId: product.id ?? "")
                     UserDefaults.standard.set(true, forKey: "\(product.id ?? "")")
                 } else {
-                    cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                    cell.favButton.tintColor = .white
+                    let alert = UIAlertController(title: "Delete", message: "Are you sure about deletion?", preferredStyle: .alert)
                     
-                    // Delete from Core Data and update UserDefaults
-                    CoreDataManager.deleteFromCoreData(productId: product.id ?? "")
-                    UserDefaults.standard.set(false, forKey: "\(product.id ?? "")")
+                    //AddAction
+                    alert.addAction(UIAlertAction(title: "OK", style: .default , handler: { [self] action in
+                        cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                        cell.favButton.tintColor = .white
+                        
+                        // Delete from Core Data and update UserDefaults
+                        CoreDataManager.deleteFromCoreData(productId: product.id ?? "")
+                        UserDefaults.standard.set(false, forKey: "\(product.id ?? "")")
+                    }))
+                    
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel , handler: { action in
+                    }))
+                    
+
+                    //showAlert
+                    self.present(alert, animated: true) {
+                    }
+                   
                 }
             }
         } else {
@@ -280,7 +297,7 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         ()
     }
     func showLoginAlert() {
-            let alert = UIAlertController(title: "Alert", message: "You must log in to do this action.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Login Required", message: "Please log in to do this action.", preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController

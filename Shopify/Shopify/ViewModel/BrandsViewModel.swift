@@ -36,7 +36,7 @@ class BrandsViewModel {
                             return ProductModel(id: product.id, price: self?.mapCost(
                                 amount: product.priceRange.maxVariantPrice.amount,
                                 currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue
-                            ) ?? 0.0, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "USD", image: product.featuredImage?.url,title: product.title,vendor: product.vendor)}
+                            ) ?? 0.0, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "", image: product.featuredImage?.url,title: product.title,vendor: product.vendor)}
                         
                         return BrandModel(title: collection.title, image: collection.image?.url, products: products)
                     }

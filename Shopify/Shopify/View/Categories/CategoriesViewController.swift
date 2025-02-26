@@ -17,7 +17,8 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
        @IBOutlet weak var firstFilter: UISegmentedControl!
        @IBOutlet weak var secFilter: UISegmentedControl!
 
-    
+    var activityIndicator: UIActivityIndicatorView!
+
     var searchBar: UISearchBar?
     var emptyStateView: UIView?
 
@@ -30,6 +31,16 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         emptyState ()
         
     }
+    func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+
     func updateEmptyState() {
             if viewModel.finalResult.isEmpty {
                 emptyStateView?.isHidden = false
@@ -53,44 +64,61 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.title = "Category"
-
+        super.viewWillAppear(animated)
+        
         CategoriesProductcollection.reloadData()
-
+        setupActivityIndicator()
         setupNavigationBarIcons()
         setupLeftBarButt()
+        
         viewModel = ProductViewModel()
-        viewModel.bindProductsToViewController = {
+        activityIndicator.startAnimating()
+        
+        viewModel.bindProductsToViewController = { [weak self] in
             DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                self.activityIndicator.stopAnimating()
+                
                 self.CategoriesProductcollection.reloadData()
                 self.updateEmptyState()
-
             }
         }
         
         setQuery()
     }
     
-    func setupNavigationBarIcons() {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        
-        let searchButt = UIButton(type: .system)
-        setUpNavBarBtn(button: searchButt, systemName: "magnifyingglass", selector: #selector(searchTapped))
-        
-        let butt2 = UIButton(type: .system)
-        setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
-        
-        stackView.addArrangedSubview(searchButt)
-        stackView.addArrangedSubview(butt2)
-        
-        let barButtonItem = UIBarButtonItem(customView: stackView)
-        tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
-    }
+
     
+    func setupNavigationBarIcons() {
+            let stackView = UIStackView()
+            stackView.axis = .horizontal
+            stackView.spacing = 10
+            stackView.distribution = .equalSpacing
+            
+           
+            let butt2 = UIButton(type: .system)
+            setUpNavBarBtn(button: butt2, systemName: "heart", selector: #selector(favTapped))
+            
+            let butt3 = UIButton(type: .system)
+            setUpNavBarBtn(button: butt3, systemName: "cart", selector: #selector(cartTapped))
+            
+            stackView.addArrangedSubview(butt3)
+            stackView.addArrangedSubview(butt2)
+
+            let barButtonItem = UIBarButtonItem(customView: stackView)
+            tabBarController?.navigationItem.rightBarButtonItem = barButtonItem
+        }
+        
+        @objc func cartTapped() {
+            if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+                let storyBord = UIStoryboard(name: "Set2", bundle: nil)
+                let cartVc = storyBord.instantiateViewController(withIdentifier: "ShoppingCartViewController") as! ShoppingCartViewController
+                navigationController?.pushViewController(cartVc, animated: true)
+            } else {
+                showLoginAlert()
+            }
+        }
     @objc func searchTapped() {
         showSearchBar()
     }
@@ -105,7 +133,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
             }
     }
     func showLoginAlert() {
-            let alert = UIAlertController(title: "Alert", message: "You must log in to access this page.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Login Required", message: "Please log in to access this page.", preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
@@ -124,8 +152,8 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         searchBar?.delegate = self
         searchBar?.searchTextField.backgroundColor = .white
         searchBar?.showsCancelButton = true
-        
-        self.tabBarController?.navigationItem.leftBarButtonItem = nil
+        self.tabBarController?.navigationItem.rightBarButtonItem = nil
+           self.tabBarController?.navigationItem.leftBarButtonItem = nil
         self.tabBarController?.navigationItem.titleView = searchBar
     }
     
@@ -135,24 +163,31 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     func hideSearchBar() {
         self.tabBarController?.navigationItem.titleView = nil
-        self.tabBarController?.title = "Category"
+        let titleLabel = UILabel()
+            titleLabel.text = "Cartique"
+            titleLabel.textColor = .white
+            titleLabel.font = .boldSystemFont(ofSize: 25)
+            
+            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
+                titleLabel.font = customFont
+            }
+            
+            titleLabel.layer.shadowColor = UIColor.black.cgColor
+            titleLabel.layer.shadowOffset = CGSize(width: 1, height: 2)
+            titleLabel.layer.shadowOpacity = 0.4
+
+        self.tabBarController?.navigationItem.titleView = titleLabel
+        setupNavigationBarIcons()
         setupLeftBarButt()
     }
     
     func setupLeftBarButt() {
-            let storeName = UILabel()
-            storeName.text = "Shopify"
-            storeName.textColor = .white
-            storeName.font = .boldSystemFont(ofSize: 22)
-            
-            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
-                storeName.font = customFont
-            }
-            storeName.layer.shadowColor = UIColor.black.cgColor
-            storeName.layer.shadowOffset = CGSize(width: 1, height: 2)
-            storeName.layer.shadowOpacity = 0.4
-          tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: storeName)
-        }
+        let searchButt = UIButton(type: .system)
+        setUpNavBarBtn(button: searchButt, systemName: "magnifyingglass", selector: #selector(searchTapped))
+        
+        let barButtonItem = UIBarButtonItem(customView: searchButt)
+        self.tabBarController?.navigationItem.leftBarButtonItem = barButtonItem
+    }
     func setUpNavBarBtn(button: UIButton, systemName: String, selector: Selector) {
         if let icon = UIImage(systemName: systemName) {
             button.setImage(icon, for: .normal)
@@ -244,12 +279,26 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
                     CoreDataManager.saveProductToCoreData(productName: product.title ?? "", productPrice: "\(product.price ?? 0)", productImage: product.image ?? "", productId: product.id ?? "")
                     UserDefaults.standard.set(true, forKey: "\(product.id ?? "")")
                 } else {
-                    cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                    cell.favButton.tintColor = .white
+                    let alert = UIAlertController(title: "Delete", message: "Are you sure about deletion?", preferredStyle: .alert)
                     
-                    // Delete from Core Data and update UserDefaults
-                    CoreDataManager.deleteFromCoreData(productId: product.id ?? "")
-                    UserDefaults.standard.set(false, forKey: "\(product.id ?? "")")
+                    //AddAction
+                    alert.addAction(UIAlertAction(title: "OK", style: .default , handler: { [self] action in
+                        cell.favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                        cell.favButton.tintColor = .white
+                        
+                        // Delete from Core Data and update UserDefaults
+                        CoreDataManager.deleteFromCoreData(productId: product.id ?? "")
+                        UserDefaults.standard.set(false, forKey: "\(product.id ?? "")")
+                    }))
+                    
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel , handler: { action in
+                    }))
+                    
+
+                    //showAlert
+                    self.present(alert, animated: true) {
+                    }
+                    
                 }
             }
         } else {

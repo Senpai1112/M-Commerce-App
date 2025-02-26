@@ -11,7 +11,7 @@ import MyApi
 import SDWebImage
 import Combine
 
-class CartSummaryViewController: UIViewController {
+class CartSummaryViewController: UIViewController ,UITextFieldDelegate {
     
     var address = Addresses()
     
@@ -34,8 +34,8 @@ class CartSummaryViewController: UIViewController {
     var cartId : String {
         return UserDefaults.standard.string(forKey: "cartID") ?? ""
     }
-    var discoundCopons : [String] {
-        return [UserDefaults.standard.string(forKey: "SUMMER30") ?? "" , UserDefaults.standard.string(forKey: "WINTER30") ?? ""]
+    var discoundCopons : String {
+        return UserDefaults.standard.string(forKey: "50OFF") ?? ""
     }
     var selectedDiscoundCopon = ""
     var newPrice = ""
@@ -53,6 +53,7 @@ class CartSummaryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Shopping Cart Summary"
+        discoundCopon.delegate = self
         self.cartViewModel.bindResultToShoppingCartTableViewController = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -68,23 +69,17 @@ class CartSummaryViewController: UIViewController {
         }
         cartViewModel.getCartFromModel(cartID: cartId)
     }
-    
     private func setupTextFieldPublisher() {
         let publisher = NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: discoundCopon)
             
             cancellable = publisher
                 .map { ($0.object as? UITextField)?.text ?? "" }
                 .sink { [weak self] newText in
-                    if newText == self?.discoundCopons[0] && self?.discoundCopons[0] != ""{
+                    if newText == self?.discoundCopons && self?.discoundCopons != ""{
                         self?.validationLabel.text = "Valid"
                         self?.validationLabel.textColor = UIColor.red
                         self?.performDiscount()
-                        self?.selectedDiscoundCopon = (self?.discoundCopons[0])!
-                    }else if newText == self?.discoundCopons[1] && self?.discoundCopons[1] != ""{
-                        self?.validationLabel.text = "Valid"
-                        self?.validationLabel.textColor = UIColor.red
-                        self?.performDiscount()
-                        self?.selectedDiscoundCopon = (self?.discoundCopons[1])!
+                        self?.selectedDiscoundCopon = (self?.discoundCopons)!
                     }else{
                         self?.validationLabel.text = "Not Valid"
                         self?.discount.text = "No Discount"
@@ -100,12 +95,16 @@ class CartSummaryViewController: UIViewController {
         }
     func performDiscount(){
         let doublePrice = Double(totalPriceOfProducts.text ?? "0.0")
-        let discountPrice = doublePrice! * 70 / 100
-        let discountAmount = doublePrice! * 30 / 100
+        let discountPrice = doublePrice! * 50 / 100
+        let discountAmount = doublePrice! * 50 / 100
         discount.text = "\((discountAmount * 100).rounded() / 100)"
         totalPriceOfProducts.text = "\((discountPrice * 100).rounded() / 100)"
         newPrice = "\((discountPrice * 100).rounded() / 100)"
     }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder() // Dismiss keyboard
+            return true
+        }
     func initNib(){
         tableView.dataSource = self
         tableView.delegate = self

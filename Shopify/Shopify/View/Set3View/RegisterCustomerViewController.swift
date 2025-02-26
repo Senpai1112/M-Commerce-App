@@ -11,45 +11,28 @@ import FirebaseAuth
 class CustomerViewController: UIViewController {
 ///
     private let viewModel = CustomerViewModel()
-    
+    var activityIndicator: UIActivityIndicatorView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         print("Loading from CustomerRegisterViewController")
+        setupActivityIndicator()
        // setupViewModelObservers()
        // testCreateCustomer()
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
     
-//    @objc private func registerButtonTapped() {
-//        
-//        testCreateCustomer()
-//        
-//        viewModel.onCustomerCreated = { customer in
-//            DispatchQueue.main.async {
-//                print(" Customer Created Successfully:")
-//                print("   ID: \(customer.id ?? "N/A")")
-//                print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
-//                print("   Email: \(customer.email ?? "N/A")")
-//
-//               //navigate to login
-//                let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
-//                if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
-//                    loginVC.customerId = customer.id ?? ""
-//                    self.navigationController?.pushViewController(loginVC, animated: true)
-//                }
-//                
-//            }
-//        }
-//
-//        viewModel.onError = { errorMessage in
-//            DispatchQueue.main.async {
-//                print(" Error Creating Customer: \(errorMessage)")
-//                self.showAlert(title: "Error", message: "\(errorMessage) \n Please try again.")
-//            }
-//        }
-//     
-//    }
+    func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
     @objc private func registerButtonTapped() {
+        activityIndicator.startAnimating()
         guard let email = emailTextField.text, !email.isEmpty,
                  let password = passwordTextField.text, !password.isEmpty else {
                showAlert(title: "Error", message: "Please enter a valid email and password.")
@@ -77,6 +60,7 @@ class CustomerViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     self.showAlert(title: "Verification Required", message: "A verification email has been sent to \(email). Please verify your email before proceeding.")
+                    self.activityIndicator.stopAnimating()
                 }
                 
                 self.checkEmailVerification(user: user)
@@ -110,13 +94,9 @@ class CustomerViewController: UIViewController {
                 print("   ID: \(customer.id ?? "N/A")")
                 print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
                 print("   Email: \(customer.email ?? "N/A")")
-
-                // Navigate to Login
-                let storyBoard = UIStoryboard(name: "Set3", bundle: nil)
-                if let loginVC = storyBoard.instantiateViewController(withIdentifier: "loginVC") as? LoginCustomerViewController {
-                    loginVC.customerId = customer.id ?? ""
-                    self.navigationController?.pushViewController(loginVC, animated: true)
-                }
+                self.activityIndicator.stopAnimating()
+                self.showLoginAlert()
+                
             }
         }
 
@@ -136,26 +116,20 @@ class CustomerViewController: UIViewController {
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }
+    func showLoginAlert() {
+            let alert = UIAlertController(title: "Login Required", message: "Email Verified Thanks! Please Log In", preferredStyle: .alert)
+            let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
+                let storyBord = UIStoryboard(name: "Set3", bundle: nil)
+                let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
+                self.navigationController?.pushViewController(loginVC, animated: true)        }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(loginAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
     
-//    private func setupViewModelObservers() {
-//        viewModel.onCustomerCreated = { customer in
-//            DispatchQueue.main.async {
-//                print(" Customer Created Successfully:")
-//                print("   ID: \(customer.id ?? "N/A")")
-//                print("   Name: \(customer.firstName ?? "N/A") \(customer.lastName ?? "N/A")")
-//                print("   Email: \(customer.email ?? "N/A")")
-//                
-//               //navigate to login
-//            }
-//        }
-//
-//        viewModel.onError = { errorMessage in
-//            DispatchQueue.main.async {
-//                print(" Error Creating Customer: \(errorMessage)")
-//                self.showAlert(title: "Error", message: "\(errorMessage) \n Please try another email.")
-//            }
-//        }
-//    }
     
     private func testCreateCustomer() {
         let testCustomerId = "123456"  // dummy
@@ -220,14 +194,11 @@ class CustomerViewController: UIViewController {
        
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Login", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.purple
-        button.layer.cornerRadius = 10
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowRadius = 5
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+      //  button.setTitle("Already have account? Click to Login", for: .normal)
+        let normalText = "Already have account? Click to Login"
+        let attributedString = NSMutableAttributedString(string: normalText)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 21)) // "Click"
+        button.setAttributedTitle(attributedString, for: .normal)
         button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         return button
     }()

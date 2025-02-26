@@ -6,15 +6,13 @@
 //
 
 import UIKit
+import Firebase
+
 
 class CashOnDeliveryViewController: UIViewController {
     
-    @IBOutlet weak var subTotal: UILabel!
-    
-    @IBOutlet weak var shippingFees: UILabel!
-    
-    
     @IBOutlet weak var grandTotal: UILabel!
+        
     
     @IBOutlet weak var placeOrder: UIButton!
     
@@ -30,9 +28,6 @@ class CashOnDeliveryViewController: UIViewController {
     
     @IBOutlet weak var phoneLabel: UILabel!
     
-    @IBOutlet weak var currencyCodeSubTotal: UILabel!
-    @IBOutlet weak var currencyCodeShippingFees: UILabel!
-    
     @IBOutlet weak var currencyCodeGrandTotal: UILabel!
     
     var selectedDiscountCopon = ""
@@ -42,6 +37,7 @@ class CashOnDeliveryViewController: UIViewController {
     
     let orderViewModel = OrderViewModel()
     let cartViewModel = CartViewModel()
+    let sendEmailViewModel = SendEmailViewModel()
     
     var newPrice = ""
     
@@ -63,29 +59,21 @@ class CashOnDeliveryViewController: UIViewController {
         updateUI()
     }
     func updateUI(){
-        subTotal.text = "\(newPrice)"
-        let doubleShippingFees = 30.0 * UserDefaults.standard.double(forKey: "currencyValue")
-        shippingFees.text = "\((doubleShippingFees * 100).rounded() / 100)"
-        
-        let doubleGrandTotal = (subTotal.text! as NSString).doubleValue + doubleShippingFees
-        
-        grandTotal.text = "\((doubleGrandTotal * 100).rounded() / 100)"
+        grandTotal.text = "\(newPrice)"
         nameLabel.text = customerDetails.firstName
         countryLabel.text = address.country
         address1Label.text = address.address1
         address2Label.text = address.address2
         cityLabel.text = address.city
         phoneLabel.text = address.phone
-        currencyCodeSubTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
         currencyCodeGrandTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
-        currencyCodeShippingFees.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {
         var lineItems = [LineItem]()
         var ids = [String]()
         guard let items = cartDetails.cart else { return }
-        guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country , let address2 = address.address2 else {
+        guard let address1 = address.address1, let phone = address.phone, let city = address.city, let country = address.country else {
             print("Address details are missing")
             return
         }
@@ -104,37 +92,27 @@ class CashOnDeliveryViewController: UIViewController {
             ids.append(id)
             lineItems.append(LineItem(variant_id: intVariantId, quantity: quantaty))
         }
-        orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
+        orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!, discountCodes: [CoponCodes(code: UserDefaults.standard.string(forKey: "selectedDiscountCopon") ?? "", amount: "50", type: "percentage")])
         cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
+        sendEmailViewModel.bindMailResult = {[weak self] in
+            print(self?.sendEmailViewModel.mailResult ?? "nothing here")
+        }
+        orderViewModel.bindLoadingToCashOnDelivery = {[weak self] in
+            if self?.orderViewModel.isLoading == true{
+                print("Still loading")
+            }else{
+                self?.sendEmailViewModel.sendMailForCustomer(customerAccessToken: self?.customerAccessToken ?? "", customerDetails: self?.customerDetails ?? CustomerDetails(), address: self?.address ?? Addresses() ,newPrice: self?.grandTotal.text ?? "0.0")
+            }
+        }
         UserDefaults.standard.set("", forKey: selectedDiscountCopon)
         
         let alert = UIAlertController(title: "Order Placed Successfully", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self]_ in
-            
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                          let sceneDelegate = windowScene.delegate as? SceneDelegate,
-                          let tabBarController = sceneDelegate.window?.rootViewController as? UITabBarController else {
-                        return
-                    }
-                    
-                    // Switch to Tab 0
-                    tabBarController.selectedIndex = 0
-                    
-                    // Pop to the root view controller of the selected tab
-                    if let navigationController = tabBarController.selectedViewController as? UINavigationController {
-                        navigationController.popToRootViewController(animated: true)
-                    }
-            /*if let navigationController = self?.navigationController {
-                /*let viewControllers = navigationController.viewControllers
-                if viewControllers.count >= 6 {
-                    navigationController.popToViewController(viewControllers[viewControllers.count - 6], animated: true)
-                }*/
-                if let tabBarController = self?.view.window?.rootViewController as? UITabBarController {
-                    tabBarController.selectedIndex = 0 // Change to the tab index you want
-                    navigationController.popToRootViewController(animated: true)
-                }
-            }*/
-            
+            if let navigationController = self?.navigationController {
+                let viewControllers = navigationController.viewControllers
+                let targetIndex = max(0, viewControllers.count - 6) // Go back 4 times
+                navigationController.popToViewController(viewControllers[targetIndex], animated: true)
+            }
         })
         self.present(alert, animated: true)
     }
@@ -158,5 +136,4 @@ class CashOnDeliveryViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
 }

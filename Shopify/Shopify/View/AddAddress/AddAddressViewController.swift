@@ -70,6 +70,10 @@ class AddAddressViewController: UIViewController {
         activityIndicator.hidesWhenStopped = true
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+
     @IBAction func addAddressButton(_ sender: UIButton) {
         let alert = UIAlertController(title: "You have to fill all fields", message: "", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })

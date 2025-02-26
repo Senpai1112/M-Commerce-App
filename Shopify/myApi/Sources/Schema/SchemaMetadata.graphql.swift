@@ -77,6 +77,9 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Order": return MyApi.Objects.Order
     case "OrderConnection": return MyApi.Objects.OrderConnection
     case "OrderEdge": return MyApi.Objects.OrderEdge
+    case "OrderLineItem": return MyApi.Objects.OrderLineItem
+    case "OrderLineItemConnection": return MyApi.Objects.OrderLineItemConnection
+    case "OrderLineItemEdge": return MyApi.Objects.OrderLineItemEdge
     case "Page": return MyApi.Objects.Page
     case "Product": return MyApi.Objects.Product
     case "ProductConnection": return MyApi.Objects.ProductConnection

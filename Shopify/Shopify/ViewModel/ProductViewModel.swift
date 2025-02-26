@@ -33,7 +33,7 @@ class ProductViewModel{
                         return ProductModel(id: product.id, price: self?.mapCost(
                             amount: product.priceRange.maxVariantPrice.amount,
                             currencyCode: product.priceRange.maxVariantPrice.currencyCode.rawValue
-                        ) ?? 0.0, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "USD",
+                        ) ?? 0.0, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "",
                                             image: product.featuredImage?.url,title: product.title,vendor: product.vendor)
                     }
                     

@@ -8,10 +8,10 @@
 import UIKit
 
 class LoginCustomerViewController: UIViewController {
-    var customerId : String = ""
     private let authViewModel = AuthViewModel()
     var newCartViewModel = NewCartViewModel()
-
+    var customerDetailsViewModel = CustomerDetailsViewModel()
+    var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         
@@ -19,13 +19,24 @@ class LoginCustomerViewController: UIViewController {
         
         print("Loading from LoginViewController")
         setupUI()
+        setupActivityIndicator()
 //        setupViewModelObservers()
 //        loginButtonTapped()
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
     
+    func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
     private func setupViewModelObservers() {
         authViewModel.onLoginSuccess = { accessToken in
             DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
                 print(" Customer Logged in Successfully!")
                 print("   Access Token: \(accessToken.accessToken ?? "N/A")")
                 
@@ -33,31 +44,21 @@ class LoginCustomerViewController: UIViewController {
                 
                 // Save the value
                 UserDefaults.standard.set(accessToken.accessToken, forKey: "accessToken")
-                UserDefaults.standard.set(self.customerId, forKey: "customerID")
-                UserDefaults.standard.set("SUMMER30", forKey: "SUMMER30")
-                UserDefaults.standard.set("WINTER30", forKey: "WINTER30")
+                UserDefaults.standard.set("50OFF", forKey: "50OFF")
 
                 if let accessToken = accessToken.accessToken {
                                     self.newCartViewModel.createCart(customerAccessToken: accessToken)
+                    self.customerDetailsViewModel.getCustomerDetails(customerAccessToken: accessToken)
                                 }
                 let tabBarController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "homeTabBar") as! UITabBarController
                     
               self.navigationController?.pushViewController(tabBarController, animated: true)
-                    // Present the TabBarController modally
-       //             self.present(tabBarController, animated: true, completion: nil)
-                
-//                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-//                if let homeVC = storyBoard.instantiateViewController(withIdentifier: "homeVC") as? HomeViewController {
-//                    self.navigationController?.pushViewController(homeVC, animated: true)
-     //           }
-                
-
-               
-            }
+                           }
         }
         
         authViewModel.onError = { errorMessage in
             DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
                 print("Error Logging In: \(errorMessage)")
                 self.showAlert(title: "Login Error", message:" \(errorMessage) email or password incorrect")
             }
@@ -71,13 +72,24 @@ class LoginCustomerViewController: UIViewController {
                         print( "Cart Creation Error  \(errorMessage)")
                     }
                 }
+        customerDetailsViewModel.bindResultToPaymentMethod = {
+            
+                let customerDetails = self.customerDetailsViewModel.customerDetails
+                print("Customer Details: \(customerDetails)")
+            UserDefaults.standard.set(customerDetails.id, forKey: "customerID")
+            UserDefaults.standard.set(customerDetails.firstName, forKey: "customerFirstName")
+            UserDefaults.standard.set(customerDetails.lastName, forKey: "customerLastName")
+            UserDefaults.standard.set(customerDetails.email, forKey: "customerEmail")
+            
+            
+        }
     }
     
     
     @objc private func loginButtonTapped() {
         let testEmail = emailTextField.text ?? ""
         let testPassword = passwordTextField.text ?? ""
-        
+        activityIndicator.startAnimating()
         print(" Testing Customer Login...")
         authViewModel.loginCustomer(email: testEmail, password: testPassword)
         
@@ -85,17 +97,22 @@ class LoginCustomerViewController: UIViewController {
         
         // Access the value
         if let value = UserDefaults.standard.string(forKey: "accessToken") {
-            print(value)
+            print("accessToken \(value) from user default")
         }
         if let valueId = UserDefaults.standard.string(forKey: "customerID") {
-            print("from user default\(valueId)")
+            print("customerID from user default\(valueId)")
         }
         if let currencyCode = UserDefaults.standard.string(forKey: "currencyCode") {
-            print("from user default\(currencyCode)")
+            print("currencyCode from user default\(currencyCode)")
         }
         let currencyValue = UserDefaults.standard.integer(forKey: "currencyValue")
-            print("from user default\(currencyValue)")
-        
+            print("currencyValue from user default\(currencyValue)")
+        if let customerName = UserDefaults.standard.string(forKey: "customerName") {
+            print("name from user default\(customerName)")
+        }
+        if let customerEmail = UserDefaults.standard.string(forKey: "customerEmail") {
+            print("mail from user default\(customerEmail)")
+        }
     }
     
     @objc private func goToRegister() {
@@ -155,14 +172,14 @@ class LoginCustomerViewController: UIViewController {
     
     private let registerButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Register", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.purple
-        button.layer.cornerRadius = 10
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowRadius = 5
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+       // button.setTitle("Don't have an account? Click to Register", for: .normal)
+        let normalText = "Don't have an account? Click to Register"
+                
+        let attributedString = NSMutableAttributedString(string: normalText)
+                
+        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 22)) // "Click"
+                
+        button.setAttributedTitle(attributedString, for: .normal)
         button.addTarget(self, action: #selector(goToRegister), for: .touchUpInside)
         return button
     }()
