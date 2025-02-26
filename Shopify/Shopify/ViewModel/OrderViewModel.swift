@@ -8,7 +8,7 @@ import Foundation
 
 class OrderViewModel: ObservableObject {
     var bindLoadingToCashOnDelivery :(()->()) = {}
-    var isLoading: Bool = false {
+    var isLoading: Bool = true {
         didSet {
             print("Loading state changed: \(isLoading)")
             bindLoadingToCashOnDelivery()
@@ -30,9 +30,10 @@ class OrderViewModel: ObservableObject {
         lineItems : [LineItem],
         billingAddress: Address,
         shippingAddress: Address,
-        transactionAmount: Double
+        transactionAmount: Double ,
+        discountCodes : [CoponCodes]
     ) {
-        isLoading = true
+        //isLoading = true
         errorMessage = nil
 
         let order = Order(
@@ -42,7 +43,7 @@ class OrderViewModel: ObservableObject {
             shipping_address: shippingAddress,
             email: email,
             transactions: [Transaction(kind: "authorization", status: "success", amount: transactionAmount)],
-            financial_status: "paid"
+            financial_status: "paid", discount_codes: discountCodes
         )
 
         let orderRequest = OrderRequest(order: order)

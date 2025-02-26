@@ -257,7 +257,7 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
                 ids.append(id)
                 lineItems.append(LineItem(variant_id: intVariantId, quantity: quantaty))
             }
-            orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!)
+            orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!, discountCodes: [CoponCodes(code: UserDefaults.standard.string(forKey: "selectedDiscountCopon") ?? "", amount: "50", type: "percentage")])
             cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
             orderViewModel.bindLoadingToCashOnDelivery = {[weak self] in
                 if self?.orderViewModel.isLoading == true{
