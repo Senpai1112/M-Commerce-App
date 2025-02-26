@@ -9,12 +9,12 @@ import Foundation
 
 extension String {
     func formattedDate() -> String {
-        let datee = DateFormatter()
-        datee.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        dateFormatter.timeZone = TimeZone(abbreviation: "EET")
+        guard let date = dateFormatter.date(from: self) else { return "Invalid Date" }
 
-        guard let date = datee.date(from: self) else { return "Invalid Date" }
-
-        datee.dateFormat = "MMM d, yyyy • h:mm a"
-        return datee.string(from: date)
+        dateFormatter.dateFormat = "d MMMM yyyy • hh:mm a"
+        return dateFormatter.string(from: date)
     }
 }
