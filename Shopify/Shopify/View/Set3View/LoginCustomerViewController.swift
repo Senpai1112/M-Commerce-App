@@ -54,6 +54,7 @@ class LoginCustomerViewController: UIViewController {
         
         authViewModel.onError = { errorMessage in
             DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
                 print("Error Logging In: \(errorMessage)")
                 self.showAlert(title: "Login Error", message:" \(errorMessage) email or password incorrect")
             }
