@@ -22,6 +22,13 @@ struct Order: Codable {
     var email: String
     var transactions: [Transaction]
     var financial_status: String
+    var discount_codes : [CoponCodes]
+}
+
+struct CoponCodes :Codable{
+    var code : String
+    var amount : String
+    var type : String
 }
 
 struct LineItem: Codable {

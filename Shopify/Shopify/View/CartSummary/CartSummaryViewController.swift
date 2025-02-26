@@ -34,8 +34,8 @@ class CartSummaryViewController: UIViewController {
     var cartId : String {
         return UserDefaults.standard.string(forKey: "cartID") ?? ""
     }
-    var discoundCopons : [String] {
-        return [UserDefaults.standard.string(forKey: "SUMMER30") ?? "" , UserDefaults.standard.string(forKey: "WINTER30") ?? ""]
+    var discoundCopons : String {
+        return UserDefaults.standard.string(forKey: "50OFF") ?? ""
     }
     var selectedDiscoundCopon = ""
     var newPrice = ""
@@ -75,16 +75,11 @@ class CartSummaryViewController: UIViewController {
             cancellable = publisher
                 .map { ($0.object as? UITextField)?.text ?? "" }
                 .sink { [weak self] newText in
-                    if newText == self?.discoundCopons[0] && self?.discoundCopons[0] != ""{
+                    if newText == self?.discoundCopons && self?.discoundCopons != ""{
                         self?.validationLabel.text = "Valid"
                         self?.validationLabel.textColor = UIColor.red
                         self?.performDiscount()
-                        self?.selectedDiscoundCopon = (self?.discoundCopons[0])!
-                    }else if newText == self?.discoundCopons[1] && self?.discoundCopons[1] != ""{
-                        self?.validationLabel.text = "Valid"
-                        self?.validationLabel.textColor = UIColor.red
-                        self?.performDiscount()
-                        self?.selectedDiscoundCopon = (self?.discoundCopons[1])!
+                        self?.selectedDiscoundCopon = (self?.discoundCopons)!
                     }else{
                         self?.validationLabel.text = "Not Valid"
                         self?.discount.text = "No Discount"
