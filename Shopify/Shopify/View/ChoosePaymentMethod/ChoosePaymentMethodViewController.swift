@@ -182,7 +182,7 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
             }
         }
         let cartTotalPrice = Double(newPrice) ?? 0.0
-        let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "\(cartTotalPrice)"))
+        let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(value: cartTotalPrice))
         items.append(total)
         paymentRequest.paymentSummaryItems = items
         
@@ -240,9 +240,8 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
                 print("Address details are missing")
                 return
             }
-            let doubleShippingFees = 30.0 * UserDefaults.standard.double(forKey: "currencyValue")
             
-            let cartTotalPrice = (Double(newPrice) ?? 0.0) + ((doubleShippingFees * 100).rounded() / 100)
+            let cartTotalPrice = Double(newPrice) ?? 0.0
 
             let address = Address(address1: address1, phone: phone, city: city, country: country)
             
