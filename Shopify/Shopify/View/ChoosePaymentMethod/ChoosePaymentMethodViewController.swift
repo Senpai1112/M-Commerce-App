@@ -243,7 +243,10 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
                 print("Address details are missing")
                 return
             }
-            let newPriceDouble = Double(newPrice)
+            let doubleShippingFees = 30.0 * UserDefaults.standard.double(forKey: "currencyValue")
+            
+            let cartTotalPrice = (Double(newPrice) ?? 0.0) + ((doubleShippingFees * 100).rounded() / 100)
+
             let address = Address(address1: address1, phone: phone, city: city, country: country)
             
             for item in items {
@@ -257,7 +260,7 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
                 ids.append(id)
                 lineItems.append(LineItem(variant_id: intVariantId, quantity: quantaty))
             }
-            orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: newPriceDouble!, discountCodes: [CoponCodes(code: UserDefaults.standard.string(forKey: "selectedDiscountCopon") ?? "", amount: "50", type: "percentage")])
+            orderViewModel.createOrder(firstName: customerDetails.firstName!, lastName: customerDetails.lastName!, email: customerDetails.email!,lineItems : lineItems, billingAddress: address, shippingAddress: address, transactionAmount: cartTotalPrice, discountCodes: [CoponCodes(code: UserDefaults.standard.string(forKey: "selectedDiscountCopon") ?? "Nothing", amount: "50", type: "percentage")])
             cartViewModel.deleteLineInCart(cartID: cartId, lineID: ids)
             orderViewModel.bindLoadingToCashOnDelivery = {[weak self] in
                 if self?.orderViewModel.isLoading == true{
@@ -283,7 +286,7 @@ extension ChoosePaymentMethodViewController: PKPaymentAuthorizationViewControlle
                 // Navigate back only if payment was successful
                 if paymentSuccess, let navigationController = self.navigationController {
                     let viewControllers = navigationController.viewControllers
-                    let targetIndex = max(0, viewControllers.count - 6) // Go back 4 times
+                    let targetIndex = max(0, viewControllers.count - 5)
                     navigationController.popToViewController(viewControllers[targetIndex], animated: true)
                 }
             }
