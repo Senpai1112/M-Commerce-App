@@ -18,7 +18,6 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     var viewModel: OrdersViewModel!
     
     var ordersActivityIndicator: UIActivityIndicatorView!
-    var wishListActivityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,12 +40,10 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         viewModel.bindOrdersToViewController = {
             DispatchQueue.main.async {
                 self.ordersActivityIndicator.stopAnimating()
-                self.wishListActivityIndicator.stopAnimating()
                 self.ordersTable.reloadData()
                 self.wishListTableView.reloadData()
             }}
         ordersActivityIndicator.startAnimating()
-        wishListActivityIndicator.startAnimating()
         
         viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken") ?? "" )
 
@@ -63,11 +60,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
           ordersActivityIndicator.center = ordersTable.center
           ordersActivityIndicator.hidesWhenStopped = true
           view.addSubview(ordersActivityIndicator)
-          
-          wishListActivityIndicator = UIActivityIndicatorView(style: .large)
-          wishListActivityIndicator.center = wishListTableView.center
-          wishListActivityIndicator.hidesWhenStopped = true
-          view.addSubview(wishListActivityIndicator)
+        
       }
     
     func initNib(){
@@ -148,7 +141,10 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == self.ordersTable {
             let count = min(2, viewModel?.finalResult.count ?? 0)
-                    if count == 0 { showEmptyMessage(tableView, message: "No orders yet.") }
+            if count == 0 {
+                        showEmptyMessage(tableView, message: "No orders yet.")
+                        self.ordersActivityIndicator.stopAnimating()
+                    }
                     return count
 
         }else {

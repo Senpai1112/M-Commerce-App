@@ -27,7 +27,6 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         CategoriesProductcollection.dataSource = self
         CategoriesProductcollection.delegate = self
-        setupActivityIndicator()
         initNib()
         emptyState ()
         
@@ -64,7 +63,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
     override func viewWillAppear(_ animated: Bool) {
 
         CategoriesProductcollection.reloadData()
-
+        setupActivityIndicator()
         setupNavigationBarIcons()
         setupLeftBarButt()
         viewModel = ProductViewModel()

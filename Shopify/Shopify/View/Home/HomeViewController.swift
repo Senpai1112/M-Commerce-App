@@ -39,33 +39,44 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
 
    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         let titleLabel = UILabel()
-            titleLabel.text = "Cartique"
-            titleLabel.textColor = .white
-            titleLabel.font = .boldSystemFont(ofSize: 25)
-            
-            if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
-                titleLabel.font = customFont
-            }
-            
-            titleLabel.layer.shadowColor = UIColor.black.cgColor
-            titleLabel.layer.shadowOffset = CGSize(width: 1, height: 2)
-            titleLabel.layer.shadowOpacity = 0.4
+        titleLabel.text = "Cartique"
+        titleLabel.textColor = .white
+        titleLabel.font = .boldSystemFont(ofSize: 25)
+        
+        if let customFont = UIFont(name: "Georgia-Italic", size: 20) {
+            titleLabel.font = customFont
+        }
+        
+        titleLabel.layer.shadowColor = UIColor.black.cgColor
+        titleLabel.layer.shadowOffset = CGSize(width: 1, height: 2)
+        titleLabel.layer.shadowOpacity = 0.4
 
         self.tabBarController?.navigationItem.titleView = titleLabel
-        
+
         setupNavigationBarIcons()
         setupLeftBarButt()
+
         viewModel = BrandsViewModel()
         activityIndicator.startAnimating()
-        viewModel.bindBrandsToViewController = {
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                self.homeCollection.reloadData()
-            }}
-            viewModel.getBrandsFromModel()
 
+        viewModel.bindBrandsToViewController = { [weak self] in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                if !self.viewModel.filteredCollections.isEmpty {
+                    self.activityIndicator.stopAnimating()
+                }
+                
+                self.homeCollection.reloadData()
+            }
+        }
+
+        viewModel.getBrandsFromModel()
     }
+
     func compositionalLayout() {
         let layout = UICollectionViewCompositionalLayout { index, environment in
 
