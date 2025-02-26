@@ -16,7 +16,10 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     var wishList = [FavoriteProduct]()
     
     var viewModel: OrdersViewModel!
-
+    
+    var ordersActivityIndicator: UIActivityIndicatorView!
+    var wishListActivityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ordersTable.dataSource = self
@@ -24,6 +27,8 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         wishListTableView.dataSource = self
         wishListTableView.delegate = self
+        setupActivityIndicators()
+
         initNib()
        
     }
@@ -35,10 +40,14 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         viewModel = OrdersViewModel()
         viewModel.bindOrdersToViewController = {
             DispatchQueue.main.async {
+                self.ordersActivityIndicator.stopAnimating()
+                self.wishListActivityIndicator.stopAnimating()
                 self.ordersTable.reloadData()
                 self.wishListTableView.reloadData()
             }}
-
+        ordersActivityIndicator.startAnimating()
+        wishListActivityIndicator.startAnimating()
+        
         viewModel.getOrdersFromModel(token: UserDefaults.standard.string(forKey: "accessToken") ?? "" )
 
         setupNavigationBarIcons()
@@ -49,7 +58,17 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                 }
         
     }
-    
+    func setupActivityIndicators() {
+          ordersActivityIndicator = UIActivityIndicatorView(style: .large)
+          ordersActivityIndicator.center = ordersTable.center
+          ordersActivityIndicator.hidesWhenStopped = true
+          view.addSubview(ordersActivityIndicator)
+          
+          wishListActivityIndicator = UIActivityIndicatorView(style: .large)
+          wishListActivityIndicator.center = wishListTableView.center
+          wishListActivityIndicator.hidesWhenStopped = true
+          view.addSubview(wishListActivityIndicator)
+      }
     
     func initNib(){
         let nib = UINib(nibName: "OrderCell", bundle: nil)
@@ -126,14 +145,30 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         button.widthAnchor.constraint(equalToConstant: 30).isActive = true
         button.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
-    /////count of orders
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == self.ordersTable {
-            return min(2,viewModel?.finalResult.count ?? 0)
+            let count = min(2, viewModel?.finalResult.count ?? 0)
+                    if count == 0 { showEmptyMessage(tableView, message: "No orders yet.") }
+                    return count
+
         }else {
-            return min (4 , wishList.count)
-        }
+            let count = min(4, wishList.count)
+                  if count == 0 { showEmptyMessage(tableView, message: "No favorites yet.") }
+                  return count        }
     }
+    func showEmptyMessage(_ tableView: UITableView, message: String) {
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.textColor = .lightGray
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        messageLabel.frame = CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height)
+        
+        tableView.backgroundView = messageLabel
+        tableView.separatorStyle = .none
+    }
+
     @IBAction func moreOrdersAction(_ sender: Any) {
         let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
         let ordersTableVC = storyBord.instantiateViewController(withIdentifier: "ordersTableVC") as! OrdersTableViewController
@@ -142,6 +177,8 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        tableView.backgroundView = nil
+        tableView.separatorStyle = .singleLine
         if tableView == self.ordersTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as! OrderCell
             let order = viewModel.finalResult[indexPath.row]
