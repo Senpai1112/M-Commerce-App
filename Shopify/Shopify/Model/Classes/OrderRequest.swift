@@ -9,7 +9,6 @@ import Foundation
 
 // MARK: - Order Model
 
-// MARK: - OrderRequest Model
 struct OrderRequest: Codable {
     var order: Order
 }
