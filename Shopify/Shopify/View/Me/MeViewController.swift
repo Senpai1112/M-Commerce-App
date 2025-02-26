@@ -104,7 +104,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
 
 
     func showLoginAlert() {
-        let alert = UIAlertController(title: "Alert", message: "You must log in to access this page.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Login Required", message: "You must log in to access this page.", preferredStyle: .alert)
         let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
             let storyBord = UIStoryboard(name: "Set3", bundle: nil)
             let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
@@ -127,24 +127,25 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         button.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     /////count of orders
-    var displayedOrders = 2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == self.ordersTable {
-            return min(viewModel?.finalResult.count ?? 0, displayedOrders)
+            return min(2,viewModel?.finalResult.count ?? 0)
         }else {
             return min (4 , wishList.count)
         }
     }
     @IBAction func moreOrdersAction(_ sender: Any) {
-        displayedOrders = viewModel.finalResult.count
-            ordersTable.reloadData()
+        let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
+        let ordersTableVC = storyBord.instantiateViewController(withIdentifier: "ordersTableVC") as! OrdersTableViewController
+        ordersTableVC.orders = viewModel.finalResult
+        navigationController?.pushViewController(ordersTableVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == self.ordersTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as! OrderCell
             let order = viewModel.finalResult[indexPath.row]
-            cell.orderDateLabel.text = "Created At: \(order.processedAt ?? "")"
+            cell.orderDateLabel.text = "Created At: \(order.processedAt?.formattedDate() ?? " ")"
             cell.orderPriceLabel.text = "Price: \(order.price ?? 0) \(order.currencyCode ?? "")"
 
             return cell
@@ -178,7 +179,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
             let order = viewModel.finalResult[indexPath.row]
            let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
 
-            let detailsVC = storyBord.instantiateViewController(withIdentifier: "orderInfoVC") as! OrderViewController
+            let detailsVC = storyBord.instantiateViewController(withIdentifier: "orderInfoVC") as! OrderDetailsViewController
             detailsVC.order = order
             navigationController?.pushViewController(detailsVC, animated: true)
         } else {
@@ -200,7 +201,7 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
             loginView.backgroundColor = .white
             
             let messageLabel = UILabel()
-            messageLabel.text = "Please log in to view your profile."
+            messageLabel.text = "Log in to access and manage your account"
             messageLabel.textAlignment = .center
         messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         messageLabel.textColor = .lightGray

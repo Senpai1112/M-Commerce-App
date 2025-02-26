@@ -12,9 +12,10 @@ import MyApi
 
 class HomeViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     @IBOutlet weak var homeCollection: UICollectionView!
-    let discountCoupon = ["SUMMER30" , "WINTER30"]
+    let discountCoupon = ["SUMMER30"]
     var viewModel: BrandsViewModel!
     var filteredBrands: [BrandModel] = []
+    var activityIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +25,18 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         homeCollection.delegate = self
         initNib()
         compositionalLayout()
+        setupActivityIndicator()
      
     }
+    func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
+
+
+
    
     override func viewWillAppear(_ animated: Bool) {
         let titleLabel = UILabel()
@@ -46,9 +57,10 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         setupNavigationBarIcons()
         setupLeftBarButt()
         viewModel = BrandsViewModel()
+        activityIndicator.startAnimating()
         viewModel.bindBrandsToViewController = {
             DispatchQueue.main.async {
-                
+                self.activityIndicator.stopAnimating()
                 self.homeCollection.reloadData()
             }}
             viewModel.getBrandsFromModel()
@@ -141,10 +153,16 @@ cell.brandTitle.text = brand.title
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch (indexPath.section) {
         case 0 :
-            UIPasteboard.general.string = discountCoupon[indexPath.row]
-            let alert = UIAlertController(title: "Discount coupon has been copied to clipboard!", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
+            if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+                
+                UIPasteboard.general.string = discountCoupon[indexPath.row]
+                let alert = UIAlertController(title: "Discount coupon has been copied to clipboard!", message: "", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+            }
+         else {
+            showLoginAlert(message: "You must log in to enjoy the coupon.")
+        }
         case 1:
             let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
             let productVC = storyBord.instantiateViewController(withIdentifier: "ProductVC") as! ProductsViewController
@@ -243,7 +261,7 @@ cell.brandTitle.text = brand.title
                 let cartVc = storyBord.instantiateViewController(withIdentifier: "ShoppingCartViewController") as! ShoppingCartViewController
                 navigationController?.pushViewController(cartVc, animated: true)
             } else {
-                showLoginAlert()
+                showLoginAlert(message: "You must log in to access this page")
             }
         }
     @objc func favTapped() {
@@ -252,11 +270,11 @@ cell.brandTitle.text = brand.title
                 let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
                 navigationController?.pushViewController(favouritesVC, animated: true)
             } else {
-                showLoginAlert()
+                showLoginAlert(message: "You must log in to access this page")
             }
     }
-    func showLoginAlert() {
-            let alert = UIAlertController(title: "Alert", message: "You must log in to access this page.", preferredStyle: .alert)
+    func showLoginAlert(message: String) {
+            let alert = UIAlertController(title: "Login Required", message: message , preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
@@ -338,5 +356,7 @@ cell.brandTitle.text = brand.title
         let barButtonItem = UIBarButtonItem(customView: searchButt)
         self.tabBarController?.navigationItem.leftBarButtonItem = barButtonItem
     }
+ 
+
 
 }

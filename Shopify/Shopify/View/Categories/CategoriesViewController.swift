@@ -17,7 +17,8 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
        @IBOutlet weak var firstFilter: UISegmentedControl!
        @IBOutlet weak var secFilter: UISegmentedControl!
 
-    
+    var activityIndicator: UIActivityIndicatorView!
+
     var searchBar: UISearchBar?
     var emptyStateView: UIView?
 
@@ -26,10 +27,18 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         CategoriesProductcollection.dataSource = self
         CategoriesProductcollection.delegate = self
+        setupActivityIndicator()
         initNib()
         emptyState ()
         
     }
+    func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
+
     func updateEmptyState() {
             if viewModel.finalResult.isEmpty {
                 emptyStateView?.isHidden = false
@@ -59,8 +68,10 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         setupNavigationBarIcons()
         setupLeftBarButt()
         viewModel = ProductViewModel()
+        activityIndicator.startAnimating()
         viewModel.bindProductsToViewController = {
             DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating() 
                 self.CategoriesProductcollection.reloadData()
                 self.updateEmptyState()
 
@@ -113,7 +124,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
             }
     }
     func showLoginAlert() {
-            let alert = UIAlertController(title: "Alert", message: "You must log in to access this page.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Login Required", message: "You must log in to access this page.", preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController

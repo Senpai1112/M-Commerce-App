@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     var order: Orders!
@@ -15,8 +15,10 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var email: UILabel!
     @IBOutlet weak var orderPriceLabel: UILabel!
     @IBOutlet weak var orderDateLabel: UILabel!
+    @IBOutlet weak var orderPhone: UILabel!
     @IBOutlet weak var itemsTableView: UITableView!
     
+    @IBOutlet weak var orderAddress: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Order Details"
@@ -25,10 +27,11 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
         itemsTableView.dataSource = self
         email.text = order.email
         orderPriceLabel.text = " \(order.price ?? 0) \(order.currencyCode ?? "")"
-        orderDateLabel.text = " \(order.processedAt ?? "")"
-        
+        orderDateLabel.text =  order.processedAt?.formattedDate() ?? " "
+        orderAddress.text = order.address
+        orderPhone.text = order.phone
     }
-
+    
     
     
     func initNib(){
@@ -47,7 +50,7 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let item = order.lineItems[indexPath.row]
         cell.quantityLable.text = "quantity : \(item.quantity ?? 0)"
         cell.orderTitle.text = item.title ?? ""
-        cell.orderPrice.text = "\(item.price ?? 0.0) EGP"
+        cell.orderPrice.text = "price : \(item.price ?? 0) \(item.currencyCode ?? "")"
         cell.subTitle.text = item.variant
         if let imgURL = URL(string: item.image ?? "") {
             cell.OrderImage.kf.setImage(with: imgURL, placeholder: UIImage(named: "1"))
@@ -57,7 +60,7 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 115
     }
     
 }

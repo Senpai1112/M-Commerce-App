@@ -18,6 +18,8 @@ struct Orders {
     let currencyCode : String?
     let processedAt : String?
     let email : String?
+    let address : String?
+    let phone : String?
 }
 struct OrderItem {
     let title: String?

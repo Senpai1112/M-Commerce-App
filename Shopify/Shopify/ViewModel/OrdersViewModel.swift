@@ -37,7 +37,7 @@ class OrdersViewModel {
                                 quantity: item.quantity,
                                 variant: item.variant?.title,
                                 image: item.variant?.image?.src,
-                                price: self?.mapCost(amount: order.originalTotalPrice.amount, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "") ?? 0.0,
+                                price: self?.mapCost(amount: item.originalTotalPrice.amount, currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "") ?? 0.0,
                                 currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? ""
                             )
 
@@ -46,7 +46,7 @@ class OrdersViewModel {
                             id: order.id,
                             lineItems: items, price: self?.mapCost(amount: order.originalTotalPrice.amount, currencyCode:  UserDefaults.standard.string(forKey: "currencyCode") ?? "") ?? 0.0,
                             currencyCode: UserDefaults.standard.string(forKey: "currencyCode") ?? "",
-                            processedAt: order.processedAt, email: order.email
+                            processedAt: order.processedAt, email: order.email, address: order.shippingAddress?.address1, phone: order.shippingAddress?.phone
                         )
                     }
                 }
