@@ -12,7 +12,7 @@ import MyApi
 
 class HomeViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     @IBOutlet weak var homeCollection: UICollectionView!
-    let discountCoupon = ["SUMMER30"]
+    let discountCoupon = ["50OFF"]
     var viewModel: BrandsViewModel!
     var filteredBrands: [BrandModel] = []
     var activityIndicator: UIActivityIndicatorView!
