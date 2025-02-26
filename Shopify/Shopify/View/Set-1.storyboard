@@ -363,6 +363,7 @@
                                     <constraint firstAttribute="height" constant="26" id="zMA-Vb-hTx"/>
                                 </constraints>
                                 <color key="pageIndicatorTintColor" red="0.57919406890000003" green="0.1280144453" blue="0.57268613580000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="currentPageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </pageControl>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MOZ-QZ-v8i">
                                 <rect key="frame" x="297" y="696" width="80" height="40"/>
@@ -380,6 +381,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="72r-6c-JeL" firstAttribute="leading" secondItem="6dM-vS-fdE" secondAttribute="leading" constant="16" id="6Oj-UV-beZ"/>
+                            <constraint firstItem="6dM-vS-fdE" firstAttribute="trailing" secondItem="DEL-0d-CYA" secondAttribute="trailing" constant="151" id="7Cx-e5-jyK"/>
+                            <constraint firstItem="DEL-0d-CYA" firstAttribute="leading" secondItem="6dM-vS-fdE" secondAttribute="leading" constant="151" id="Jc1-Pa-MCf"/>
                             <constraint firstItem="6dM-vS-fdE" firstAttribute="trailing" secondItem="DEL-0d-CYA" secondAttribute="trailing" constant="151" id="aub-AL-1AF"/>
                             <constraint firstItem="72r-6c-JeL" firstAttribute="top" secondItem="6dM-vS-fdE" secondAttribute="top" constant="13" id="c9s-8T-ykh"/>
                             <constraint firstItem="DEL-0d-CYA" firstAttribute="leading" secondItem="6dM-vS-fdE" secondAttribute="leading" constant="151" id="ilC-1Z-6yK"/>
