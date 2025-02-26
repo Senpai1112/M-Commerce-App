@@ -23,12 +23,24 @@ class OrdersTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     
-
+   
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return orders.count
+        let count = orders.count
+                if count == 0 { showEmptyMessage(tableView, message: "No orders yet.") }
+                return count
     }
-
+    func showEmptyMessage(_ tableView: UITableView, message: String) {
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.textColor = .lightGray
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        messageLabel.frame = CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height)
+        
+        tableView.backgroundView = messageLabel
+        tableView.separatorStyle = .none
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as! OrderCell
