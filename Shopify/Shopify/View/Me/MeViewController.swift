@@ -89,9 +89,8 @@ class MeViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                
         let butt3 = UIButton(type: .system)
         setUpNavBarBtn(button: butt3, systemName: "cart", selector: #selector(cartTapped))
-        
-        stackView.addArrangedSubview(settingsButt)
         stackView.addArrangedSubview(butt3)
+        stackView.addArrangedSubview(settingsButt)
         
         let barButtonItem = UIBarButtonItem(customView: stackView)
         tabBarController?.navigationItem.rightBarButtonItem = barButtonItem

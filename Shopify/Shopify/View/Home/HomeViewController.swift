@@ -344,10 +344,37 @@ cell.brandTitle.text = brand.title
                    print("Search Text Changed: \(searchText)")
              
                    viewModel.searchText = searchText
-
+           if viewModel.filteredCollections.isEmpty {
+                  setEmptyMessage("No matching brands found.")
+              } else {
+                  restoreCollectionView()
+              }
                    homeCollection.reloadData()
                }
-    
+    func setEmptyMessage(_ message: String) {
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        messageLabel.textColor = .gray
+        messageLabel.numberOfLines = 0
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let containerView = UIView()
+        containerView.addSubview(messageLabel)
+        
+        NSLayoutConstraint.activate([
+            messageLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            messageLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        ])
+        
+        homeCollection.backgroundView = containerView
+    }
+
+    func restoreCollectionView() {
+        homeCollection.backgroundView = nil
+    }
+
     
     func setupLeftBarButt() {
         let searchButt = UIButton(type: .system)
