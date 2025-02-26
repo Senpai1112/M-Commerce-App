@@ -11,12 +11,8 @@ import Firebase
 
 class CashOnDeliveryViewController: UIViewController {
     
-    @IBOutlet weak var subTotal: UILabel!
-    
-    @IBOutlet weak var shippingFees: UILabel!
-    
-    
     @IBOutlet weak var grandTotal: UILabel!
+        
     
     @IBOutlet weak var placeOrder: UIButton!
     
@@ -31,9 +27,6 @@ class CashOnDeliveryViewController: UIViewController {
     @IBOutlet weak var countryLabel: UILabel!
     
     @IBOutlet weak var phoneLabel: UILabel!
-    
-    @IBOutlet weak var currencyCodeSubTotal: UILabel!
-    @IBOutlet weak var currencyCodeShippingFees: UILabel!
     
     @IBOutlet weak var currencyCodeGrandTotal: UILabel!
     
@@ -66,22 +59,14 @@ class CashOnDeliveryViewController: UIViewController {
         updateUI()
     }
     func updateUI(){
-        subTotal.text = "\(newPrice)"
-        let doubleShippingFees = 30.0 * UserDefaults.standard.double(forKey: "currencyValue")
-        shippingFees.text = "\((doubleShippingFees * 100).rounded() / 100)"
-        
-        let doubleGrandTotal = (subTotal.text! as NSString).doubleValue + doubleShippingFees
-        
-        grandTotal.text = "\((doubleGrandTotal * 100).rounded() / 100)"
+        grandTotal.text = "\(newPrice)"
         nameLabel.text = customerDetails.firstName
         countryLabel.text = address.country
         address1Label.text = address.address1
         address2Label.text = address.address2
         cityLabel.text = address.city
         phoneLabel.text = address.phone
-        currencyCodeSubTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
         currencyCodeGrandTotal.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
-        currencyCodeShippingFees.text = cartDetails.totalCost?.totalAmount?.currencyCode ?? "EGP"
     }
     
     @IBAction func placeOrder(_ sender: UIButton) {

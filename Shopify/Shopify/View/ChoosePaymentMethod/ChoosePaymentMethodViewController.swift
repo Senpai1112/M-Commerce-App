@@ -181,11 +181,8 @@ extension ChoosePaymentMethodViewController: UITableViewDataSource, UITableViewD
                 items.append(tempItems)
             }
         }
-        let doubleShippingFees = 30.0 * UserDefaults.standard.double(forKey: "currencyValue")
-        let shippingFees = PKPaymentSummaryItem(label: "Shipping Fees", amount: NSDecimalNumber(string: "\((doubleShippingFees * 100).rounded() / 100)"))
-        let cartTotalPrice = (Double(newPrice) ?? 0.0) + ((doubleShippingFees * 100).rounded() / 100)
+        let cartTotalPrice = Double(newPrice) ?? 0.0
         let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "\(cartTotalPrice)"))
-        items.append(shippingFees)
         items.append(total)
         paymentRequest.paymentSummaryItems = items
         

@@ -23,6 +23,10 @@ class LoginCustomerViewController: UIViewController {
 //        setupViewModelObservers()
 //        loginButtonTapped()
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
     func setupActivityIndicator() {
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.center = view.center

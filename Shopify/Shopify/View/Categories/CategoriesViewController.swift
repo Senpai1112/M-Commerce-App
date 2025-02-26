@@ -37,6 +37,9 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         activityIndicator.hidesWhenStopped = true
         view.addSubview(activityIndicator)
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
 
     func updateEmptyState() {
             if viewModel.finalResult.isEmpty {

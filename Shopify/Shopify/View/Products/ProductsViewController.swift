@@ -50,6 +50,9 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         let emptyStateNib = UINib(nibName: "EmptyStateView", bundle: nil)
               emptyStateView = emptyStateNib.instantiate(withOwner: nil, options: nil).first as? UIView
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
     
     func updateEmptyState() {
             if filteredProducts.isEmpty {

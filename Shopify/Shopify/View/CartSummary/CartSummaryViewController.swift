@@ -11,7 +11,7 @@ import MyApi
 import SDWebImage
 import Combine
 
-class CartSummaryViewController: UIViewController {
+class CartSummaryViewController: UIViewController ,UITextFieldDelegate {
     
     var address = Addresses()
     
@@ -53,6 +53,7 @@ class CartSummaryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Shopping Cart Summary"
+        discoundCopon.delegate = self
         self.cartViewModel.bindResultToShoppingCartTableViewController = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -68,10 +69,6 @@ class CartSummaryViewController: UIViewController {
         }
         cartViewModel.getCartFromModel(cartID: cartId)
     }
-    
-        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-            view.endEditing(true)
-        }
     private func setupTextFieldPublisher() {
         let publisher = NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: discoundCopon)
             
@@ -104,6 +101,10 @@ class CartSummaryViewController: UIViewController {
         totalPriceOfProducts.text = "\((discountPrice * 100).rounded() / 100)"
         newPrice = "\((discountPrice * 100).rounded() / 100)"
     }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder() // Dismiss keyboard
+            return true
+        }
     func initNib(){
         tableView.dataSource = self
         tableView.delegate = self

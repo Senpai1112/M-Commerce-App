@@ -21,6 +21,9 @@ class CustomerViewController: UIViewController {
        // setupViewModelObservers()
        // testCreateCustomer()
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
     
     func setupActivityIndicator() {
         activityIndicator = UIActivityIndicatorView(style: .large)

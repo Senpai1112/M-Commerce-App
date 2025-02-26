@@ -35,7 +35,9 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
         view.addSubview(activityIndicator)
     }
 
-
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
 
    
     override func viewWillAppear(_ animated: Bool) {
