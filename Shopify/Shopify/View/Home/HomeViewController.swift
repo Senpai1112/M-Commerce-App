@@ -114,10 +114,10 @@ class HomeViewController: UIViewController, UICollectionViewDataSource, UICollec
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! HeaderView
             switch indexPath.section {
             case 0:
-                header.headerLabel.text = ""
+                header.headerLabel.text = "Ads"
             case 1:
                 header.headerLabel.text = "Brands"
-            default: header.headerLabel.text = "Ads"
+            default: header.headerLabel.text = ""
             }
             return header
         }
@@ -169,12 +169,13 @@ cell.brandTitle.text = brand.title
             if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
                 
                 UIPasteboard.general.string = discountCoupon[indexPath.row]
-                let alert = UIAlertController(title: "Discount coupon has been copied to clipboard!", message: "", preferredStyle: .alert)
+
+                let alert = UIAlertController(title: "Congratulations!", message: "Your discount coupon \"50OFF\" has been copied to clipboard!", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 present(alert, animated: true)
             }
          else {
-            showLoginAlert(message: "You must log in to enjoy the coupon.")
+            showLoginAlert(message: "Please log in to enjoy the coupon.")
         }
         case 1:
             let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
@@ -206,6 +207,11 @@ cell.brandTitle.text = brand.title
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPagingCentered
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [header]
+        
 
         return section
     }
@@ -274,7 +280,7 @@ cell.brandTitle.text = brand.title
                 let cartVc = storyBord.instantiateViewController(withIdentifier: "ShoppingCartViewController") as! ShoppingCartViewController
                 navigationController?.pushViewController(cartVc, animated: true)
             } else {
-                showLoginAlert(message: "You must log in to access this page")
+                showLoginAlert(message: "Please log in to access this page")
             }
         }
     @objc func favTapped() {
@@ -283,7 +289,7 @@ cell.brandTitle.text = brand.title
                 let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
                 navigationController?.pushViewController(favouritesVC, animated: true)
             } else {
-                showLoginAlert(message: "You must log in to access this page")
+                showLoginAlert(message: "Please log in to access this page")
             }
     }
     func showLoginAlert(message: String) {

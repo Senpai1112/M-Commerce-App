@@ -64,24 +64,31 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-
+        super.viewWillAppear(animated)
+        
         CategoriesProductcollection.reloadData()
         setupActivityIndicator()
         setupNavigationBarIcons()
         setupLeftBarButt()
+        
         viewModel = ProductViewModel()
         activityIndicator.startAnimating()
-        viewModel.bindProductsToViewController = {
+        
+        viewModel.bindProductsToViewController = { [weak self] in
             DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating() 
+                guard let self = self else { return }
+                
+                self.activityIndicator.stopAnimating()
+                
                 self.CategoriesProductcollection.reloadData()
                 self.updateEmptyState()
-
             }
         }
         
         setQuery()
     }
+    
+
     
     func setupNavigationBarIcons() {
             let stackView = UIStackView()
@@ -126,7 +133,7 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
             }
     }
     func showLoginAlert() {
-            let alert = UIAlertController(title: "Login Required", message: "You must log in to access this page.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Login Required", message: "Please log in to access this page.", preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
