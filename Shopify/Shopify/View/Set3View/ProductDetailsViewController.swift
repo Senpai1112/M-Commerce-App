@@ -134,13 +134,15 @@ class ProductDetailsViewController: UIViewController ,UITableViewDelegate, UITab
       //  variantPicker.delegate = self
      //   variantPicker.dataSource = self
         print("Fetching product data...")
-        setupViewModelObservers()
-        viewModel.fetchProduct(pid: id ?? "gid://shopify/Product/7226328383543")
+//        setupViewModelObservers()
+//        viewModel.fetchProduct(pid: id ?? "gid://shopify/Product/7226328383543")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         setupActivityIndicator()
         activityIndicator.startAnimating()
+        setupViewModelObservers()
+        viewModel.fetchProduct(pid: id ?? "gid://shopify/Product/7226328383543")
         checkIfFavorite()
     }
     
@@ -203,7 +205,7 @@ class ProductDetailsViewController: UIViewController ,UITableViewDelegate, UITab
     }
     
     func showLoginAlert() {
-            let alert = UIAlertController(title: "Login Required", message: "You must log in to do this action.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Login Required", message: "Please log in to do this action.", preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
@@ -217,34 +219,38 @@ class ProductDetailsViewController: UIViewController ,UITableViewDelegate, UITab
         }
      
     @objc func addToCartTapped() {
-        if let selectedIndexPath = variantTableView.indexPathForSelectedRow {
-            let selectedVariant = product?.variants[selectedIndexPath.row] ?? product?.variants.first
-            
-            if let variant = selectedVariant {
-                lines = [CartLineInput(quantity: 1, merchandiseId: variant.id)]
-                print("Add to Cart Tapped with Variant: \(variant.title), Price: \(variant.price.amount) \(variant.price.currencyCode)  ID: \(variant.id)")
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken"), !accessToken.isEmpty {
+            if let selectedIndexPath = variantTableView.indexPathForSelectedRow {
+                let selectedVariant = product?.variants[selectedIndexPath.row] ?? product?.variants.first
                 
-                if let cartID = UserDefaults.standard.string(forKey: "cartID") {
-                    addToCartViewModel.addLineToCart(cartId: cartID, lines: lines)
+                if let variant = selectedVariant {
+                    lines = [CartLineInput(quantity: 1, merchandiseId: variant.id)]
+                    print("Add to Cart Tapped with Variant: \(variant.title), Price: \(variant.price.amount) \(variant.price.currencyCode)  ID: \(variant.id)")
+                    
+                    if let cartID = UserDefaults.standard.string(forKey: "cartID") {
+                        addToCartViewModel.addLineToCart(cartId: cartID, lines: lines)
+                    }
                 }
-            }
-            variantTableView.deselectRow(at: selectedIndexPath, animated: true)
-            addToCartViewModel.onCartUpdated = { [weak self] cart in
-                let alertController = UIAlertController(title: "Success", message: "Item has been added to your cart.", preferredStyle: .alert)
+                variantTableView.deselectRow(at: selectedIndexPath, animated: true)
+                addToCartViewModel.onCartUpdated = { [weak self] cart in
+                    let alertController = UIAlertController(title: "Success", message: "Item has been added to your cart.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(okAction)
+                    self?.present(alertController, animated: true, completion: nil)
+                }
+                
+                viewModel.onError = { error in
+                    print("Error: \(error)")
+                }
+            } else {
+                // Show an alert if no row is selected
+                let alert = UIAlertController(title: "No Size Or Color Selected", message: "Please select size & color before adding to cart.", preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                alertController.addAction(okAction)
-                self?.present(alertController, animated: true, completion: nil)
+                alert.addAction(okAction)
+                present(alert, animated: true, completion: nil)
             }
-            
-            viewModel.onError = { error in
-                print("Error: \(error)")
-            }
-        } else {
-            // Show an alert if no row is selected
-            let alert = UIAlertController(title: "No Variant Selected", message: "Please select size & color before adding to the cart.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(okAction)
-            present(alert, animated: true, completion: nil)
+        }else{
+            showLoginAlert()
         }
     }
 
@@ -360,7 +366,7 @@ class ProductDetailsViewController: UIViewController ,UITableViewDelegate, UITab
         descriptionLabel.text = "The iconic ASICS Tiger GEL-Lyte III was originally released in 1990. Having over two decades of performance heritage, it offers fine design detailing and a padded split tongue."
         descriptionLabel.numberOfLines = 0
         
-        addToCartButton.setTitle("Add to Bag", for: .normal)
+        addToCartButton.setTitle("Add to Cart", for: .normal)
         addToCartButton.backgroundColor = .purple
         addToCartButton.setTitleColor(.white, for: .normal)
         addToCartButton.layer.cornerRadius = 25
