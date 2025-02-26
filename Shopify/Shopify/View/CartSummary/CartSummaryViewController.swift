@@ -69,6 +69,9 @@ class CartSummaryViewController: UIViewController {
         cartViewModel.getCartFromModel(cartID: cartId)
     }
     
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            view.endEditing(true)
+        }
     private func setupTextFieldPublisher() {
         let publisher = NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: discoundCopon)
             
