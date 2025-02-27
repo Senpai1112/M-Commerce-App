@@ -64,24 +64,31 @@ class CategoriesViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-
+        super.viewWillAppear(animated)
+        
         CategoriesProductcollection.reloadData()
         setupActivityIndicator()
         setupNavigationBarIcons()
         setupLeftBarButt()
+        
         viewModel = ProductViewModel()
         activityIndicator.startAnimating()
-        viewModel.bindProductsToViewController = {
+        
+        viewModel.bindProductsToViewController = { [weak self] in
             DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating() 
+                guard let self = self else { return }
+                
+                self.activityIndicator.stopAnimating()
+                
                 self.CategoriesProductcollection.reloadData()
                 self.updateEmptyState()
-
             }
         }
         
         setQuery()
     }
+    
+
     
     func setupNavigationBarIcons() {
             let stackView = UIStackView()

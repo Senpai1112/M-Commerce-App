@@ -15,10 +15,10 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var email: UILabel!
     @IBOutlet weak var orderPriceLabel: UILabel!
     @IBOutlet weak var orderDateLabel: UILabel!
-    @IBOutlet weak var orderPhone: UILabel!
+   
     @IBOutlet weak var itemsTableView: UITableView!
     
-    @IBOutlet weak var orderAddress: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Order Details"
@@ -28,8 +28,7 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
         email.text = order.email
         orderPriceLabel.text = " \(order.price ?? 0) \(order.currencyCode ?? "")"
         orderDateLabel.text =  order.processedAt?.formattedDate() ?? " "
-        orderAddress.text = order.address
-        orderPhone.text = order.phone
+       
     }
     
     
