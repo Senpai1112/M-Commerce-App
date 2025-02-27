@@ -175,7 +175,7 @@ cell.brandTitle.text = brand.title
                 present(alert, animated: true)
             }
          else {
-            showLoginAlert(message: "You must log in to enjoy the coupon.")
+            showLoginAlert(message: "Please log in to enjoy the coupon.")
         }
         case 1:
             let storyBord = UIStoryboard(name: "Set-1", bundle: nil)
@@ -280,7 +280,7 @@ cell.brandTitle.text = brand.title
                 let cartVc = storyBord.instantiateViewController(withIdentifier: "ShoppingCartViewController") as! ShoppingCartViewController
                 navigationController?.pushViewController(cartVc, animated: true)
             } else {
-                showLoginAlert(message: "You must log in to access this page")
+                showLoginAlert(message: "Please log in to access this page")
             }
         }
     @objc func favTapped() {
@@ -289,7 +289,7 @@ cell.brandTitle.text = brand.title
                 let favouritesVC = storyBord.instantiateViewController(withIdentifier: "favouritesVC") as! FavouritesViewController
                 navigationController?.pushViewController(favouritesVC, animated: true)
             } else {
-                showLoginAlert(message: "You must log in to access this page")
+                showLoginAlert(message: "Please log in to access this page")
             }
     }
     func showLoginAlert(message: String) {

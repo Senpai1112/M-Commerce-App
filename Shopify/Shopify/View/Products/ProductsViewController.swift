@@ -297,7 +297,7 @@ class ProductsViewController: UIViewController, UICollectionViewDataSource, UICo
         ()
     }
     func showLoginAlert() {
-            let alert = UIAlertController(title: "Login Required", message: "You must log in to do this action.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Login Required", message: "Please log in to do this action.", preferredStyle: .alert)
             let loginAction = UIAlertAction(title: "Log In", style: .default) { _ in
                 let storyBord = UIStoryboard(name: "Set3", bundle: nil)
                 let loginVC = storyBord.instantiateViewController(withIdentifier: "loginVC") as! LoginCustomerViewController
